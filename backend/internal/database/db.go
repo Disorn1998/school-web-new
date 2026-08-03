@@ -1,39 +1,44 @@
 package database
 
 import (
-	"fmt"
 	"log"
-	"os"
 
-	"gorm.io/driver/postgres"
+	"backend/internal/models"
+	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )
 
 // DB is the global database instance
 var DB *gorm.DB
 
-// ConnectDB connects to the database and assigns it to the DB variable
+// ConnectDB connects to the SQLite database and assigns it to the DB variable
 func ConnectDB() {
-	host := os.Getenv("DB_HOST")
-	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASS")
-	dbname := os.Getenv("DB_NAME")
-	port := os.Getenv("DB_PORT")
-	sslmode := os.Getenv("DB_SSLMODE")
-	timezone := os.Getenv("DB_TIMEZONE")
-
-	if user == "" {
-		log.Fatal("Error: DB_USER is empty. Please check your .env file.")
-	}
-
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s",
-		host, user, password, dbname, port, sslmode, timezone)
-
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	// Use pure Go SQLite instead of Postgres for local testing (No CGO required)
+	db, err := gorm.Open(sqlite.Open("school.db"), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Database Connection Failed: ", err)
 	}
 
 	DB = db
-	log.Println("Connected to the Database Successfully")
+	log.Println("Connected to the SQLite Database Successfully")
+
+	// Auto Migrate the schemas so tables are created automatically
+	log.Println("Migrating database schemas...")
+	err = db.AutoMigrate(
+		&models.Admin{},
+		&models.Student{},
+		&models.Parent{},
+		&models.Attendance{},
+		&models.Year{},
+		&models.Subject{},
+		&models.Homework{},
+		&models.Semester{},
+		&models.Invoice{},
+		&models.InvoiceItem{},
+	)
+	if err != nil {
+		log.Println("Migration warning: ", err)
+	} else {
+		log.Println("Database migrated successfully.")
+	}
 }
