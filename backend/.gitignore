@@ -17,3 +17,11 @@ go.work.sum
 *.tmp
 *.bak
 *~
+
+# Database files
+school.db
+*.sqlite
+*.sqlite3
+
+# Uploads
+uploads/
