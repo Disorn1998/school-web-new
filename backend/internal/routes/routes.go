@@ -15,14 +15,28 @@ func SetupRoutes(app *fiber.App) {
 	auth := api.Group("/auth")
 	auth.Post("/login", handlers.Login)
 
-	// Example of a protected Admin Route
-	admin := api.Group("/admin", middleware.Protected(), middleware.RoleGuard("super", "admin"))
+	// Admin Routes (Protected)
+	admin := api.Group("/admin", middleware.Protected(), middleware.RoleGuard("super", "admin", "officer"))
 	admin.Get("/dashboard", func(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{"message": "Welcome to the Admin Dashboard!"})
 	})
 
-	// Example of a protected Student Route
-	student := api.Group("/student", middleware.Protected()) // Can add student specific guard if needed
+	// Parent Management
+	admin.Get("/parents", handlers.GetAllParents)
+	admin.Get("/parents/:id", handlers.GetParent)
+	admin.Post("/parents", handlers.CreateParent)
+	admin.Put("/parents/:id", handlers.UpdateParent)
+	admin.Delete("/parents/:id", handlers.DeleteParent)
+
+	// Student Management
+	admin.Get("/students", handlers.GetAllStudents)
+	admin.Get("/students/:id", handlers.GetStudent)
+	admin.Post("/students", handlers.CreateStudent)
+	admin.Put("/students/:id", handlers.UpdateStudent)
+	admin.Delete("/students/:id", handlers.DeleteStudent)
+
+	// Student Routes (Protected)
+	student := api.Group("/student", middleware.Protected())
 	student.Get("/dashboard", func(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{"message": "Welcome to the Student Dashboard!"})
 	})
