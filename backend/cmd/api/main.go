@@ -2,6 +2,7 @@ package main
 
 import (
 	"backend/internal/database"
+	"backend/internal/routes"
 	"log"
 	"os"
 
@@ -20,11 +21,8 @@ func main() {
 
 	app := fiber.New()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{
-			"message": "Welcome to School System API",
-		})
-	})
+	// Setup application routes
+	routes.SetupRoutes(app)
 
 	port := os.Getenv("PORT")
 	if port == "" {
