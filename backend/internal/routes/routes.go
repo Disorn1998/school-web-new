@@ -40,4 +40,24 @@ func SetupRoutes(app *fiber.App) {
 	student.Get("/dashboard", func(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{"message": "Welcome to the Student Dashboard!"})
 	})
+
+	// === Phase 4: Academic & Operations ===
+
+	// 4.1 Attendance
+	api.Post("/attendance/checkin", middleware.Protected(), handlers.CheckIn)
+
+	// 4.2 Homework
+	homework := api.Group("/homework", middleware.Protected())
+	homework.Get("/", handlers.GetAllHomework)
+	homework.Post("/", middleware.RoleGuard("super", "admin", "teacher"), handlers.CreateHomework)
+	homework.Put("/:id", middleware.RoleGuard("super", "admin", "teacher"), handlers.UpdateHomework)
+	homework.Delete("/:id", middleware.RoleGuard("super", "admin", "teacher"), handlers.DeleteHomework)
+
+	// 4.3 Invoices
+	invoices := api.Group("/invoices", middleware.Protected())
+	invoices.Get("/", middleware.RoleGuard("super", "admin", "officer"), handlers.GetAllInvoices)
+	invoices.Post("/generate", middleware.RoleGuard("super", "admin", "officer"), handlers.GenerateInvoices)
+
+	// 4.4 Webhook (Unprotected - Called by Bank)
+	api.Post("/webhook/payment", handlers.WebhookPayment)
 }
