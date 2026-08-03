@@ -18,28 +18,28 @@ func GetSMTPAccount(accountType string) SMTPAccount {
 	case "info":
 		user := os.Getenv("SMTP_INFO_USER")
 		if user == "" {
-			user = "info@stmarks.ac.th"
+			user = "info@school.edu"
 		}
 		return SMTPAccount{
 			Username: user,
 			Password: os.Getenv("SMTP_INFO_PASS"),
-			FromName: "ST.MARKS Info",
+			FromName: "School Info",
 		}
 	case "parent":
 		user := os.Getenv("SMTP_PARENT_USER")
 		if user == "" {
-			user = "parent@stmarks.ac.th"
+			user = "parent@school.edu"
 		}
 		return SMTPAccount{
 			Username: user,
 			Password: os.Getenv("SMTP_PARENT_PASS"),
-			FromName: "ST.MARKS Parent Relations",
+			FromName: "School Parent Relations",
 		}
 	default:
 		// Default to main MAIL_USERNAME
 		user := os.Getenv("MAIL_USERNAME")
 		if user == "" {
-			user = "tis@stmarks.ac.th"
+			user = "info@school.edu"
 		}
 		return SMTPAccount{
 			Username: user,
