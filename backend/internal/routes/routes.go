@@ -37,9 +37,9 @@ func SetupRoutes(app *fiber.App) {
 
 	// Student Routes (Protected)
 	student := api.Group("/student", middleware.Protected())
-	student.Get("/dashboard", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{"message": "Welcome to the Student Dashboard!"})
-	})
+	student.Get("/profile", handlers.GetMyProfile)
+	student.Get("/homework", handlers.GetMyHomework)
+	student.Get("/invoices", handlers.GetMyInvoices)
 
 	// === Phase 4: Academic & Operations ===
 
