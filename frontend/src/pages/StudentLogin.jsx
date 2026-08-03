@@ -113,7 +113,7 @@ const StudentLogin = () => {
           </div>
         </div>
         <p className="text-center mt-8 text-sm text-slate-500 font-medium">
-          © 2026 ST.MARKS School Management System
+          © 2026 Simple School System
         </p>
       </div>
     </div>

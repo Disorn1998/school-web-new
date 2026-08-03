@@ -36,11 +36,11 @@ const AdminSidebar = ({ activeTab, setActiveTab }) => {
       <div className="p-6 pb-4 border-b border-slate-800 sticky top-0 bg-slate-900 z-10">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-gradient-to-tr from-brand-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/20">
-            <span className="text-white font-bold text-xl">SM</span>
+            <span className="text-white font-bold text-xl">SSS</span>
           </div>
           <div>
             <h1 className="text-white font-bold text-lg tracking-tight">Admin Portal</h1>
-            <p className="text-xs text-emerald-400 font-medium">ST.MARKS System</p>
+            <p className="text-xs text-emerald-400 font-medium">Simple School System</p>
           </div>
         </div>
       </div>
