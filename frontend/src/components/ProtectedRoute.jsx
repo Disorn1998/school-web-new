@@ -20,7 +20,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   if (allowedRoles && !allowedRoles.includes(user.group)) {
     // If user tries to access a route they don't have permission for,
     // redirect them to their respective dashboard
-    if (['super', 'admin', 'officer', 'teacher'].includes(user.group)) {
+    if (['staff', 'super', 'admin', 'officer', 'teacher'].includes(user.group)) {
       return <Navigate to="/admin" replace />;
     } else {
       return <Navigate to="/student" replace />;

@@ -4,23 +4,44 @@ import api from '../utils/api';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      try {
+        const parsedUser = JSON.parse(savedUser);
+        if (!parsedUser.group) {
+          localStorage.removeItem('user');
+          localStorage.removeItem('token');
+          return null;
+        }
+        return parsedUser;
+      } catch (e) {
+        localStorage.removeItem('user');
+        return null;
+      }
+    }
+    return null;
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Check if token exists on load
     const token = localStorage.getItem('token');
-    const storedUser = localStorage.getItem('user');
-
-    if (token && storedUser) {
-      setUser(JSON.parse(storedUser));
+    
+    if (token && user) {
+      setUser(user);
     }
     setLoading(false);
   }, []);
 
   const login = async (username, password, role) => {
     try {
-      const response = await api.post('/auth/login', { username, password, role });
+      const authGroup = role === 'admin' ? 'staff' : 'student';
+      const response = await api.post('/auth/login', { 
+        username: username.trim(), 
+        password: password.trim(), 
+        auth_group: authGroup 
+      });
       const { token, user: userData } = response.data;
       
       localStorage.setItem('token', token);

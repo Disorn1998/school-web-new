@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
 )
 
@@ -20,6 +21,12 @@ func main() {
 	database.ConnectDB()
 
 	app := fiber.New()
+
+	// Enable CORS for frontend connection
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
+	}))
 
 	// Setup application routes
 	routes.SetupRoutes(app)

@@ -10,10 +10,13 @@ type Admin struct {
 	PasswordHash string    `gorm:"column:password_hash" json:"-"` // hidden in JSON response
 	Name         string    `gorm:"column:name" json:"name"`
 	Fullname     string    `gorm:"column:fullname" json:"fullname"`
+	Email        string    `gorm:"column:email" json:"email"`
+	PassportName string    `gorm:"column:passport_name" json:"passport_name"`
 	Role         string    `gorm:"column:role" json:"role"`
 	Photo        string    `gorm:"column:photo" json:"photo"`
-	CreatedAt    time.Time `gorm:"column:created_at" json:"created_at"`
-	UpdatedAt    time.Time `gorm:"column:updated_at" json:"updated_at"`
+	CreatedAt      time.Time       `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt      time.Time       `gorm:"column:updated_at" json:"updated_at"`
+	TeacherProfile *TeacherProfile `gorm:"foreignKey:AdminID" json:"teacher_profile,omitempty"`
 }
 
 // TableName overrides the table name used by Admin to `admins`

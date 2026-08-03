@@ -6,6 +6,8 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/crypto/bcrypt"
+	"fmt"
+	"time"
 )
 
 // GetAllParents returns all parents with their linked students
@@ -50,7 +52,19 @@ func CreateParent(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to hash password"})
 		}
-		input.Parent.PasswordHash = string(hash)
+		input.Parent.Password = string(hash)
+	}
+
+	// Auto-generate username if empty
+	if input.Parent.Username == "" {
+		var lastParent models.Parent
+		database.DB.Order("id desc").First(&lastParent)
+		newId := 1
+		if lastParent.ID > 0 {
+			newId = lastParent.ID + 1
+		}
+		currentYear := time.Now().Year()
+		input.Parent.Username = fmt.Sprintf("PRT%d%04d", currentYear, newId)
 	}
 
 	if err := database.DB.Create(&input.Parent).Error; err != nil {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { LogOut, BookOpen, Clock, FileText, Calendar } from 'lucide-react';
+import { LogOut, BookOpen, Clock, FileText, Calendar, CheckSquare } from 'lucide-react';
 import api from '../utils/api';
 
 const StudentDashboard = () => {

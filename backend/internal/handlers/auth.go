@@ -3,6 +3,7 @@ package handlers
 import (
 	"backend/internal/database"
 	"backend/internal/models"
+	"log"
 	"os"
 	"time"
 
@@ -24,6 +25,8 @@ func Login(c *fiber.Ctx) error {
 	if err := c.BodyParser(&input); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid input"})
 	}
+
+	log.Printf("Login Request Received: AuthGroup='%s', Username='%s', Password Length=%d", input.AuthGroup, input.Username, len(input.Password))
 
 	if input.Username == "" || input.Password == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Please fill in all required fields"})
@@ -75,6 +78,7 @@ func Login(c *fiber.Ctx) error {
 				"fullname": admin.Fullname,
 				"role":     admin.Role,
 				"photo":    admin.Photo,
+				"group":    "staff",
 			},
 		})
 	}
@@ -115,7 +119,7 @@ func Login(c *fiber.Ctx) error {
 		device = "Unknown" // Can implement better detection if needed
 	}
 
-	database.DB.Exec("UPDATE parents SET login_count = login_count + 1, last_login = NOW(), last_device = ? WHERE id = ?", device, result.ParentID)
+	database.DB.Exec("UPDATE parents SET login_count = login_count + 1, last_login = ?, last_device = ? WHERE id = ?", time.Now(), device, result.ParentID)
 
 	// Generate JWT Token
 	claims := jwt.MapClaims{
@@ -138,6 +142,7 @@ func Login(c *fiber.Ctx) error {
 			"id":       result.StudentID,
 			"fullname": result.Fullname,
 			"year_id":  result.YearID,
+			"group":    "student",
 		},
 	})
 }

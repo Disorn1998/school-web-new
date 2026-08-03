@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { LogIn, User, Lock, Shield, GraduationCap, Users } from 'lucide-react';
+import { LogIn, User, Lock, GraduationCap } from 'lucide-react';
 
-const Login = () => {
-  const [role, setRole] = useState('admin');
+const StudentLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -18,13 +17,14 @@ const Login = () => {
     setError('');
     setIsLoading(true);
 
-    const result = await login(username, password, role);
+    // Hardcode role to 'student' so the backend handles it properly
+    const result = await login(username, password, 'student');
     
     if (result.success) {
-      if (['super', 'admin', 'officer', 'teacher'].includes(result.role)) {
-        navigate('/admin');
-      } else {
+      if (['student', 'parent'].includes(result.role)) {
         navigate('/student');
+      } else {
+        setError('Unauthorized access for this portal.');
       }
     } else {
       setError(result.message);
@@ -40,43 +40,13 @@ const Login = () => {
       <div className="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
 
       <div className="w-full max-w-md z-10">
-        <div className="glass-panel rounded-3xl p-8 transition-all duration-300 hover:shadow-2xl">
+        <div className="bg-white/80 backdrop-blur-xl border border-white rounded-3xl p-8 transition-all duration-300 shadow-xl">
           <div className="text-center mb-8">
             <div className="w-16 h-16 bg-gradient-to-tr from-brand-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg transform rotate-3">
               <GraduationCap className="text-white w-10 h-10 -rotate-3" />
             </div>
-            <h1 className="text-3xl font-bold text-slate-800 tracking-tight">Welcome Back</h1>
-            <p className="text-slate-500 mt-2">Sign in to your account</p>
-          </div>
-
-          <div className="flex gap-2 p-1 bg-slate-100 rounded-xl mb-8">
-            <button
-              type="button"
-              onClick={() => setRole('admin')}
-              className={`flex-1 py-2 rounded-lg text-sm font-semibold flex justify-center items-center gap-2 transition-all duration-200 ${
-                role === 'admin' ? 'bg-white text-brand-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'
-              }`}
-            >
-              <Shield size={16} /> Admin
-            </button>
-            <button
-              type="button"
-              onClick={() => setRole('parent')}
-              className={`flex-1 py-2 rounded-lg text-sm font-semibold flex justify-center items-center gap-2 transition-all duration-200 ${
-                role === 'parent' ? 'bg-white text-brand-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'
-              }`}
-            >
-              <Users size={16} /> Parent
-            </button>
-            <button
-              type="button"
-              onClick={() => setRole('student')}
-              className={`flex-1 py-2 rounded-lg text-sm font-semibold flex justify-center items-center gap-2 transition-all duration-200 ${
-                role === 'student' ? 'bg-white text-brand-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'
-              }`}
-            >
-              <GraduationCap size={16} /> Student
-            </button>
+            <h1 className="text-3xl font-bold text-slate-800 tracking-tight">Student Portal</h1>
+            <p className="text-slate-500 mt-2">Sign in as Parent or Student</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-5">
@@ -135,6 +105,12 @@ const Login = () => {
               )}
             </button>
           </form>
+          
+          <div className="mt-6 text-center">
+             <button onClick={() => navigate('/admin/login')} className="text-sm text-slate-500 hover:text-brand-600 font-medium transition-colors">
+               Go to Admin Portal
+             </button>
+          </div>
         </div>
         <p className="text-center mt-8 text-sm text-slate-500 font-medium">
           © 2026 ST.MARKS School Management System
@@ -144,4 +120,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default StudentLogin;

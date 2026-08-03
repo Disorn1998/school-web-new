@@ -9,7 +9,14 @@ import (
 
 // SetupRoutes configures all the application routes
 func SetupRoutes(app *fiber.App) {
+	// Serve static files for uploads
+	app.Static("/uploads", "./uploads")
+
 	api := app.Group("/api")
+
+	// Public Routes (Testing only)
+	api.Get("/admin/teachers_test", handlers.GetTeachers)
+	api.Get("/admin/staff_test", handlers.GetStaff)
 
 	// Authentication Routes
 	auth := api.Group("/auth")
@@ -17,9 +24,7 @@ func SetupRoutes(app *fiber.App) {
 
 	// Admin Routes (Protected)
 	admin := api.Group("/admin", middleware.Protected(), middleware.RoleGuard("super", "admin", "officer"))
-	admin.Get("/dashboard", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{"message": "Welcome to the Admin Dashboard!"})
-	})
+	admin.Get("/dashboard/stats", handlers.GetDashboardStats)
 
 	// Parent Management
 	admin.Get("/parents", handlers.GetAllParents)
@@ -28,12 +33,27 @@ func SetupRoutes(app *fiber.App) {
 	admin.Put("/parents/:id", handlers.UpdateParent)
 	admin.Delete("/parents/:id", handlers.DeleteParent)
 
+	// Teacher and Staff Routes
+	admin.Get("/teachers", handlers.GetTeachers)
+	admin.Get("/staff", handlers.GetStaff)
+
+	// File Uploads
+	admin.Post("/upload", handlers.UploadImage)
+
 	// Student Management
 	admin.Get("/students", handlers.GetAllStudents)
 	admin.Get("/students/:id", handlers.GetStudent)
 	admin.Post("/students", handlers.CreateStudent)
 	admin.Put("/students/:id", handlers.UpdateStudent)
 	admin.Delete("/students/:id", handlers.DeleteStudent)
+
+	// Attendance Management
+	admin.Get("/attendance/daily", handlers.GetDailyAttendance)
+	admin.Get("/attendance/report", handlers.GetMonthlyReport)
+	admin.Get("/attendance/report/yearly", handlers.GetYearlyReport)
+	admin.Get("/attendance/student/:id", handlers.GetStudentAttendance)
+	admin.Post("/attendance/manual", handlers.ManualCheckIn)
+	admin.Post("/attendance/bulk", handlers.BulkCheckIn)
 
 	// Student Routes (Protected)
 	student := api.Group("/student", middleware.Protected())

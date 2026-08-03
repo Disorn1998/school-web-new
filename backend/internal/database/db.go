@@ -35,6 +35,7 @@ func ConnectDB() {
 		&models.Semester{},
 		&models.Invoice{},
 		&models.InvoiceItem{},
+		&models.TeacherProfile{},
 	)
 	if err != nil {
 		log.Println("Migration warning: ", err)

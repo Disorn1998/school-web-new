@@ -5,6 +5,8 @@ import (
 	"backend/internal/models"
 
 	"github.com/gofiber/fiber/v2"
+	"fmt"
+	"time"
 )
 
 // GetAllStudents returns all students with their parent information
@@ -37,6 +39,18 @@ func CreateStudent(c *fiber.Ctx) error {
 
 	if err := c.BodyParser(&student); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid input"})
+	}
+
+	// Auto-generate student_id if empty
+	if student.StudentID == "" {
+		var lastStudent models.Student
+		database.DB.Order("id desc").First(&lastStudent)
+		newId := 1
+		if lastStudent.ID > 0 {
+			newId = lastStudent.ID + 1
+		}
+		currentYear := time.Now().Year()
+		student.StudentID = fmt.Sprintf("STU%d%04d", currentYear, newId)
 	}
 
 	if err := database.DB.Create(&student).Error; err != nil {
