@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 // Admin represents the admins table in the database
 type Admin struct {
@@ -13,10 +17,12 @@ type Admin struct {
 	Email        string    `gorm:"column:email" json:"email"`
 	PassportName string    `gorm:"column:passport_name" json:"passport_name"`
 	Role         string    `gorm:"column:role" json:"role"`
-	Photo        string    `gorm:"column:photo" json:"photo"`
-	CreatedAt      time.Time       `gorm:"column:created_at" json:"created_at"`
-	UpdatedAt      time.Time       `gorm:"column:updated_at" json:"updated_at"`
-	TeacherProfile *TeacherProfile `gorm:"foreignKey:AdminID" json:"teacher_profile,omitempty"`
+	Photo              string          `gorm:"column:photo" json:"photo"`
+	ForcePasswordReset bool            `gorm:"column:force_password_reset;default:false" json:"force_password_reset"`
+	CreatedAt          time.Time       `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt          time.Time       `gorm:"column:updated_at" json:"updated_at"`
+	DeletedAt          gorm.DeletedAt  `gorm:"index" json:"-"`
+	TeacherProfile     *TeacherProfile `gorm:"foreignKey:AdminID" json:"teacher_profile,omitempty"`
 }
 
 // TableName overrides the table name used by Admin to `admins`

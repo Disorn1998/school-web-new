@@ -3,32 +3,38 @@ import {
   LayoutDashboard, Users, UserCog, CheckSquare, 
   ShieldAlert, BookOpen, FileText, HeartPulse, 
   Library, DollarSign, Bus, Activity, 
-  Award, Mail, PieChart, LogOut, Settings 
+  Award, Mail, PieChart, LogOut, Settings, ClipboardList
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const menuItems = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { id: 'teachers', label: 'Teachers', icon: Users },
-  { id: 'staff', label: 'Staff & Officers', icon: UserCog },
-  { id: 'students', label: 'Students', icon: Users },
-  { id: 'parents', label: 'Parents', icon: UserCog },
-  { id: 'attendance', label: 'Attendance', icon: CheckSquare },
-  { id: 'conduct', label: 'Conduct', icon: ShieldAlert },
-  { id: 'homework', label: 'Homework', icon: BookOpen },
-  { id: 'lesson', label: 'Lesson Plan', icon: FileText },
-  { id: 'health', label: 'Health', icon: HeartPulse },
-  { id: 'library', label: 'Library', icon: Library },
-  { id: 'finance', label: 'Finance & Invoices', icon: DollarSign },
-  { id: 'schoolbus', label: 'School Bus', icon: Bus },
-  { id: 'ecas', label: 'ECAs', icon: Activity },
-  { id: 'evaluation', label: 'Evaluation', icon: Award },
-  { id: 'newsletter', label: 'Newsletter', icon: Mail },
-  { id: 'reports', label: 'Reports', icon: PieChart },
+  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: ['super', 'officer', 'teacher'] },
+  { id: 'duty_roster', label: 'Duty Roster', icon: ClipboardList, roles: ['super', 'officer'] },
+  { id: 'teachers', label: 'Teachers', icon: Users, roles: ['super', 'officer'] },
+  { id: 'staff', label: 'Staff & Officers', icon: UserCog, roles: ['super'] },
+  { id: 'students', label: 'Students', icon: Users, roles: ['super', 'officer', 'teacher'] },
+  { id: 'parents', label: 'Parents', icon: UserCog, roles: ['super', 'officer'] },
+  { id: 'attendance', label: 'Attendance', icon: CheckSquare, roles: ['super', 'officer', 'teacher'] },
+  { id: 'conduct', label: 'Conduct', icon: ShieldAlert, roles: ['super', 'officer', 'teacher'] },
+  { id: 'homework', label: 'Homework', icon: BookOpen, roles: ['super', 'officer', 'teacher'] },
+  { id: 'lesson', label: 'Lesson Plan', icon: FileText, roles: ['super', 'officer', 'teacher'] },
+  { id: 'health', label: 'Health', icon: HeartPulse, roles: ['super', 'officer', 'teacher'] },
+  { id: 'library', label: 'Library', icon: Library, roles: ['super', 'officer', 'teacher'] },
+  { id: 'finance', label: 'Finance & Invoices', icon: DollarSign, roles: ['super', 'officer'] },
+  { id: 'schoolbus', label: 'School Bus', icon: Bus, roles: ['super', 'officer'] },
+  { id: 'ecas', label: 'ECAs', icon: Activity, roles: ['super', 'officer'] },
+  { id: 'evaluation', label: 'Evaluation', icon: Award, roles: ['super', 'officer', 'teacher'] },
+  { id: 'newsletter', label: 'Newsletter', icon: Mail, roles: ['super', 'officer'] },
+  { id: 'reports', label: 'Reports', icon: PieChart, roles: ['super', 'officer'] },
+  { id: 'settings', label: 'Academic Settings', icon: Settings, roles: ['super', 'officer'] },
 ];
 
 const AdminSidebar = ({ activeTab, setActiveTab }) => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
+  
+  // Filter menu items based on user role
+  const userRole = user?.role || 'teacher';
+  const visibleMenuItems = menuItems.filter(item => item.roles.includes(userRole));
 
   return (
     <aside className="w-72 h-screen bg-slate-900 text-slate-300 flex flex-col shadow-2xl z-10 sticky top-0 overflow-y-auto custom-scrollbar">
@@ -49,7 +55,7 @@ const AdminSidebar = ({ activeTab, setActiveTab }) => {
       <div className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
         <p className="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Main Menu</p>
         
-        {menuItems.map((item) => {
+        {visibleMenuItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
           

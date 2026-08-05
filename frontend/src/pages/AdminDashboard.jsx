@@ -8,6 +8,10 @@ import ParentsView from '../components/admin/ParentsView';
 import AttendanceView from '../components/admin/AttendanceView';
 import TeachersView from '../components/admin/TeachersView';
 import StaffView from '../components/admin/StaffView';
+import AcademicSettingsView from '../components/admin/AcademicSettingsView';
+import FinanceView from '../components/admin/FinanceView';
+import TeacherDashboardView from '../components/admin/TeacherDashboardView';
+import AdminDutyManagement from '../components/admin/AdminDutyManagement';
 import { Users, FileText, CheckSquare, Bell, Search, Wrench } from 'lucide-react';
 
 const AdminDashboard = () => {
@@ -49,6 +53,9 @@ const AdminDashboard = () => {
 
   const renderContent = () => {
     if (activeTab === 'dashboard') {
+      if (user?.role === 'teacher') {
+        return <TeacherDashboardView />;
+      }
       return (
         <div className="max-w-7xl mx-auto space-y-8">
           {/* Header Stats */}
@@ -151,6 +158,10 @@ const AdminDashboard = () => {
       return <StudentsView />;
     }
 
+    if (activeTab === 'duty_roster') {
+      return <AdminDutyManagement />;
+    }
+
     if (activeTab === 'parents') {
       return <ParentsView />;
     }
@@ -165,6 +176,14 @@ const AdminDashboard = () => {
 
     if (activeTab === 'staff') {
       return <StaffView />;
+    }
+
+    if (activeTab === 'settings') {
+      return <AcademicSettingsView />;
+    }
+
+    if (activeTab === 'finance') {
+      return <FinanceView />;
     }
 
     // Placeholder view for all other tabs

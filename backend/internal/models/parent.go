@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 // Parent represents the parents table (family unit) in the database
 type Parent struct {
@@ -42,16 +46,19 @@ type Parent struct {
 	Province      string `gorm:"column:province" json:"province"`
 	Postcode      string `gorm:"column:postcode" json:"postcode"`
 	Country       string `gorm:"column:country" json:"country"`
+	GoogleMapLink string `gorm:"column:google_map_link" json:"google_map_link"`
 
-	Status     string    `gorm:"column:status;default:'active'" json:"status"`
-	LoginCount int       `gorm:"column:login_count" json:"login_count"`
-	LastLogin  time.Time `gorm:"column:last_login" json:"last_login"`
-	LastDevice string    `gorm:"column:last_device" json:"last_device"`
-	CreatedAt  time.Time `gorm:"column:created_at" json:"created_at"`
-	UpdatedAt  time.Time `gorm:"column:updated_at" json:"updated_at"`
+	Status             string         `gorm:"column:status;default:'active'" json:"status"`
+	ForcePasswordReset bool           `gorm:"column:force_password_reset;default:false" json:"force_password_reset"`
+	LoginCount         int            `gorm:"column:login_count" json:"login_count"`
+	LastLogin          time.Time      `gorm:"column:last_login" json:"last_login"`
+	LastDevice         string         `gorm:"column:last_device" json:"last_device"`
+	CreatedAt          time.Time      `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt          time.Time      `gorm:"column:updated_at" json:"updated_at"`
+	DeletedAt          gorm.DeletedAt `gorm:"index" json:"-"`
 
 	// Relationships
-	Students []Student `gorm:"foreignKey:ParentID" json:"students,omitempty"`
+	Students []Student `gorm:"foreignKey:ParentID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT;" json:"students,omitempty"`
 }
 
 // TableName overrides the table name used by Parent to `parents`

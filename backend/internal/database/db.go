@@ -36,9 +36,21 @@ func ConnectDB() {
 		&models.Invoice{},
 		&models.InvoiceItem{},
 		&models.TeacherProfile{},
+		&models.AuditLog{},
+		&models.LoginAttempt{},
+		&models.LoginHistory{},
+		&models.TuitionFee{},
+		&models.InvoiceHeader{},
+		&models.Invoice{},
+		&models.InvoiceItem{},
+		&models.Payment{},
+		&models.StudentDiscount{},
+		&models.ReminderMessage{},
+		&models.ReminderSchedule{},
 	)
+
 	if err != nil {
-		log.Println("Migration warning: ", err)
+		log.Fatalf("Failed to auto-migrate: %v", err)
 	} else {
 		log.Println("Database migrated successfully.")
 	}

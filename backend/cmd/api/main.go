@@ -2,6 +2,8 @@ package main
 
 import (
 	"backend/internal/database"
+	"backend/internal/handlers"
+	"backend/internal/models"
 	"backend/internal/routes"
 	"log"
 	"os"
@@ -19,6 +21,31 @@ func main() {
 
 	// Connect to Database
 	database.ConnectDB()
+
+	// Auto Migrate
+	database.DB.AutoMigrate(
+		&models.Admin{},
+		&models.Student{},
+		&models.Parent{},
+		&models.Semester{},
+		&models.Year{},
+		&models.TuitionFee{},
+		&models.Subject{},
+		&models.InvoiceHeader{},
+		&models.InvoiceItem{},
+		&models.Homework{},
+		&models.TeacherProfile{},
+		&models.LoginAttempt{},
+		&models.LoginHistory{},
+		&models.DutyDay{},
+		&models.DutyTimeSlot{},
+		&models.DutyArea{},
+		&models.DutyAssignment{},
+		&models.StudentLeave{},
+	)
+
+	// Seed meta data for Duty
+	handlers.InitDutyMetaData()
 
 	app := fiber.New()
 

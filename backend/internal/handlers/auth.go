@@ -3,7 +3,6 @@ package handlers
 import (
 	"backend/internal/database"
 	"backend/internal/models"
-	"log"
 	"os"
 	"time"
 
@@ -19,6 +18,54 @@ type LoginInput struct {
 	Password  string `json:"password"`
 }
 
+// checkBruteForce checks if the IP is locked out
+func checkBruteForce(ip string, username string) (bool, time.Time) {
+	var attempt models.LoginAttempt
+	if err := database.DB.Where("ip_address = ? AND username = ?", ip, username).First(&attempt).Error; err == nil {
+		if attempt.Attempts >= 5 && time.Now().Before(attempt.LockedUntil) {
+			return true, attempt.LockedUntil
+		}
+	}
+	return false, time.Time{}
+}
+
+// recordFailedLogin increments the failed login count
+func recordFailedLogin(ip string, username string) {
+	var attempt models.LoginAttempt
+	if err := database.DB.Where("ip_address = ? AND username = ?", ip, username).First(&attempt).Error; err != nil {
+		// Create new
+		database.DB.Create(&models.LoginAttempt{
+			Username:      username,
+			IPAddress:     ip,
+			Attempts:      1,
+			LastAttemptAt: time.Now(),
+		})
+	} else {
+		attempt.Attempts += 1
+		attempt.LastAttemptAt = time.Now()
+		if attempt.Attempts >= 5 {
+			attempt.LockedUntil = time.Now().Add(15 * time.Minute)
+		}
+		database.DB.Save(&attempt)
+	}
+}
+
+// recordSuccessfulLogin clears brute force locks and logs session
+func recordSuccessfulLogin(ip, username, userAgent, userType string, userID int) {
+	// Clear brute force
+	database.DB.Where("ip_address = ? AND username = ?", ip, username).Delete(&models.LoginAttempt{})
+
+	// Log Session
+	database.DB.Create(&models.LoginHistory{
+		UserID:    userID,
+		UserType:  userType,
+		IPAddress: ip,
+		UserAgent: userAgent,
+		Device:    "Unknown", // A proper user-agent parser can be added later
+		LoginAt:   time.Now(),
+	})
+}
+
 // Login handles user authentication and returns a JWT
 func Login(c *fiber.Ctx) error {
 	var input LoginInput
@@ -26,7 +73,16 @@ func Login(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid input"})
 	}
 
-	log.Printf("Login Request Received: AuthGroup='%s', Username='%s', Password Length=%d", input.AuthGroup, input.Username, len(input.Password))
+	ip := c.IP()
+	userAgent := string(c.Request().Header.UserAgent())
+
+	// 1. BRUTE FORCE CHECK
+	locked, lockedUntil := checkBruteForce(ip, input.Username)
+	if locked {
+		return c.Status(fiber.StatusTooManyRequests).JSON(fiber.Map{
+			"error": "Account temporarily locked due to too many failed attempts. Try again at " + lockedUntil.Format("15:04:05"),
+		})
+	}
 
 	if input.Username == "" || input.Password == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Please fill in all required fields"})
@@ -42,6 +98,7 @@ func Login(c *fiber.Ctx) error {
 	if input.AuthGroup == "staff" {
 		var admin models.Admin
 		if err := database.DB.Where("username = ?", input.Username).First(&admin).Error; err != nil {
+			recordFailedLogin(ip, input.Username)
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Incorrect username or password"})
 		}
 
@@ -52,8 +109,12 @@ func Login(c *fiber.Ctx) error {
 		}
 
 		if err := bcrypt.CompareHashAndPassword([]byte(dbPassword), []byte(input.Password)); err != nil {
+			recordFailedLogin(ip, input.Username)
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Incorrect username or password"})
 		}
+
+		// Success
+		recordSuccessfulLogin(ip, input.Username, userAgent, "staff", admin.ID)
 
 		// Generate JWT Token
 		claims := jwt.MapClaims{
@@ -84,7 +145,6 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	// 2. Student / Parent
-	// The PHP code joins parents and students. We will do the same.
 	type ParentStudentResult struct {
 		ParentID  int    `gorm:"column:parent_id"`
 		StudentID int    `gorm:"column:student_id"`
@@ -103,23 +163,26 @@ func Login(c *fiber.Ctx) error {
 	`
 
 	if err := database.DB.Raw(query, input.Username).Scan(&result).Error; err != nil || result.ParentID == 0 {
+		recordFailedLogin(ip, input.Username)
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Incorrect username or password"})
 	}
 
 	// Verify Password
 	if err := bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(input.Password)); err != nil {
+		recordFailedLogin(ip, input.Username)
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Incorrect username or password"})
 	}
 
 	// Update Login stats
 	device := "Desktop"
-	userAgent := string(c.Request().Header.UserAgent())
-	// Very simple user agent check for mobile
 	if len(userAgent) > 0 {
 		device = "Unknown" // Can implement better detection if needed
 	}
 
 	database.DB.Exec("UPDATE parents SET login_count = login_count + 1, last_login = ?, last_device = ? WHERE id = ?", time.Now(), device, result.ParentID)
+
+	// Success
+	recordSuccessfulLogin(ip, input.Username, userAgent, "parent", result.ParentID)
 
 	// Generate JWT Token
 	claims := jwt.MapClaims{
