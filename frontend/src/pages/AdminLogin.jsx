@@ -48,13 +48,39 @@ const AdminLogin = () => {
             <p className="text-slate-400 mt-2">Sign in to manage the system</p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form className="space-y-6" onSubmit={handleLogin}>
             {error && (
-              <div className="bg-red-500/10 text-red-400 px-4 py-3 rounded-xl text-sm font-medium border border-red-500/20 flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-red-500"></div>
+              <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-4 rounded-xl text-sm flex items-center justify-center animate-fade-in">
                 {error}
               </div>
             )}
+
+            {/* DEMO MODE QUICK LOGIN BUTTONS */}
+            <div className="mb-6 space-y-3">
+              <p className="text-xs text-slate-400 uppercase tracking-wider text-center font-semibold">Demo Quick Login</p>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => { setUsername('admin'); setPassword('password'); }}
+                  className="py-2 px-3 border border-brand-500/30 rounded-lg text-sm text-brand-400 hover:bg-brand-500/10 transition-colors"
+                >
+                  Admin
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setUsername('teacher1'); setPassword('password'); }}
+                  className="py-2 px-3 border border-purple-500/30 rounded-lg text-sm text-purple-400 hover:bg-purple-500/10 transition-colors"
+                >
+                  Teacher
+                </button>
+              </div>
+            </div>
+
+            <div className="relative flex items-center py-2">
+              <div className="flex-grow border-t border-slate-700"></div>
+              <span className="flex-shrink-0 mx-4 text-slate-500 text-xs">OR ENTER CREDENTIALS</span>
+              <div className="flex-grow border-t border-slate-700"></div>
+            </div>
 
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5 ml-1">Username</label>

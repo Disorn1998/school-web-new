@@ -49,16 +49,43 @@ const StudentLogin = () => {
             <p className="text-slate-500 mt-2">Sign in as Parent or Student</p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form className="space-y-6" onSubmit={handleLogin}>
             {error && (
-              <div className="bg-red-50 text-red-600 px-4 py-3 rounded-xl text-sm font-medium border border-red-100 flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-red-600"></div>
+              <div className="bg-red-50 text-red-600 px-4 py-3 rounded-xl text-sm font-medium border border-red-100 flex items-center gap-2 animate-fade-in">
+                <div className="w-2 h-2 rounded-full bg-red-500"></div>
                 {error}
               </div>
             )}
 
+            {/* DEMO MODE QUICK LOGIN BUTTONS */}
+            <div className="mb-6 space-y-3">
+              <p className="text-xs text-slate-500 uppercase tracking-wider text-center font-semibold">Demo Quick Login</p>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => { setUsername('student1'); setPassword('password'); }}
+                  className="py-2 px-3 bg-brand-50 border border-brand-200 rounded-lg text-sm text-brand-700 hover:bg-brand-100 transition-colors shadow-sm font-medium"
+                >
+                  Student
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setUsername('parent1'); setPassword('password'); }}
+                  className="py-2 px-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700 hover:bg-blue-100 transition-colors shadow-sm font-medium"
+                >
+                  Parent
+                </button>
+              </div>
+            </div>
+
+            <div className="relative flex items-center py-2">
+              <div className="flex-grow border-t border-slate-200"></div>
+              <span className="flex-shrink-0 mx-4 text-slate-400 text-xs uppercase font-medium tracking-wide">Or Enter Credentials</span>
+              <div className="flex-grow border-t border-slate-200"></div>
+            </div>
+
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5 ml-1">Username</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5 ml-1">Username (Student ID / Parent Phone)</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <User className="h-5 w-5 text-slate-400" />
