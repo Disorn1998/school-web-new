@@ -4,6 +4,7 @@ import (
 	"backend/internal/database"
 	"backend/internal/models"
 	"backend/internal/utils"
+	"backend/pkg/promptpay"
 	"fmt"
 	"net/http"
 	"path/filepath"
@@ -771,3 +772,22 @@ func TriggerSendReminders(c *fiber.Ctx) error {
 	})
 }
 
+// GenerateInvoiceQR generates a PromptPay QR Code for a specific invoice
+func GenerateInvoiceQR(c *fiber.Ctx) error {
+	id := c.Params("id")
+	var invoice models.Invoice
+	if err := database.DB.First(&invoice, id).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "Invoice not found"})
+	}
+
+	// Fetch the school's PromptPay ID from settings.
+	schoolPromptPayID := "0904982968" // Real Phone Number / Tax ID
+
+	png, err := promptpay.GenerateQRImage(schoolPromptPayID, invoice.Total, 256)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to generate QR Code"})
+	}
+
+	c.Set("Content-Type", "image/png")
+	return c.Send(png)
+}

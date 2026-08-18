@@ -3,7 +3,7 @@ import {
   LayoutDashboard, Users, UserCog, CheckSquare, 
   ShieldAlert, BookOpen, FileText, HeartPulse, 
   Library, DollarSign, Bus, Activity, Calendar,
-  Award, Mail, PieChart, LogOut, Settings, ClipboardList, Sun, Wrench, UserPlus, ShoppingBag
+  Award, Mail, PieChart, LogOut, Settings, ClipboardList, Sun, Wrench, UserPlus, ShoppingBag, Database
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -11,6 +11,7 @@ const menuItems = [
   { id: 'dashboard', label: 'Overview', icon: LayoutDashboard, roles: ['super', 'officer', 'teacher'] },
   { id: 'admissions', label: 'Admissions', icon: UserPlus, roles: ['super', 'officer'] },
   { id: 'students', label: 'Students', icon: Users, roles: ['super', 'officer', 'teacher'] },
+  { id: 'student-tools', label: 'Student Tools (Import)', icon: Database, roles: ['super', 'officer'] },
   { id: 'attendance', label: 'Attendance', icon: CheckSquare, roles: ['super', 'officer', 'teacher'] },
   { id: 'conduct', label: 'Conduct', icon: ShieldAlert, roles: ['super', 'officer', 'teacher'] },
   { id: 'homework', label: 'Homework', icon: BookOpen, roles: ['super', 'officer', 'teacher'] },

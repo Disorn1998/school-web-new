@@ -27,7 +27,8 @@ import SupportClassManagement from '../components/admin/SupportClassManagement';
 import TicketManagement from '../components/admin/TicketManagement';
 import AdmissionsManagement from '../components/admin/AdmissionsManagement';
 import ShopManagement from '../components/admin/ShopManagement';
-import { Users, FileText, CheckSquare, Bell, Search, Wrench, UserPlus, ShoppingBag } from 'lucide-react';
+import StudentToolsManagement from '../components/admin/StudentToolsManagement';
+import { Users, FileText, CheckSquare, Bell, Search, Wrench, UserPlus, ShoppingBag, Settings } from 'lucide-react';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -73,6 +74,10 @@ const AdminDashboard = () => {
 
     if (activeTab === 'shop') {
       return <ShopManagement />;
+    }
+
+    if (activeTab === 'student-tools') {
+      return <StudentToolsManagement />;
     }
 
     if (activeTab === 'dashboard') {

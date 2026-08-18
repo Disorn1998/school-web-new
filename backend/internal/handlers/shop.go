@@ -3,6 +3,7 @@ package handlers
 import (
 	"backend/internal/database"
 	"backend/internal/models"
+	"backend/pkg/promptpay"
 	"fmt"
 	"strconv"
 	"time"
@@ -151,3 +152,23 @@ func GetStudentShopOrders(c *fiber.Ctx) error {
 	}
 	return c.JSON(orders)
 }
+
+// GenerateOrderQR generates a PromptPay QR for a shop order
+func GenerateOrderQR(c *fiber.Ctx) error {
+	id := c.Params("id")
+	var order models.ShopOrder
+	if err := database.DB.First(&order, id).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "Order not found"})
+	}
+
+	schoolPromptPayID := "0904982968"
+
+	png, err := promptpay.GenerateQRImage(schoolPromptPayID, order.Total, 256)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to generate QR Code"})
+	}
+
+	c.Set("Content-Type", "image/png")
+	return c.Send(png)
+}
+

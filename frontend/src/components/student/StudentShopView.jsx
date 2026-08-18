@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../utils/api';
-import { ShoppingBag, ShoppingCart, Plus, Minus, Check } from 'lucide-react';
+import { ShoppingBag, ShoppingCart, Plus, Minus, Check, XCircle, QrCode, X } from 'lucide-react';
 
 const StudentShopView = ({ currentStudent }) => {
   const [items, setItems] = useState([]);
@@ -10,6 +10,7 @@ const StudentShopView = ({ currentStudent }) => {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [qrModal, setQrModal] = useState({ isOpen: false, orderId: null, orderNo: '', total: 0 });
 
   useEffect(() => {
     if (currentStudent?.id) {
@@ -192,7 +193,17 @@ const StudentShopView = ({ currentStudent }) => {
                       <span className="text-xs font-bold text-slate-500">{o.order_no}</span>
                       <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">{o.status}</span>
                     </div>
-                    <div className="font-bold text-sm text-slate-800">฿{o.total.toFixed(2)}</div>
+                    <div className="flex justify-between items-end">
+                      <div className="font-bold text-sm text-slate-800">฿{o.total.toFixed(2)}</div>
+                      {o.status === 'pending' && (
+                        <button 
+                          onClick={() => setQrModal({ isOpen: true, orderId: o.id, orderNo: o.order_no, total: o.total })}
+                          className="text-xs font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 rounded-lg flex items-center gap-1 transition-colors"
+                        >
+                          <QrCode size={14}/> Pay QR
+                        </button>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -200,6 +211,38 @@ const StudentShopView = ({ currentStudent }) => {
           )}
         </div>
       </div>
+
+      {/* QR Code Modal */}
+      {qrModal.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 animate-fade-in">
+          <div className="bg-white rounded-3xl w-full max-w-sm shadow-2xl overflow-hidden flex flex-col">
+            <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-indigo-600">
+              <h2 className="font-bold text-white flex items-center gap-2"><QrCode size={18}/> Thai PromptPay</h2>
+              <button onClick={() => setQrModal({ isOpen: false })} className="text-indigo-200 hover:text-white transition-colors">
+                <X size={20} />
+              </button>
+            </div>
+            <div className="p-8 flex flex-col items-center">
+              <div className="text-center mb-4">
+                <div className="text-sm font-bold text-slate-500 mb-1">Order {qrModal.orderNo}</div>
+                <div className="text-3xl font-black text-slate-800">฿{qrModal.total.toFixed(2)}</div>
+              </div>
+              
+              <div className="bg-white p-4 rounded-2xl shadow-sm border-2 border-indigo-100 mb-4">
+                <img 
+                  src={`http://localhost:3000/api/student/shop/orders/${qrModal.orderId}/qr`} 
+                  alt="PromptPay QR" 
+                  className="w-48 h-48 object-contain"
+                />
+              </div>
+              
+              <div className="text-xs font-semibold text-slate-500 text-center bg-slate-50 p-3 rounded-xl">
+                Scan with any Thai banking app to pay directly. Show receipt to school staff to collect items.
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

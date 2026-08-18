@@ -47,8 +47,12 @@ func SetupRoutes(app *fiber.App) {
 	adminRoutes := api.Group("/admin", middleware.RoleGuard("super", "officer", "teacher"))
 
 	// Student Management
-	adminRoutes.Get("/students", handlers.GetAllStudents) // Moved here to allow teachers to GET
-	adminRoutes.Get("/students/:id", handlers.GetStudent) // Moved here to allow teachers to GET
+	adminRoutes.Get("/students", handlers.GetAllStudents) 
+	adminRoutes.Get("/students/:id", handlers.GetStudent) 
+	
+	admin.Post("/students/import", handlers.ImportStudentsCSV)
+	admin.Get("/students/export", handlers.ExportStudentsCSV)
+	admin.Post("/students/promote", handlers.PromoteStudents) 
 	
 	admin.Post("/students", handlers.CreateStudent)
 	admin.Put("/students/:id", handlers.UpdateStudent)
@@ -190,11 +194,12 @@ func SetupRoutes(app *fiber.App) {
 	student.Get("/tickets", handlers.GetAllTickets)
 	student.Post("/tickets", handlers.CreateTicket)
 
-	// Phase 16: Shop
+	// 16. School Shop
 	student.Get("/shop/categories", handlers.GetShopCategories)
 	student.Get("/shop/items", handlers.GetShopItems)
 	student.Post("/shop/orders", handlers.PlaceShopOrder)
 	student.Get("/shop/orders/me", handlers.GetStudentShopOrders)
+	student.Get("/shop/orders/:id/qr", handlers.GenerateOrderQR)
 	
 	// Phase 6 & 7: Student Views (Also used by parents passing student ID)
 	student.Get("/homework/:id", handlers.GetStudentHomeworks)
@@ -233,6 +238,7 @@ func SetupRoutes(app *fiber.App) {
 	invoices.Get("/", middleware.RoleGuard("super", "admin", "officer"), handlers.GetAllInvoices)
 	invoices.Post("/generate", middleware.RoleGuard("super", "admin", "officer"), handlers.GenerateInvoices)
 	invoices.Post("/custom", middleware.RoleGuard("super", "admin", "officer"), handlers.GenerateCustomInvoices)
+	invoices.Get("/:id/qr", handlers.GenerateInvoiceQR) // QR Code Generation
 	
 	// Invoice Management
 	admin.Put("/invoices/:id", handlers.EditInvoice)

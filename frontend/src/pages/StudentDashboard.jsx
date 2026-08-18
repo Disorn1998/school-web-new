@@ -15,7 +15,9 @@ import StudentEvaluationView from '../components/student/StudentEvaluationView';
 import StudentSupportClassView from '../components/student/StudentSupportClassView';
 import MyTicketsView from '../components/student/MyTicketsView';
 import StudentShopView from '../components/student/StudentShopView';
-import { LogOut, BookOpen, Clock, FileText, Calendar, CheckSquare, Users, Activity, Bus, Library, HeartPulse, Award, Sun, Wrench, ShoppingBag } from 'lucide-react';
+import PrincipalMessagePopup from '../components/student/PrincipalMessagePopup';
+import SchoolInformationView from '../components/student/SchoolInformationView';
+import { LogOut, BookOpen, Clock, FileText, Calendar, CheckSquare, Users, Activity, Bus, Library, HeartPulse, Award, Sun, Wrench, ShoppingBag, Info } from 'lucide-react';
 
 const StudentDashboard = () => {
   const { user, logout } = useAuth();
@@ -68,6 +70,11 @@ const StudentDashboard = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
+      {/* Principal Welcome Popup */}
+      {profile && (
+        <PrincipalMessagePopup studentName={profile.fullname} />
+      )}
+
       {/* Navbar */}
       <nav className="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center sticky top-0 z-10">
         <div className="flex items-center gap-3">
@@ -221,6 +228,12 @@ const StudentDashboard = () => {
           >
             <Award size={18} /> Evaluation
           </button>
+          <button 
+            onClick={() => setActiveTab('information')} 
+            className={`px-4 py-2 font-bold flex items-center gap-2 ${activeTab === 'information' ? 'text-brand-600 border-b-2 border-brand-600' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            <Info size={18} /> Information
+          </button>
         </div>
 
         {activeTab === 'dashboard' ? (
@@ -339,6 +352,8 @@ const StudentDashboard = () => {
           <StudentHealthView currentStudent={profile} />
         ) : activeTab === 'evaluation' ? (
           <StudentEvaluationView currentStudent={profile} />
+        ) : activeTab === 'information' ? (
+          <SchoolInformationView currentStudent={profile} />
         ) : null}
       </main>
     </div>
