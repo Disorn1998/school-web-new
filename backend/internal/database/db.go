@@ -5,6 +5,7 @@ import (
 
 	"backend/internal/models"
 	"github.com/glebarez/sqlite"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -53,5 +54,25 @@ func ConnectDB() {
 		log.Fatalf("Failed to auto-migrate: %v", err)
 	} else {
 		log.Println("Database migrated successfully.")
+	}
+
+	// Seed Default Admin if none exists
+	seedDefaultAdmin()
+}
+
+func seedDefaultAdmin() {
+	var count int64
+	DB.Model(&models.Admin{}).Count(&count)
+	if count == 0 {
+		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("password"), bcrypt.DefaultCost)
+		admin := models.Admin{
+			Username:     "admin",
+			PasswordHash: string(hashedPassword),
+			Role:         "Super Admin",
+			Email:        "admin@school.com",
+			Name:         "System Administrator",
+		}
+		DB.Create(&admin)
+		log.Println("Seeded default admin user: admin / password")
 	}
 }
