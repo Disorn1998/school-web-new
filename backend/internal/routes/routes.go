@@ -14,7 +14,10 @@ func SetupRoutes(app *fiber.App) {
 
 	api := app.Group("/api")
 
-	// Public Routes (Testing only)
+	// Demo Reset Route (Public for Portfolio)
+	api.Post("/demo/reset", handlers.ResetDemoDB)
+
+	// Admin Routes (Testing only)
 	api.Get("/admin/teachers_test", handlers.GetTeachers)
 	api.Get("/admin/staff_test", handlers.GetStaff)
 
