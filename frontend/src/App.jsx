@@ -6,6 +6,7 @@ import AdminLogin from './pages/AdminLogin';
 import StudentLogin from './pages/StudentLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import StudentDashboard from './pages/StudentDashboard';
+import ApplicationForm from './pages/ApplicationForm';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Public Routes */}
+          <Route path="/apply" element={<ApplicationForm />} />
           <Route path="/login" element={<StudentLogin />} />
           <Route path="/admin/login" element={<AdminLogin />} />
 

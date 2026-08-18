@@ -43,20 +43,124 @@ func SetupRoutes(app *fiber.App) {
 	// File Uploads
 	admin.Post("/upload", handlers.UploadImage)
 
+	// Admin & Teacher Protected Routes
+	adminRoutes := api.Group("/admin", middleware.RoleGuard("super", "officer", "teacher"))
+
 	// Student Management
-	admin.Get("/students", handlers.GetAllStudents)
-	admin.Get("/students/:id", handlers.GetStudent)
+	adminRoutes.Get("/students", handlers.GetAllStudents) // Moved here to allow teachers to GET
+	adminRoutes.Get("/students/:id", handlers.GetStudent) // Moved here to allow teachers to GET
+	
 	admin.Post("/students", handlers.CreateStudent)
 	admin.Put("/students/:id", handlers.UpdateStudent)
 	admin.Delete("/students/:id", handlers.DeleteStudent)
+	
+	// Duty & Attendance
+	adminRoutes.Get("/duties", handlers.GetAdminDuties)
+	adminRoutes.Post("/duties", handlers.AssignDuty)
+	adminRoutes.Delete("/duties/:id", handlers.DeleteDuty)
+	
+	adminRoutes.Get("/attendance/daily", handlers.GetDailyAttendance)
+	adminRoutes.Get("/attendance/report", handlers.GetMonthlyReport)
+	adminRoutes.Get("/attendance/report/yearly", handlers.GetYearlyReport)
+	adminRoutes.Post("/attendance/manual", handlers.ManualCheckIn)
+	adminRoutes.Post("/attendance/bulk", handlers.BulkCheckIn)
+	adminRoutes.Get("/attendance/student/:id", handlers.GetStudentAttendance)
+	
+	// Phase 6: Homework
+	adminRoutes.Get("/homework", handlers.GetTeacherHomeworks)
+	adminRoutes.Post("/homework", handlers.CreateHomework)
+	adminRoutes.Delete("/homework/:id", handlers.DeleteHomework)
 
-	// Attendance Management
-	admin.Get("/attendance/daily", handlers.GetDailyAttendance)
-	admin.Get("/attendance/report", handlers.GetMonthlyReport)
-	admin.Get("/attendance/report/yearly", handlers.GetYearlyReport)
-	admin.Get("/attendance/student/:id", handlers.GetStudentAttendance)
-	admin.Post("/attendance/manual", handlers.ManualCheckIn)
-	admin.Post("/attendance/bulk", handlers.BulkCheckIn)
+	// Phase 6: Scores / Reports
+	adminRoutes.Get("/scores", handlers.GetAssessments)
+	adminRoutes.Post("/scores/header", handlers.CreateAssessment)
+	adminRoutes.Get("/scores/details/:id", handlers.GetAssessmentScores)
+	adminRoutes.Post("/scores/bulk/:id", handlers.SaveAssessmentScores)
+	adminRoutes.Post("/scores/upload/:detail_id", handlers.UploadExamFile)
+
+	// Phase 6: Lesson Plans
+	adminRoutes.Get("/lesson-plans", handlers.GetTeacherLessonPlans)
+	adminRoutes.Post("/lesson-plans", handlers.UploadLessonPlan)
+	adminRoutes.Delete("/lesson-plans/:id", handlers.DeleteLessonPlan)
+
+	// Phase 7: Conduct Reports
+	adminRoutes.Get("/conduct", handlers.GetConductHeaders)
+	adminRoutes.Post("/conduct/header", handlers.CreateConductHeader)
+	adminRoutes.Get("/conduct/details/:id", handlers.GetConductDetails)
+	adminRoutes.Post("/conduct/bulk/:id", handlers.SaveConductDetails)
+
+	// Phase 8: Timetable
+	adminRoutes.Get("/timetable", handlers.GetClassTimetable)
+	adminRoutes.Post("/timetable/bulk", handlers.SaveClassTimetable)
+	adminRoutes.Get("/timetable/teacher/:id", handlers.GetTeacherTimetable)
+
+	// Phase 8: ECAs
+	adminRoutes.Get("/ecas", handlers.GetAllECAs)
+	adminRoutes.Post("/ecas", handlers.CreateECA)
+
+	// Phase 9: School Bus
+	adminRoutes.Get("/schoolbus/routes", handlers.GetAllSchoolBusRoutes)
+	adminRoutes.Post("/schoolbus/routes", handlers.CreateSchoolBusRoute)
+	adminRoutes.Get("/schoolbus/registrations", handlers.GetSchoolBusRegistrations)
+
+	// Phase 9: Leave Requests
+	adminRoutes.Get("/leave", handlers.GetAllLeaveRequests)
+	adminRoutes.Put("/leave/:id", handlers.UpdateLeaveStatus)
+
+	// Phase 10: Library
+	adminRoutes.Get("/library/categories", handlers.GetLibraryCategories)
+	adminRoutes.Post("/library/categories", handlers.CreateLibraryCategory)
+	adminRoutes.Get("/library/books", handlers.GetLibraryBooks)
+	adminRoutes.Post("/library/books", handlers.CreateLibraryBook)
+	adminRoutes.Get("/library/borrowings", handlers.GetBorrowings)
+	adminRoutes.Post("/library/borrow", handlers.BorrowBook)
+	adminRoutes.Put("/library/return/:id", handlers.ReturnBook)
+
+	// Phase 11: Health & Evaluation
+	adminRoutes.Get("/health/incidents", handlers.GetAllHealthIncidents)
+	adminRoutes.Post("/health/incidents", handlers.CreateHealthIncident)
+	adminRoutes.Get("/health/record/:id", handlers.GetStudentHealthRecord)
+	adminRoutes.Post("/health/record", handlers.UpsertHealthRecord)
+	
+	adminRoutes.Get("/evaluation", handlers.GetAllEvaluations)
+	adminRoutes.Post("/evaluation", handlers.CreateEvaluation)
+
+	// Phase 12: Lesson Plans
+	adminRoutes.Get("/lesson-plans", handlers.GetLessonPlans)
+	adminRoutes.Post("/lesson-plans", handlers.CreateLessonPlan)
+	adminRoutes.Put("/lesson-plans/:id/status", handlers.UpdateLessonPlanStatus)
+
+	// Phase 13: Support Classes
+	adminRoutes.Get("/support-classes", handlers.GetAllSupportClasses)
+	adminRoutes.Post("/support-classes", handlers.CreateSupportClass)
+
+	// Phase 14: Support Tickets
+	adminRoutes.Get("/tickets", handlers.GetAllTickets)
+	adminRoutes.Post("/tickets", handlers.CreateTicket)
+	adminRoutes.Put("/tickets/:id/status", handlers.UpdateTicketStatus)
+
+	// Phase 15: Admissions
+	adminRoutes.Get("/admissions", handlers.GetAllAdmissions)
+	adminRoutes.Put("/admissions/:id/status", handlers.UpdateAdmissionStatus)
+	adminRoutes.Post("/admissions/:id/convert", handlers.ConvertToStudent)
+
+	// Phase 16: Shop
+	adminRoutes.Get("/shop/categories", handlers.GetShopCategories)
+	adminRoutes.Post("/shop/categories", handlers.CreateShopCategory)
+	adminRoutes.Get("/shop/items", handlers.GetShopItems)
+	adminRoutes.Post("/shop/items", handlers.CreateShopItem)
+	adminRoutes.Get("/shop/orders", handlers.GetShopOrders)
+
+	// Public Routes (No Auth)
+	api.Post("/public/admissions", handlers.SubmitAdmission)
+
+
+	
+	// Removed student ECA from here
+
+	// Admin Only Routes (Super/Officer)
+	adminOnlyRoutes := api.Group("/admin", middleware.RoleGuard("super", "officer"))
+	adminOnlyRoutes.Get("/stats", handlers.GetDashboardStats)
 
 	// Settings & Academic Configurations
 	admin.Get("/settings/years", handlers.GetYears)
@@ -75,20 +179,54 @@ func SetupRoutes(app *fiber.App) {
 	// Student Routes (Protected)
 	student := api.Group("/student", middleware.Protected())
 	student.Get("/profile", handlers.GetMyProfile)
-	student.Get("/homework", handlers.GetMyHomework)
 	student.Get("/invoices", handlers.GetMyInvoices)
+	
+	// Phase 13: Support Classes
+	student.Get("/support-classes", handlers.GetAllSupportClasses) // Student can see available classes
+	student.Post("/support-classes/enroll", handlers.EnrollSupportClass)
+	student.Get("/my-support-classes", handlers.GetStudentSupportClasses)
+
+	// Phase 14: Support Tickets
+	student.Get("/tickets", handlers.GetAllTickets)
+	student.Post("/tickets", handlers.CreateTicket)
+
+	// Phase 16: Shop
+	student.Get("/shop/categories", handlers.GetShopCategories)
+	student.Get("/shop/items", handlers.GetShopItems)
+	student.Post("/shop/orders", handlers.PlaceShopOrder)
+	student.Get("/shop/orders/me", handlers.GetStudentShopOrders)
+	
+	// Phase 6 & 7: Student Views (Also used by parents passing student ID)
+	student.Get("/homework/:id", handlers.GetStudentHomeworks)
+	student.Get("/academic-report/:id", handlers.GetStudentAcademicReport)
+	student.Get("/conduct/:student_id", handlers.GetStudentConductReport)
+	
+	// Phase 8: Student ECA endpoints
+	student.Get("/ecas", handlers.GetAllECAs)
+	student.Get("/my-ecas", handlers.GetStudentECAs)
+	student.Post("/ecas/enroll", handlers.EnrollStudentECA)
+
+	// Phase 9: Student Bus & Leave endpoints
+	student.Get("/schoolbus/routes", handlers.GetAllSchoolBusRoutes)
+	student.Get("/schoolbus/registration/:id", handlers.GetStudentBusRegistration)
+	student.Post("/schoolbus/register", handlers.RegisterStudentBus)
+	
+	student.Get("/leave/:id", handlers.GetStudentLeaveRequests)
+	student.Post("/leave", handlers.SubmitLeaveRequest)
+
+	// Phase 10: Student Library
+	student.Get("/library/books", handlers.GetLibraryBooks)
+	student.Get("/library/borrowings/:id", handlers.GetStudentBorrowings)
+
+	// Phase 11: Student Health & Evaluation
+	student.Get("/health/record/:id", handlers.GetStudentHealthRecord)
+	student.Get("/health/incidents/:id", handlers.GetStudentHealthIncidents)
+	student.Get("/evaluation/:id", handlers.GetStudentEvaluations)
 
 	// === Phase 4: Academic & Operations ===
 
 	// 4.1 Attendance
 	api.Post("/attendance/checkin", middleware.Protected(), handlers.CheckIn)
-
-	// 4.2 Homework
-	homework := api.Group("/homework", middleware.Protected())
-	homework.Get("/", handlers.GetAllHomework)
-	homework.Post("/", middleware.RoleGuard("super", "admin", "teacher"), handlers.CreateHomework)
-	homework.Put("/:id", middleware.RoleGuard("super", "admin", "teacher"), handlers.UpdateHomework)
-	homework.Delete("/:id", middleware.RoleGuard("super", "admin", "teacher"), handlers.DeleteHomework)
 
 	// 4.3 Invoices (Finance)
 	invoices := api.Group("/invoices", middleware.Protected())

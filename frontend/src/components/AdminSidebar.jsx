@@ -2,27 +2,33 @@ import React from 'react';
 import { 
   LayoutDashboard, Users, UserCog, CheckSquare, 
   ShieldAlert, BookOpen, FileText, HeartPulse, 
-  Library, DollarSign, Bus, Activity, 
-  Award, Mail, PieChart, LogOut, Settings, ClipboardList
+  Library, DollarSign, Bus, Activity, Calendar,
+  Award, Mail, PieChart, LogOut, Settings, ClipboardList, Sun, Wrench, UserPlus, ShoppingBag
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const menuItems = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: ['super', 'officer', 'teacher'] },
-  { id: 'duty_roster', label: 'Duty Roster', icon: ClipboardList, roles: ['super', 'officer'] },
-  { id: 'teachers', label: 'Teachers', icon: Users, roles: ['super', 'officer'] },
-  { id: 'staff', label: 'Staff & Officers', icon: UserCog, roles: ['super'] },
+  { id: 'dashboard', label: 'Overview', icon: LayoutDashboard, roles: ['super', 'officer', 'teacher'] },
+  { id: 'admissions', label: 'Admissions', icon: UserPlus, roles: ['super', 'officer'] },
   { id: 'students', label: 'Students', icon: Users, roles: ['super', 'officer', 'teacher'] },
-  { id: 'parents', label: 'Parents', icon: UserCog, roles: ['super', 'officer'] },
   { id: 'attendance', label: 'Attendance', icon: CheckSquare, roles: ['super', 'officer', 'teacher'] },
   { id: 'conduct', label: 'Conduct', icon: ShieldAlert, roles: ['super', 'officer', 'teacher'] },
   { id: 'homework', label: 'Homework', icon: BookOpen, roles: ['super', 'officer', 'teacher'] },
   { id: 'lesson', label: 'Lesson Plan', icon: FileText, roles: ['super', 'officer', 'teacher'] },
+  { id: 'timetable', label: 'Timetable', icon: Calendar, roles: ['super', 'officer', 'teacher'] },
+  { id: 'duty_roster', label: 'Duty Roster', icon: ClipboardList, roles: ['super', 'officer'] },
+  { id: 'teachers', label: 'Teachers', icon: Users, roles: ['super', 'officer'] },
+  { id: 'staff', label: 'Staff & Officers', icon: UserCog, roles: ['super'] },
+  { id: 'parents', label: 'Parents', icon: UserCog, roles: ['super', 'officer'] },
+  { id: 'schoolbus', label: 'School Bus', icon: Bus, roles: ['super', 'officer'] },
+  { id: 'leave', label: 'Leave Requests', icon: Calendar, roles: ['super', 'officer', 'teacher'] },
   { id: 'health', label: 'Health', icon: HeartPulse, roles: ['super', 'officer', 'teacher'] },
   { id: 'library', label: 'Library', icon: Library, roles: ['super', 'officer', 'teacher'] },
   { id: 'finance', label: 'Finance & Invoices', icon: DollarSign, roles: ['super', 'officer'] },
-  { id: 'schoolbus', label: 'School Bus', icon: Bus, roles: ['super', 'officer'] },
+  { id: 'shop', label: 'School Shop', icon: ShoppingBag, roles: ['super', 'officer'] },
   { id: 'ecas', label: 'ECAs', icon: Activity, roles: ['super', 'officer'] },
+  { id: 'support-classes', label: 'Summer Classes', icon: Sun, roles: ['super', 'officer'] },
+  { id: 'tickets', label: 'Support Tickets', icon: Wrench, roles: ['super', 'officer', 'teacher'] },
   { id: 'evaluation', label: 'Evaluation', icon: Award, roles: ['super', 'officer', 'teacher'] },
   { id: 'newsletter', label: 'Newsletter', icon: Mail, roles: ['super', 'officer'] },
   { id: 'reports', label: 'Reports', icon: PieChart, roles: ['super', 'officer'] },

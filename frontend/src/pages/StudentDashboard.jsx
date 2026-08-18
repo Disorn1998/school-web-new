@@ -1,8 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { LogOut, BookOpen, Clock, FileText, Calendar, CheckSquare, Users } from 'lucide-react';
 import api from '../utils/api';
 import StudentInvoicesView from '../components/student/StudentInvoicesView';
+import StudentHomeworkView from '../components/student/StudentHomeworkView';
+import StudentReportCardView from '../components/student/StudentReportCardView';
+import StudentConductReportView from '../components/student/StudentConductReportView';
+import StudentTimetableView from '../components/student/StudentTimetableView';
+import StudentECAEnrollment from '../components/student/StudentECAEnrollment';
+import StudentSchoolBusRegistration from '../components/student/StudentSchoolBusRegistration';
+import StudentLeaveRequest from '../components/student/StudentLeaveRequest';
+import StudentLibrary from '../components/student/StudentLibrary';
+import StudentHealthView from '../components/student/StudentHealthView';
+import StudentEvaluationView from '../components/student/StudentEvaluationView';
+import StudentSupportClassView from '../components/student/StudentSupportClassView';
+import MyTicketsView from '../components/student/MyTicketsView';
+import StudentShopView from '../components/student/StudentShopView';
+import { LogOut, BookOpen, Clock, FileText, Calendar, CheckSquare, Users, Activity, Bus, Library, HeartPulse, Award, Sun, Wrench, ShoppingBag } from 'lucide-react';
 
 const StudentDashboard = () => {
   const { user, logout } = useAuth();
@@ -117,7 +130,7 @@ const StudentDashboard = () => {
         )}
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-6 border-b border-slate-200 pb-2">
+        <div className="flex flex-wrap gap-2 mb-6 border-b border-slate-200 pb-2">
           <button 
             onClick={() => setActiveTab('dashboard')} 
             className={`px-4 py-2 font-bold ${activeTab === 'dashboard' ? 'text-brand-600 border-b-2 border-brand-600' : 'text-slate-500 hover:text-slate-700'}`}
@@ -125,10 +138,88 @@ const StudentDashboard = () => {
             Dashboard
           </button>
           <button 
+            onClick={() => setActiveTab('homework')} 
+            className={`px-4 py-2 font-bold flex items-center gap-2 ${activeTab === 'homework' ? 'text-brand-600 border-b-2 border-brand-600' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            <BookOpen size={18} /> My Homework
+          </button>
+          <button 
+            onClick={() => setActiveTab('report-card')} 
+            className={`px-4 py-2 font-bold flex items-center gap-2 ${activeTab === 'report-card' ? 'text-brand-600 border-b-2 border-brand-600' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            <FileText size={18} /> Report Card
+          </button>
+          <button 
             onClick={() => setActiveTab('invoices')} 
             className={`px-4 py-2 font-bold flex items-center gap-2 ${activeTab === 'invoices' ? 'text-brand-600 border-b-2 border-brand-600' : 'text-slate-500 hover:text-slate-700'}`}
           >
             <FileText size={18} /> Invoices & Receipts
+          </button>
+          <button 
+            onClick={() => setActiveTab('conduct-report')} 
+            className={`px-4 py-2 font-bold flex items-center gap-2 ${activeTab === 'conduct-report' ? 'text-brand-600 border-b-2 border-brand-600' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            <CheckSquare size={18} /> Conduct Report
+          </button>
+          <button 
+            onClick={() => setActiveTab('timetable')} 
+            className={`px-4 py-2 font-bold flex items-center gap-2 ${activeTab === 'timetable' ? 'text-brand-600 border-b-2 border-brand-600' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            <Calendar size={18} /> Timetable
+          </button>
+          <button 
+            onClick={() => setActiveTab('ecas')} 
+            className={`px-4 py-2 font-bold flex items-center gap-2 ${activeTab === 'ecas' ? 'text-brand-600 border-b-2 border-brand-600' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            <Activity size={18} /> ECAs / Clubs
+          </button>
+          <button 
+            onClick={() => setActiveTab('support-classes')} 
+            className={`px-4 py-2 font-bold flex items-center gap-2 ${activeTab === 'support-classes' ? 'text-brand-600 border-b-2 border-brand-600' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            <Sun size={18} /> Summer Classes
+          </button>
+          <button 
+            onClick={() => setActiveTab('tickets')} 
+            className={`px-4 py-2 font-bold flex items-center gap-2 ${activeTab === 'tickets' ? 'text-brand-600 border-b-2 border-brand-600' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            <Wrench size={18} /> Help & Support
+          </button>
+          <button 
+            onClick={() => setActiveTab('shop')} 
+            className={`px-4 py-2 font-bold flex items-center gap-2 ${activeTab === 'shop' ? 'text-brand-600 border-b-2 border-brand-600' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            <ShoppingBag size={18} /> School Shop
+          </button>
+          <button 
+            onClick={() => setActiveTab('schoolbus')} 
+            className={`px-4 py-2 font-bold flex items-center gap-2 ${activeTab === 'schoolbus' ? 'text-brand-600 border-b-2 border-brand-600' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            <Bus size={18} /> School Bus
+          </button>
+          <button 
+            onClick={() => setActiveTab('leave')} 
+            className={`px-4 py-2 font-bold flex items-center gap-2 ${activeTab === 'leave' ? 'text-brand-600 border-b-2 border-brand-600' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            <Calendar size={18} /> Leave Request
+          </button>
+          <button 
+            onClick={() => setActiveTab('library')} 
+            className={`px-4 py-2 font-bold flex items-center gap-2 ${activeTab === 'library' ? 'text-brand-600 border-b-2 border-brand-600' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            <Library size={18} /> Library
+          </button>
+          <button 
+            onClick={() => setActiveTab('health')} 
+            className={`px-4 py-2 font-bold flex items-center gap-2 ${activeTab === 'health' ? 'text-brand-600 border-b-2 border-brand-600' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            <HeartPulse size={18} /> Health
+          </button>
+          <button 
+            onClick={() => setActiveTab('evaluation')} 
+            className={`px-4 py-2 font-bold flex items-center gap-2 ${activeTab === 'evaluation' ? 'text-brand-600 border-b-2 border-brand-600' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            <Award size={18} /> Evaluation
           </button>
         </div>
 
@@ -222,6 +313,32 @@ const StudentDashboard = () => {
           </div>
         ) : activeTab === 'invoices' ? (
           <StudentInvoicesView activeStudentId={activeStudentId} />
+        ) : activeTab === 'homework' ? (
+          <StudentHomeworkView currentStudent={profile} />
+        ) : activeTab === 'report-card' ? (
+          <StudentReportCardView currentStudent={profile} />
+        ) : activeTab === 'conduct-report' ? (
+          <StudentConductReportView currentStudent={profile} />
+        ) : activeTab === 'timetable' ? (
+          <StudentTimetableView currentStudent={profile} />
+        ) : activeTab === 'ecas' ? (
+          <StudentECAEnrollment currentStudent={profile} />
+        ) : activeTab === 'support-classes' ? (
+          <StudentSupportClassView currentStudent={profile} />
+        ) : activeTab === 'tickets' ? (
+          <MyTicketsView currentStudent={profile} />
+        ) : activeTab === 'shop' ? (
+          <StudentShopView currentStudent={profile} />
+        ) : activeTab === 'schoolbus' ? (
+          <StudentSchoolBusRegistration currentStudent={profile} />
+        ) : activeTab === 'leave' ? (
+          <StudentLeaveRequest currentStudent={profile} />
+        ) : activeTab === 'library' ? (
+          <StudentLibrary currentStudent={profile} />
+        ) : activeTab === 'health' ? (
+          <StudentHealthView currentStudent={profile} />
+        ) : activeTab === 'evaluation' ? (
+          <StudentEvaluationView currentStudent={profile} />
         ) : null}
       </main>
     </div>

@@ -19,11 +19,13 @@ func main() {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		if strings.HasPrefix(line, "CREATE TABLE `invoices`") ||
-			strings.HasPrefix(line, "CREATE TABLE `invoice_items`") ||
-			strings.HasPrefix(line, "CREATE TABLE `payments`") ||
-			strings.HasPrefix(line, "CREATE TABLE `slip_records`") ||
-			strings.HasPrefix(line, "CREATE TABLE `invoice_headers`") {
+		if strings.HasPrefix(line, "CREATE TABLE `homework`") ||
+			strings.HasPrefix(line, "CREATE TABLE `homework_files`") ||
+			strings.HasPrefix(line, "CREATE TABLE `homework_submissions`") ||
+			strings.HasPrefix(line, "CREATE TABLE `scores`") ||
+			strings.HasPrefix(line, "CREATE TABLE `student_scores`") ||
+			strings.HasPrefix(line, "CREATE TABLE `lesson_plans`") ||
+			strings.HasPrefix(line, "CREATE TABLE `reports`") {
 			printLines = 25
 		}
 

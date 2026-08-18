@@ -11,8 +11,23 @@ import StaffView from '../components/admin/StaffView';
 import AcademicSettingsView from '../components/admin/AcademicSettingsView';
 import FinanceView from '../components/admin/FinanceView';
 import TeacherDashboardView from '../components/admin/TeacherDashboardView';
+import TeacherHomeworkView from '../components/admin/TeacherHomeworkView';
+import TeacherScoresView from '../components/admin/TeacherScoresView';
+import TeacherLessonPlanView from '../components/admin/TeacherLessonPlanView';
 import AdminDutyManagement from '../components/admin/AdminDutyManagement';
-import { Users, FileText, CheckSquare, Bell, Search, Wrench } from 'lucide-react';
+import ConductReportList from '../components/admin/ConductReportList';
+import TimetableView from '../components/admin/TimetableView';
+import ECAView from '../components/admin/ECAView';
+import SchoolBusManagement from '../components/admin/SchoolBusManagement';
+import LeaveApprovalView from '../components/admin/LeaveApprovalView';
+import LibraryManagement from '../components/admin/LibraryManagement';
+import HealthManagement from '../components/admin/HealthManagement';
+import MonthlyEvaluationManagement from '../components/admin/MonthlyEvaluationManagement';
+import SupportClassManagement from '../components/admin/SupportClassManagement';
+import TicketManagement from '../components/admin/TicketManagement';
+import AdmissionsManagement from '../components/admin/AdmissionsManagement';
+import ShopManagement from '../components/admin/ShopManagement';
+import { Users, FileText, CheckSquare, Bell, Search, Wrench, UserPlus, ShoppingBag } from 'lucide-react';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -52,9 +67,17 @@ const AdminDashboard = () => {
   }, []);
 
   const renderContent = () => {
+    if (activeTab === 'admissions') {
+      return <AdmissionsManagement />;
+    }
+
+    if (activeTab === 'shop') {
+      return <ShopManagement />;
+    }
+
     if (activeTab === 'dashboard') {
       if (user?.role === 'teacher') {
-        return <TeacherDashboardView />;
+        return <TeacherDashboardView setActiveTab={setActiveTab} />;
       }
       return (
         <div className="max-w-7xl mx-auto space-y-8">
@@ -160,6 +183,58 @@ const AdminDashboard = () => {
 
     if (activeTab === 'duty_roster') {
       return <AdminDutyManagement />;
+    }
+
+    if (activeTab === 'homework') {
+      return <TeacherHomeworkView />;
+    }
+
+    if (activeTab === 'scores') {
+      return <TeacherScoresView />;
+    }
+
+    if (activeTab === 'lesson-plans') {
+      return <TeacherLessonPlanView />;
+    }
+
+    if (activeTab === 'timetable') {
+      return <TimetableView />;
+    }
+
+    if (activeTab === 'ecas') {
+      return <ECAView />;
+    }
+
+    if (activeTab === 'schoolbus') {
+      return <SchoolBusManagement />;
+    }
+
+    if (activeTab === 'leave') {
+      return <LeaveApprovalView />;
+    }
+
+    if (activeTab === 'library') {
+      return <LibraryManagement />;
+    }
+
+    if (activeTab === 'health') {
+      return <HealthManagement />;
+    }
+
+    if (activeTab === 'evaluation') {
+      return <MonthlyEvaluationManagement />;
+    }
+
+    if (activeTab === 'support-classes') {
+      return <SupportClassManagement />;
+    }
+
+    if (activeTab === 'tickets') {
+      return <TicketManagement />;
+    }
+
+    if (activeTab === 'conduct') {
+      return <ConductReportList />;
     }
 
     if (activeTab === 'parents') {

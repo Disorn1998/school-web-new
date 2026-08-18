@@ -3,7 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import api from '../../utils/api';
 import { ClipboardList, CalendarDays, BookOpen, UserCheck, Activity, Star } from 'lucide-react';
 
-const TeacherDashboardView = () => {
+const TeacherDashboardView = ({ setActiveTab }) => {
   const { user } = useAuth();
   const [dutyData, setDutyData] = useState({});
   const [leaves, setLeaves] = useState([]);
@@ -95,7 +95,7 @@ const TeacherDashboardView = () => {
       <div>
         <h3 className="text-slate-800 font-bold text-lg mb-4">Quick Actions</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <button className="group flex items-center gap-4 p-4 rounded-2xl bg-white border border-slate-200 hover:border-blue-400 hover:shadow-lg transition-all text-left">
+          <button onClick={() => setActiveTab('homework')} className="group flex items-center gap-4 p-4 rounded-2xl bg-white border border-slate-200 hover:border-blue-400 hover:shadow-lg transition-all text-left">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 text-white flex items-center justify-center shadow-md group-hover:scale-105 transition-transform flex-shrink-0">
               <BookOpen size={24} />
             </div>
@@ -105,7 +105,7 @@ const TeacherDashboardView = () => {
             </div>
           </button>
 
-          <button className="group flex items-center gap-4 p-4 rounded-2xl bg-white border border-slate-200 hover:border-emerald-400 hover:shadow-lg transition-all text-left">
+          <button onClick={() => setActiveTab('scores')} className="group flex items-center gap-4 p-4 rounded-2xl bg-white border border-slate-200 hover:border-emerald-400 hover:shadow-lg transition-all text-left">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-green-400 text-white flex items-center justify-center shadow-md group-hover:scale-105 transition-transform flex-shrink-0">
               <Activity size={24} />
             </div>
@@ -115,23 +115,23 @@ const TeacherDashboardView = () => {
             </div>
           </button>
 
-          <button className="group flex items-center gap-4 p-4 rounded-2xl bg-white border border-slate-200 hover:border-amber-400 hover:shadow-lg transition-all text-left">
+          <button onClick={() => setActiveTab('lesson-plans')} className="group flex items-center gap-4 p-4 rounded-2xl bg-white border border-slate-200 hover:border-amber-400 hover:shadow-lg transition-all text-left">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-400 text-white flex items-center justify-center shadow-md group-hover:scale-105 transition-transform flex-shrink-0">
               <Star size={24} />
             </div>
             <div>
-              <p className="font-bold text-slate-800 leading-tight">Student Conduct</p>
-              <p className="text-xs text-slate-500 font-medium mt-1">Behavior records</p>
+              <p className="font-bold text-slate-800 leading-tight">Lesson Plans</p>
+              <p className="text-xs text-slate-500 font-medium mt-1">Upload materials</p>
             </div>
           </button>
 
-          <button className="group flex items-center gap-4 p-4 rounded-2xl bg-white border border-slate-200 hover:border-purple-400 hover:shadow-lg transition-all text-left">
+          <button onClick={() => setActiveTab('duty_roster')} className="group flex items-center gap-4 p-4 rounded-2xl bg-white border border-slate-200 hover:border-purple-400 hover:shadow-lg transition-all text-left">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-400 text-white flex items-center justify-center shadow-md group-hover:scale-105 transition-transform flex-shrink-0">
               <ClipboardList size={24} />
             </div>
             <div>
-              <p className="font-bold text-slate-800 leading-tight">Monthly Evaluation</p>
-              <p className="text-xs text-slate-500 font-medium mt-1">Manage evaluations</p>
+              <p className="font-bold text-slate-800 leading-tight">Duty Roster</p>
+              <p className="text-xs text-slate-500 font-medium mt-1">Check assignments</p>
             </div>
           </button>
         </div>
