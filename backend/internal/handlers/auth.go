@@ -158,11 +158,11 @@ func Login(c *fiber.Ctx) error {
 		SELECT p.id as parent_id, s.id as student_id, s.year_id, s.fullname, p.password_hash
 		FROM parents p
 		JOIN students s ON s.parent_id = p.id
-		WHERE p.username = ?
+		WHERE p.username = ? OR p.father_phone = ? OR s.student_id = ?
 		LIMIT 1
 	`
 
-	if err := database.DB.Raw(query, input.Username).Scan(&result).Error; err != nil || result.ParentID == 0 {
+	if err := database.DB.Raw(query, input.Username, input.Username, input.Username).Scan(&result).Error; err != nil || result.ParentID == 0 {
 		recordFailedLogin(ip, input.Username)
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Incorrect username or password"})
 	}

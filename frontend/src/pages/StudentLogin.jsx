@@ -63,7 +63,7 @@ const StudentLogin = () => {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
-                  onClick={() => { setUsername('student1'); setPassword('password'); }}
+                  onClick={() => { setUsername('STU20261'); setPassword('password'); }}
                   className="py-2 px-3 bg-brand-50 border border-brand-200 rounded-lg text-sm text-brand-700 hover:bg-brand-100 transition-colors shadow-sm font-medium"
                 >
                   Student
