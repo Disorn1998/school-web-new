@@ -131,10 +131,21 @@ const AdminLogin = () => {
             </button>
           </form>
           
-          <div className="mt-6 text-center">
-             <button onClick={() => navigate('/login')} className="text-sm text-slate-400 hover:text-white transition-colors">
-               Go to Student Portal
-             </button>
+          <div className="mt-8 pt-6 border-t border-slate-700">
+            <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-700 shadow-inner">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-bold text-white">Students & Parents</h3>
+                  <p className="text-xs text-slate-400 mt-0.5">Check grades and homework</p>
+                </div>
+                <button 
+                  onClick={() => navigate('/login')} 
+                  className="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium rounded-lg transition-colors shadow-lg shadow-brand-500/20"
+                >
+                  Student Portal
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
