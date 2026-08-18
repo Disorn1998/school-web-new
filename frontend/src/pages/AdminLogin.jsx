@@ -55,21 +55,20 @@ const AdminLogin = () => {
               </div>
             )}
 
-            {/* DEMO MODE QUICK LOGIN BUTTONS */}
-            <div className="mb-6 space-y-3">
-              <p className="text-xs text-slate-400 uppercase tracking-wider text-center font-semibold">Demo Quick Login</p>
+            <div className="mb-6 space-y-3 bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+              <p className="text-xs text-slate-300 uppercase tracking-wider text-center font-bold mb-2">⭐ Auto Fill Demo Login</p>
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
                   onClick={() => { setUsername('admin'); setPassword('password'); }}
-                  className="py-2 px-3 border border-brand-500/30 rounded-lg text-sm text-brand-400 hover:bg-brand-500/10 transition-colors"
+                  className="py-2.5 px-3 bg-brand-600 hover:bg-brand-500 rounded-lg text-sm text-white font-bold transition-all shadow-lg shadow-brand-500/20 active:scale-95 flex items-center justify-center gap-2"
                 >
                   Admin
                 </button>
                 <button
                   type="button"
                   onClick={() => { setUsername('teacher1'); setPassword('password'); }}
-                  className="py-2 px-3 border border-purple-500/30 rounded-lg text-sm text-purple-400 hover:bg-purple-500/10 transition-colors"
+                  className="py-2.5 px-3 bg-purple-600 hover:bg-purple-500 rounded-lg text-sm text-white font-bold transition-all shadow-lg shadow-purple-500/20 active:scale-95 flex items-center justify-center gap-2"
                 >
                   Teacher
                 </button>
