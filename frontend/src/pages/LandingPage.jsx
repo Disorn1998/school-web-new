@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Menu, X, ChevronDown, Lock, ArrowRight, Users, ShieldAlert, Globe, MapPin, Compass, BookOpen, Heart } from 'lucide-react';
+import { Search, Menu, X, ChevronDown, Lock, ArrowRight, Users, ShieldAlert, Globe, MapPin, Compass, BookOpen, Heart, RotateCcw, ZoomIn, ZoomOut, Play, Pause, Layers, Eye, Sparkles } from 'lucide-react';
 
 // Crisp, colorful country flag component using CDN
 const FlagIcon = ({ code, className = "w-6 h-4" }) => {
@@ -54,6 +54,288 @@ const TiltCard = ({ children, bgImage }) => {
       <div className="absolute bottom-0 left-0 p-8 w-full" style={{ transform: 'translateZ(60px)' }}>
         {children}
       </div>
+    </div>
+  );
+};
+
+// 100% Reliable Native 3D Interactive Campus Explorer Component
+const Campus3DExplorer = ({ lang = 'EN' }) => {
+  const [rotateX, setRotateX] = useState(55);
+  const [rotateZ, setRotateZ] = useState(35);
+  const [zoom, setZoom] = useState(1);
+  const [isDragging, setIsDragging] = useState(false);
+  const [autoRotate, setAutoRotate] = useState(true);
+  const [selectedBuilding, setSelectedBuilding] = useState(null);
+  const [activeTheme, setActiveTheme] = useState('day'); // 'day' or 'night'
+  const dragStartPos = useRef({ x: 0, y: 0 });
+  const animRef = useRef();
+
+  const buildingsData = {
+    EN: [
+      { id: 'main', name: 'Discovery Academic Hall', type: 'Academic', x: 220, y: 180, height: 110, color: '#f2a900', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: 'Central academic hub featuring modern lecture halls, collaborative student spaces, and administrative leadership offices.' },
+      { id: 'stem', name: 'STEM & Robotics Center', type: 'Technology', x: 380, y: 140, height: 95, color: '#00c49f', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: 'Advanced biotech laboratories, makerspaces, 3D printing suites, and AI robotics testing arenas.' },
+      { id: 'arts', name: 'Performing Arts & Theater', type: 'Arts', x: 120, y: 320, height: 100, color: '#ff7300', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: 'State-of-the-art 650-seat auditorium, acoustics orchestra hall, black box theater, and sculpture studios.' },
+      { id: 'sports', name: 'Athletic Arena & Complex', type: 'Athletics', x: 400, y: 340, height: 80, color: '#0088fe', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: 'Olympic-length aquatic center, indoor basketball courts, fitness pavilion, and synthetic turf stadium.' },
+      { id: 'library', name: 'Learning Resource Library', type: 'Library', x: 260, y: 300, height: 85, color: '#9966ff', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: 'Over 50,000 volumes, silent study sanctuaries, digital multimedia suites, and research archive databases.' },
+      { id: 'nature', name: '75-Acre Forest Sanctuary', type: 'Outdoors', x: 100, y: 100, height: 40, color: '#22c55e', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: 'Pristine Pacific Northwest evergreen trails, outdoor amphitheaters, organic gardens, and ecological ponds.' }
+    ],
+    TH: [
+      { id: 'main', name: 'อาคารวิชาการ Discovery Hall', type: 'วิชาการ', x: 220, y: 180, height: 110, color: '#f2a900', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: 'ศูนย์กลางวิชาการหลัก ประกอบด้วยห้องบรรยายทันสมัย พื้นที่ทำงานร่วมกันของนักเรียน และสำนักงานบริหาร' },
+      { id: 'stem', name: 'ศูนย์นวัตกรรม STEM และหุ่นยนต์', type: 'เทคโนโลยี', x: 380, y: 140, height: 95, color: '#00c49f', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: 'ห้องปฏิบัติการวิทยาศาสตร์ขั้นสูง ศูนย์ทดลองหุ่นยนต์ AI เครื่องพิมพ์ 3 มิติ และห้องทดลองชีววิทยาศาสตร์' },
+      { id: 'arts', name: 'ศูนย์ศิลปะการแสดงและโรงละคร', type: 'ศิลปะ', x: 120, y: 320, height: 100, color: '#ff7300', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: 'หอประชุมและโรงละคร 650 ที่นั่ง ห้องซ้อมดนตรีออร์เคสตรามาตรฐานระดับโลก และสตูดิโอประติมากรรม' },
+      { id: 'sports', name: 'ศูนย์กีฬาและสระว่ายน้ำโอลิมปิก', type: 'กีฬา', x: 400, y: 340, height: 80, color: '#0088fe', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: 'สระว่ายน้ำมาตรฐานโอลิมปิก สนามบาสเกตบอลในร่ม สนามฟุตบอลหญ้าเทียม และศูนย์ฟิตเนสครบวงจร' },
+      { id: 'library', name: 'หอสมุดและศูนย์วิทยบริการ', type: 'ห้องสมุด', x: 260, y: 300, height: 85, color: '#9966ff', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: 'หนังสือและสื่อค้นคว้ากว่า 50,000 รายการ พื้นที่อ่านหนังสือเงียบสงบ และระบบฐานข้อมูลวิจัยดิจิทัลระดับสากล' },
+      { id: 'nature', name: 'พื้นที่ป่าธรรมชาติ 75 เอเคอร์ (190 ไร่)', type: 'ธรรมชาติ', x: 100, y: 100, height: 40, color: '#22c55e', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: 'เส้นทางเดินสำรวจธรรมชาติอันอุดมสมบูรณ์ ลานเรียนรู้กลางแจ้ง สวนเกษตรอินทรีย์ และสระน้ำเชิงนิเวศ' }
+    ],
+    CN: [
+      { id: 'main', name: '探索主教学楼 Discovery Hall', type: '学术', x: 220, y: 180, height: 110, color: '#f2a900', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: '核心教学主楼，配备现代化多功能阶梯教室、学生协同研讨区及学校行政办公中心。' },
+      { id: 'stem', name: 'STEM人工智能与科研中心', type: '科技', x: 380, y: 140, height: 95, color: '#00c49f', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: '配备前沿生物科学实验室、创客工坊、3D打印研发套件及AI机器人竞技训练场。' },
+      { id: 'arts', name: '大剧院与表演艺术中心', type: '艺术', x: 120, y: 320, height: 100, color: '#ff7300', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: '拥有650座的专业声学剧场、交响乐排练大厅、黑匣子实验剧场及雕塑艺术工作室。' },
+      { id: 'sports', name: '综合体育中心与游泳馆', type: '体育', x: 400, y: 340, height: 80, color: '#0088fe', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: '国际奥林匹克标准恒温泳池、室内篮球馆、专业健身房及全天候人工草坪运动场。' },
+      { id: 'library', name: '学术图书馆与信息资源中心', type: '图书馆', x: 260, y: 300, height: 85, color: '#9966ff', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: '馆藏50,000余册实体学术典籍，设静谧自习专区、多媒体交互研讨室及全球数字文献库。' },
+      { id: 'nature', name: '75英亩自然生态探究林区', type: '户外生态', x: 100, y: 100, height: 40, color: '#22c55e', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: '纯净的常青树森林步道、户外圆形阶梯剧场、有机植物研习园及生态湿地探索区。' }
+    ],
+    JP: [
+      { id: 'main', name: 'ディスカバリー本校舎', type: '学術', x: 220, y: 180, height: 110, color: '#f2a900', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: '最新の講義室、生徒の協働学習ラウンジ、学校本部が集約されたキャンパスの中心校舎。' },
+      { id: 'stem', name: 'STEM＆ロボティクス先端棟', type: 'テクノロジー', x: 380, y: 140, height: 95, color: '#00c49f', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: '最先端のバイオ実験室、メイカースペース、3Dプリンティング設備、AIロボット実証フィールド。' },
+      { id: 'arts', name: 'パフォーミングアーツ大劇場', type: '芸術', x: 120, y: 320, height: 100, color: '#ff7300', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: '音響設計に優れた650席の大講堂、オーケストラホール、ブラックボックステアター、造形アトリエ。' },
+      { id: 'sports', name: '総合アリーナ＆オリンピックプール', type: 'スポーツ', x: 400, y: 340, height: 80, color: '#0088fe', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: 'オリンピック規格の温水プール、屋内バスケットボールコート、トレーニング施設、全天候型スタジアム。' },
+      { id: 'library', name: '学術図書館・メディアセンター', type: '図書館', x: 260, y: 300, height: 85, color: '#9966ff', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: '5万冊以上の蔵書を誇り、静寂な個別自習ブース、マルチメディア編集室、デジタル論文DBを完備。' },
+      { id: 'nature', name: '75エーカー自然保護林・野外教室', type: '大自然', x: 100, y: 100, height: 40, color: '#22c55e', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: '広大な常緑樹の森林トレイル、オープンエアの野外円形教室、有機ガーデン、自然観察池。' }
+    ]
+  };
+
+  const buildings = buildingsData[lang] || buildingsData.EN;
+
+  // Auto rotation loop
+  useEffect(() => {
+    if (autoRotate && !isDragging) {
+      const interval = setInterval(() => {
+        setRotateZ(prev => (prev + 0.3) % 360);
+      }, 30);
+      return () => clearInterval(interval);
+    }
+  }, [autoRotate, isDragging]);
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setAutoRotate(false);
+    dragStartPos.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    const deltaX = e.clientX - dragStartPos.current.x;
+    const deltaY = e.clientY - dragStartPos.current.y;
+    setRotateZ(prev => prev + deltaX * 0.4);
+    setRotateX(prev => Math.min(80, Math.max(20, prev - deltaY * 0.3)));
+    dragStartPos.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleWheel = (e) => {
+    e.preventDefault();
+    if (e.deltaY < 0) {
+      setZoom(prev => Math.min(1.6, prev + 0.08));
+    } else {
+      setZoom(prev => Math.max(0.6, prev - 0.08));
+    }
+  };
+
+  const resetView = () => {
+    setRotateX(55);
+    setRotateZ(35);
+    setZoom(1);
+    setAutoRotate(true);
+    setSelectedBuilding(null);
+  };
+
+  return (
+    <div className="w-full relative select-none rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] border border-white/15 bg-gradient-to-b from-[#0a1410] via-[#020906] to-[#010403]">
+      
+      {/* Top Floating Control Bar */}
+      <div className="absolute top-6 left-6 right-6 z-30 flex flex-wrap justify-between items-center gap-4 pointer-events-none">
+        <div className="flex items-center gap-2 pointer-events-auto bg-black/70 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 text-xs font-bold text-white shadow-lg">
+          <Sparkles size={14} className="text-[#f2a900]" />
+          <span>3D LIVE CAMPUS TWIN</span>
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-1"></span>
+        </div>
+
+        {/* Action Controls */}
+        <div className="flex items-center gap-2 pointer-events-auto bg-black/70 backdrop-blur-md p-1.5 rounded-full border border-white/20 shadow-lg">
+          <button 
+            onClick={() => setAutoRotate(!autoRotate)} 
+            className={`p-2 rounded-full transition-all text-xs font-bold flex items-center gap-1.5 ${autoRotate ? 'bg-[#00523e] text-emerald-300' : 'bg-white/10 text-white hover:bg-white/20'}`}
+            title="Auto Rotate"
+          >
+            {autoRotate ? <Pause size={14} /> : <Play size={14} />}
+            <span className="hidden sm:inline">{autoRotate ? 'Auto Orbit' : 'Paused'}</span>
+          </button>
+          
+          <button onClick={() => setZoom(prev => Math.min(1.6, prev + 0.15))} className="p-2 text-white hover:bg-white/20 rounded-full transition-colors" title="Zoom In">
+            <ZoomIn size={16} />
+          </button>
+          <button onClick={() => setZoom(prev => Math.max(0.6, prev - 0.15))} className="p-2 text-white hover:bg-white/20 rounded-full transition-colors" title="Zoom Out">
+            <ZoomOut size={16} />
+          </button>
+          <button onClick={resetView} className="p-2 text-white hover:bg-white/20 rounded-full transition-colors" title="Reset Camera">
+            <RotateCcw size={16} />
+          </button>
+          <button onClick={() => setActiveTheme(activeTheme === 'day' ? 'night' : 'day')} className="px-3 py-1 text-xs font-bold text-[#f2a900] hover:bg-white/10 rounded-full transition-colors">
+            {activeTheme === 'day' ? '🌙 Night Mode' : '☀️ Day Mode'}
+          </button>
+        </div>
+      </div>
+
+      {/* 3D Viewport Scene Area */}
+      <div 
+        className="w-full h-[620px] cursor-grab active:cursor-grabbing flex items-center justify-center overflow-hidden relative"
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        onWheel={handleWheel}
+        style={{ perspective: '1200px' }}
+      >
+        {/* Background Grid & Ambient Glow */}
+        <div className={`absolute inset-0 transition-opacity duration-700 pointer-events-none ${activeTheme === 'night' ? 'bg-[radial-gradient(circle_at_center,#00523e_0%,#000_70%)]' : 'bg-[radial-gradient(circle_at_center,#022c22_0%,#000_80%)]'}`}></div>
+        
+        {/* 3D World Transform Board */}
+        <div 
+          className="relative w-[560px] h-[560px] transition-transform duration-75"
+          style={{
+            transform: `scale(${zoom}) rotateX(${rotateX}deg) rotateZ(${rotateZ}deg)`,
+            transformStyle: 'preserve-3d'
+          }}
+        >
+          {/* Ground Terrain (75-Acre Overlake Woodland Grid) */}
+          <div 
+            className={`absolute inset-0 rounded-[3rem] border-4 shadow-[0_0_80px_rgba(0,82,62,0.6)] transition-colors duration-500 ${activeTheme === 'night' ? 'bg-[#021d15] border-emerald-500/40' : 'bg-[#043325] border-emerald-400/60'}`}
+            style={{ 
+              transformStyle: 'preserve-3d',
+              backgroundImage: 'radial-gradient(#10b981 1.5px, transparent 1.5px), linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)',
+              backgroundSize: '35px 35px, 70px 70px, 70px 70px'
+            }}
+          >
+            {/* Campus Pathways / Trails */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-60">
+              <path d="M 80 80 Q 220 180 380 140 T 400 340 T 260 300 T 120 320 Z" fill="none" stroke="#f2a900" strokeWidth="4" strokeDasharray="8 6" />
+              <path d="M 220 180 L 260 300 L 380 140" fill="none" stroke="#6ee7b7" strokeWidth="3" />
+              <circle cx="280" cy="240" r="45" fill="rgba(16,185,129,0.2)" stroke="#34d399" strokeWidth="2" />
+            </svg>
+
+            {/* Central Quad Lawn */}
+            <div className="absolute top-[200px] left-[200px] w-[140px] h-[100px] rounded-2xl bg-emerald-500/20 border-2 border-emerald-400/40 flex items-center justify-center">
+              <span className="text-[10px] font-black text-emerald-300 uppercase tracking-widest pointer-events-none">CENTRAL QUAD</span>
+            </div>
+
+            {/* Decorative Evergreen Trees */}
+            {[
+              {x: 60, y: 70}, {x: 80, y: 130}, {x: 140, y: 60}, {x: 480, y: 90}, {x: 450, y: 220}, 
+              {x: 80, y: 440}, {x: 160, y: 460}, {x: 340, y: 450}, {x: 470, y: 440}, {x: 50, y: 220}
+            ].map((tree, idx) => (
+              <div 
+                key={idx} 
+                className="absolute w-6 h-6 flex items-center justify-center pointer-events-none text-emerald-400 text-lg"
+                style={{ 
+                  left: tree.x, 
+                  top: tree.y,
+                  transform: `translateZ(15px) rotateX(-${rotateX}deg) rotateZ(-${rotateZ}deg)`,
+                  transformStyle: 'preserve-3d'
+                }}
+              >
+                🌲
+              </div>
+            ))}
+
+            {/* 3D Buildings with Clickable Hotspots */}
+            {buildings.map((b) => (
+              <div 
+                key={b.id}
+                onClick={(e) => { e.stopPropagation(); setSelectedBuilding(b); }}
+                className="absolute group cursor-pointer"
+                style={{
+                  left: b.x,
+                  top: b.y,
+                  width: '90px',
+                  height: '70px',
+                  transformStyle: 'preserve-3d'
+                }}
+              >
+                {/* 3D Extruded Building Mesh */}
+                <div 
+                  className={`w-full h-full rounded-xl transition-all duration-300 relative ${selectedBuilding?.id === b.id ? 'ring-4 ring-[#f2a900] shadow-[0_0_30px_#f2a900]' : 'group-hover:ring-2 group-hover:ring-white'}`}
+                  style={{
+                    backgroundColor: b.color,
+                    transform: `translateZ(${b.height / 2}px)`,
+                    boxShadow: `0 0 25px ${b.color}80, inset 0 0 15px rgba(255,255,255,0.4)`
+                  }}
+                >
+                  {/* Roof Glow */}
+                  <div className="absolute inset-1 rounded-lg bg-white/20 border border-white/40 flex items-center justify-center">
+                    <span className="text-[10px] font-black text-black/80 uppercase tracking-tighter truncate px-1">{b.type}</span>
+                  </div>
+                </div>
+
+                {/* Floating Interactive 3D Pin & Name Tag */}
+                <div 
+                  className="absolute left-1/2 -top-8 -translate-x-1/2 flex flex-col items-center pointer-events-none"
+                  style={{
+                    transform: `translateZ(${b.height + 25}px) rotateX(-${rotateX}deg) rotateZ(-${rotateZ}deg)`,
+                    transformStyle: 'preserve-3d'
+                  }}
+                >
+                  <div className="bg-black/90 text-white font-extrabold text-xs px-3 py-1 rounded-full border border-white/30 shadow-xl flex items-center gap-1.5 whitespace-nowrap backdrop-blur-md group-hover:scale-110 group-hover:border-[#f2a900] transition-all">
+                    <div className="w-2.5 h-2.5 rounded-full animate-ping" style={{ backgroundColor: b.color }}></div>
+                    <span>{b.name}</span>
+                  </div>
+                  <div className="w-1 h-3 bg-white/60"></div>
+                </div>
+              </div>
+            ))}
+
+          </div>
+        </div>
+      </div>
+
+      {/* Floating Selected Building Detail Card */}
+      {selectedBuilding && (
+        <div className="absolute bottom-6 left-6 right-6 md:left-auto md:right-6 md:w-[380px] z-40 bg-black/90 backdrop-blur-xl p-6 rounded-2xl border-2 border-[#f2a900] shadow-[0_10px_40px_rgba(0,0,0,0.9)] animate-fade-in text-white">
+          <div className="flex justify-between items-start mb-3">
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#f2a900] bg-[#f2a900]/20 px-2 py-0.5 rounded border border-[#f2a900]/40">
+                {selectedBuilding.type}
+              </span>
+              <h4 className="text-xl font-black mt-1 text-white">{selectedBuilding.name}</h4>
+            </div>
+            <button onClick={() => setSelectedBuilding(null)} className="p-1 hover:bg-white/20 rounded-full transition-colors text-gray-400 hover:text-white">
+              <X size={18} />
+            </button>
+          </div>
+          
+          <img src={selectedBuilding.img} alt={selectedBuilding.name} className="w-full h-36 object-cover rounded-xl mb-3 shadow-md border border-white/10" />
+          
+          <p className="text-xs text-gray-300 leading-relaxed mb-4">
+            {selectedBuilding.desc}
+          </p>
+
+          <div className="flex gap-2">
+            <button onClick={() => setSelectedBuilding(null)} className="flex-1 bg-[#00523e] hover:bg-[#003d2e] py-2 rounded-xl text-xs font-bold text-white transition-colors border border-emerald-500/40 flex items-center justify-center gap-1">
+              <Eye size={12} /> Explore More
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Bottom Help Tip */}
+      <div className="absolute bottom-4 left-6 z-20 pointer-events-none hidden md:flex items-center gap-2 text-xs font-bold text-gray-400 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
+        <Compass size={14} className="text-[#f2a900]" />
+        <span>Drag to rotate 3D view • Scroll wheel to zoom • Click any building for details</span>
+      </div>
+
     </div>
   );
 };
@@ -548,7 +830,6 @@ const LandingPage = () => {
     { code: 'JP', label: '日本語' }
   ];
 
-  // Retrieve saved language from localStorage if available
   const [currentLang, setCurrentLang] = useState(() => {
     const saved = localStorage.getItem('site_lang');
     return languages.find(l => l.code === saved) || languages[0];
@@ -673,7 +954,6 @@ const LandingPage = () => {
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 bg-[#00523e]/95 backdrop-blur-xl z-40 flex flex-col pt-28 px-8 pb-8 overflow-y-auto animate-fade-in">
-          {/* Language picker in mobile menu */}
           <div className="flex gap-2 mb-6 pb-4 border-b border-white/20 overflow-x-auto">
             {languages.map(lang => (
               <button 
@@ -834,30 +1114,21 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Interactive 3D Campus Map Section */}
-      <div className="w-full bg-[#111] text-white py-32 px-8 relative overflow-hidden border-t-4 border-[#f2a900] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] z-30">
+      {/* 100% Reliable Native 3D Interactive Campus Map Explorer Section */}
+      <div className="w-full bg-[#050e0a] text-white py-32 px-4 md:px-8 relative overflow-hidden border-t-4 border-[#f2a900] shadow-[0_-20px_50px_rgba(0,0,0,0.8)] z-30">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           <div className="flex items-center gap-3 mb-4">
             <MapPin size={32} className="text-[#f2a900] animate-bounce" />
-            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-white drop-shadow-[0_0_15px_rgba(242,169,0,0.3)]">{t.tourTitle}</h2>
+            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-white drop-shadow-[0_0_20px_rgba(242,169,0,0.4)] text-center">
+              {t.tourTitle}
+            </h2>
           </div>
-          <p className="text-gray-400 mb-12 text-center max-w-2xl text-lg">
+          <p className="text-gray-400 mb-12 text-center max-w-2xl text-base md:text-lg">
             {t.tourDesc}
           </p>
           
-          <div className="w-full h-[600px] rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] bg-gradient-to-b from-gray-800 to-black border border-white/10 relative group flex items-center justify-center">
-            <iframe 
-              title="3D Campus Viewer" 
-              src='https://my.spline.design/miniroom-06915fb66601f021c1f55a156e5df469/' 
-              frameBorder='0' 
-              width='100%' 
-              height='100%'
-              className="absolute inset-0 z-10 transition-transform duration-700 group-hover:scale-105"
-            ></iframe>
-            <div className="absolute bottom-6 right-6 z-20 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 text-xs font-bold tracking-widest text-[#f2a900] flex items-center gap-2 pointer-events-none">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> {t.live3d}
-            </div>
-          </div>
+          {/* Integrated 3D Interactive Component */}
+          <Campus3DExplorer lang={currentLang.code} />
         </div>
       </div>
 
