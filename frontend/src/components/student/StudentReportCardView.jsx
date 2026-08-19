@@ -125,9 +125,9 @@ const StudentReportCardView = () => {
                 <span className="font-bold text-slate-400">LOGO</span>
               </div>
               <div>
-                <h2 className="font-extrabold text-lg text-black m-0">THE OVERLAKE SCHOOL</h2>
+                <h2 className="font-extrabold text-lg text-black m-0">SIMPLE SCHOOL SYSTEM</h2>
                 <p className="text-xs text-black m-0">1294 Srinakarin Road, On-Nut , Suan Luang, Bangkok 10250, Thailand</p>
-                <p className="text-xs text-black m-0">Tel : 02-300-5463 | Fax : 02-300-5465 | E-mail : info@overlake.org</p>
+                <p className="text-xs text-black m-0">Tel : 02-300-5463 | Fax : 02-300-5465 | E-mail : info@simpleschool.com</p>
               </div>
             </div>
 
