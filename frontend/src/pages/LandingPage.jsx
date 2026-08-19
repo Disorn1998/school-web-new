@@ -16,15 +16,15 @@ const LandingPage = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const topUtilityLinks = ["Students", "Alumni", "Careers", "Give", "Contact"];
+  const topUtilityLinks = [{name: "Students", path: "/login"}, {name: "Alumni", path: "/page/alumni"}, {name: "Careers", path: "/page/careers"}, {name: "Give", path: "/page/give"}, {name: "Contact", path: "/page/contact"}];
   
   const mainNavLinks = [
-    { name: "About Us", links: ["Our Mission", "Leadership", "Diversity & Inclusion", "Campus"] },
-    { name: "Admission", links: ["How to Apply", "Tuition & Financial Aid", "Visit SSS", "FAQ"] },
-    { name: "Academics", links: ["Curriculum", "Library", "Technology", "College Counseling"] },
-    { name: "Arts", links: ["Visual Arts", "Performing Arts", "Music", "Theater"] },
-    { name: "Athletics", links: ["Teams", "Schedules", "Facilities", "Coaches"] },
-    { name: "Student Life", links: ["Clubs", "Community Service", "Outdoor Education", "Events"] }
+    { name: "About Us", links: [{name: "Our Mission", path: "our-mission"}, {name: "Leadership", path: "leadership"}, {name: "Diversity & Inclusion", path: "diversity-inclusion"}, {name: "Campus", path: "campus"}] },
+    { name: "Admission", links: [{name: "How to Apply", path: "how-to-apply"}, {name: "Tuition & Financial Aid", path: "tuition-financial-aid"}, {name: "Visit SSS", path: "visit-sss"}, {name: "FAQ", path: "faq"}] },
+    { name: "Academics", links: [{name: "Curriculum", path: "curriculum"}, {name: "Library", path: "library"}, {name: "Technology", path: "technology"}, {name: "College Counseling", path: "college-counseling"}] },
+    { name: "Arts", links: [{name: "Visual Arts", path: "visual-arts"}, {name: "Performing Arts", path: "performing-arts"}, {name: "Music", path: "music"}, {name: "Theater", path: "theater"}] },
+    { name: "Athletics", links: [{name: "Teams", path: "teams"}, {name: "Schedules", path: "schedules"}, {name: "Facilities", path: "facilities"}, {name: "Coaches", path: "coaches"}] },
+    { name: "Student Life", links: [{name: "Clubs", path: "clubs"}, {name: "Community Service", path: "community-service"}, {name: "Outdoor Education", path: "outdoor-education"}, {name: "Events", path: "events"}] }
   ];
 
   return (
@@ -33,7 +33,7 @@ const LandingPage = () => {
       {/* Utility Top Bar */}
       <div className="hidden md:flex w-full bg-[#00523e] text-white py-1.5 px-8 justify-end text-xs font-semibold uppercase tracking-wider items-center gap-6 z-50 relative">
         {topUtilityLinks.map(link => (
-          <span key={link} className="hover:text-[#f2a900] cursor-pointer transition-colors">{link}</span>
+          <span key={link.name} onClick={() => navigate(link.path)} className="hover:text-[#f2a900] cursor-pointer transition-colors">{link.name}</span>
         ))}
         <div className="flex items-center gap-2 ml-4">
           <button onClick={() => navigate('/login')} className="flex items-center gap-1 hover:text-[#f2a900] transition-colors"><Lock size={12}/> Portals</button>
@@ -69,8 +69,12 @@ const LandingPage = () => {
               <div className={`absolute top-full left-0 mt-4 w-56 bg-[#00523e] text-white shadow-2xl border-t-4 border-[#f2a900] transition-all duration-200 transform origin-top ${activeDropdown === nav.name ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0 pointer-events-none'}`}>
                 <div className="py-2 flex flex-col">
                   {nav.links.map(sublink => (
-                    <span key={sublink} className="px-5 py-3 text-sm font-bold uppercase tracking-wider hover:bg-white/10 hover:text-[#f2a900] cursor-pointer transition-colors">
-                      {sublink}
+                    <span 
+                      key={sublink.path} 
+                      onClick={() => { setActiveDropdown(null); navigate(`/page/${sublink.path}`); }}
+                      className="px-5 py-3 text-sm font-bold uppercase tracking-wider hover:bg-white/10 hover:text-[#f2a900] cursor-pointer transition-colors block"
+                    >
+                      {sublink.name}
                     </span>
                   ))}
                 </div>
@@ -97,7 +101,13 @@ const LandingPage = () => {
                 <span className="flex justify-between items-center mb-2">{nav.name} <ChevronDown size={20}/></span>
                 <div className="flex flex-col gap-3 pl-4 mt-2">
                   {nav.links.map(sublink => (
-                    <span key={sublink} className="text-sm text-gray-500 font-bold hover:text-[#f2a900]">{sublink}</span>
+                    <span 
+                      key={sublink.path} 
+                      onClick={() => { setMobileMenuOpen(false); navigate(`/page/${sublink.path}`); }}
+                      className="text-sm text-gray-500 font-bold hover:text-[#f2a900] cursor-pointer"
+                    >
+                      {sublink.name}
+                    </span>
                   ))}
                 </div>
               </div>
@@ -355,3 +365,4 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+

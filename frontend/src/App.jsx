@@ -8,6 +8,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import StudentDashboard from './pages/StudentDashboard';
 import ApplicationForm from './pages/ApplicationForm';
 import LandingPage from './pages/LandingPage';
+import PublicPage from './pages/PublicPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
+          <Route path="/page/:slug" element={<PublicPage />} />
           <Route path="/apply" element={<ApplicationForm />} />
           <Route path="/login" element={<StudentLogin />} />
           <Route path="/admin/login" element={<AdminLogin />} />
