@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Menu, X, ChevronDown, Lock, ArrowRight } from 'lucide-react';
+import { Search, Menu, X, ChevronDown, Lock, ArrowRight, Users, ShieldAlert, Globe } from 'lucide-react';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -39,6 +39,15 @@ const LandingPage = () => {
           <button onClick={() => navigate('/login')} className="flex items-center gap-1 hover:text-[#f2a900] transition-colors"><Lock size={12}/> Portals</button>
         </div>
         <Search size={14} className="cursor-pointer hover:text-[#f2a900] ml-2" />
+        <div className="flex items-center gap-1 border-l border-white/30 pl-4 ml-2">
+          <Globe size={14} />
+          <select className="bg-transparent text-white font-bold cursor-pointer outline-none text-xs hover:text-[#f2a900] transition-colors appearance-none">
+            <option value="en" className="text-black">EN</option>
+            <option value="th" className="text-black">TH</option>
+            <option value="cn" className="text-black">CN</option>
+            <option value="jp" className="text-black">JP</option>
+          </select>
+        </div>
       </div>
 
       {/* Main Navigation */}
@@ -138,9 +147,17 @@ const LandingPage = () => {
             Inspire<br/>Excellence
           </h1>
           <div className="w-24 h-2 bg-[#f2a900] mb-6 shadow-md"></div>
-          <p className="text-xl md:text-2xl text-white font-medium max-w-2xl drop-shadow-md">
+          <p className="text-xl md:text-2xl text-white font-medium max-w-2xl drop-shadow-md mb-10">
             Dedicated to inspiring excellence, developing intellectual curiosity, and teaching students to lead in a changing world.
           </p>
+          <div className="flex flex-col sm:flex-row gap-6 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+            <button onClick={() => navigate('/login')} className="px-8 py-5 rounded-full bg-[#f2a900] text-[#00523e] font-black text-lg md:text-xl hover:bg-white transition-all shadow-2xl active:scale-95 flex items-center justify-center gap-3 border-4 border-[#f2a900] group">
+              <Users size={28} className="group-hover:scale-110 transition-transform" /> Student & Parent Login
+            </button>
+            <button onClick={() => navigate('/admin/login')} className="px-8 py-5 rounded-full bg-[#00523e]/80 text-white font-black text-lg md:text-xl hover:bg-[#00523e] transition-all shadow-2xl active:scale-95 flex items-center justify-center gap-3 border-4 border-white/30 backdrop-blur-md group hover:border-[#f2a900]">
+              <ShieldAlert size={28} className="group-hover:scale-110 transition-transform text-[#f2a900]" /> Staff & Admin Portal
+            </button>
+          </div>
         </div>
       </div>
 
@@ -307,6 +324,12 @@ const LandingPage = () => {
       </div>
 
       {/* Footer */}
+      
+      {/* Demo Notice Banner */}
+      <div className="w-full bg-red-600 text-white font-black text-center py-3 text-sm uppercase tracking-widest flex items-center justify-center gap-2 shadow-inner">
+        ?? This is a demo version / ระบบนี้เป็นเพียงเวอร์ชันทดลอง ??
+      </div>
+
       <footer className="w-full bg-[#1a1a1a] text-white py-16 px-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12 border-b border-gray-800 pb-12 mb-8">
           <div className="flex items-start gap-4 max-w-sm">
@@ -365,4 +388,6 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+
+
 

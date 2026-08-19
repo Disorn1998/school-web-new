@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Search, Menu, X, ChevronDown, Lock, ChevronRight } from 'lucide-react';
+import { Search, Menu, X, ChevronDown, Lock, ChevronRight, Globe } from 'lucide-react';
 
 const pageContentData = {
   // About Us
@@ -92,6 +92,15 @@ const PublicPage = () => {
           <button onClick={() => navigate('/login')} className="flex items-center gap-1 hover:text-[#f2a900] transition-colors"><Lock size={12}/> Portals</button>
         </div>
         <Search size={14} className="cursor-pointer hover:text-[#f2a900] ml-2" />
+        <div className="flex items-center gap-1 border-l border-white/30 pl-4 ml-2">
+          <Globe size={14} />
+          <select className="bg-transparent text-white font-bold cursor-pointer outline-none text-xs hover:text-[#f2a900] transition-colors appearance-none">
+            <option value="en" className="text-black">EN</option>
+            <option value="th" className="text-black">TH</option>
+            <option value="cn" className="text-black">CN</option>
+            <option value="jp" className="text-black">JP</option>
+          </select>
+        </div>
       </div>
 
       {/* Main Navigation - Solid Green for content pages */}
@@ -246,6 +255,12 @@ const PublicPage = () => {
       </div>
 
       {/* Footer (Simplified for PublicPage to maintain context) */}
+      
+      {/* Demo Notice Banner */}
+      <div className="w-full bg-red-600 text-white font-black text-center py-3 text-sm uppercase tracking-widest flex items-center justify-center gap-2 shadow-inner">
+        ?? This is a demo version / ระบบนี้เป็นเพียงเวอร์ชันทดลอง ??
+      </div>
+
       <footer className="w-full bg-[#1a1a1a] text-white py-12 px-8 mt-auto">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 border-b border-gray-800 pb-8 mb-6">
           <div className="flex items-center gap-4">
@@ -270,3 +285,5 @@ const PublicPage = () => {
 };
 
 export default PublicPage;
+
+
