@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Menu, X, ChevronDown, Lock, ArrowRight, Users, ShieldAlert, Globe, MapPin, Compass, BookOpen, Heart, RotateCcw, ZoomIn, ZoomOut, Play, Pause, Layers, Eye, Sparkles } from 'lucide-react';
+import * as THREE from 'three';
+import { Search, Menu, X, ChevronDown, Lock, ArrowRight, Users, ShieldAlert, Globe, MapPin, Compass, BookOpen, Heart, RotateCcw, ZoomIn, ZoomOut, Play, Pause, Eye, Sparkles, Sun, Moon, Maximize2 } from 'lucide-react';
 
 // Crisp, colorful country flag component using CDN
 const FlagIcon = ({ code, className = "w-6 h-4" }) => {
@@ -20,7 +21,7 @@ const FlagIcon = ({ code, className = "w-6 h-4" }) => {
   );
 };
 
-// 3D Tilt Card Component with Luxury Royal Navy & White Aesthetic
+// 3D Tilt Card Component
 const TiltCard = ({ children, bgImage }) => {
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
   const handleMouseMove = (e) => {
@@ -58,287 +59,597 @@ const TiltCard = ({ children, bgImage }) => {
   );
 };
 
-// 100% Reliable Native 3D Interactive Campus Explorer Component (Royal Navy Theme)
-const Campus3DExplorer = ({ lang = 'EN' }) => {
-  const [rotateX, setRotateX] = useState(55);
-  const [rotateZ, setRotateZ] = useState(35);
-  const [zoom, setZoom] = useState(1);
-  const [isDragging, setIsDragging] = useState(false);
-  const [autoRotate, setAutoRotate] = useState(true);
+// =========================================================================
+// Real 3D WebGL Three.js Campus Digital Twin Explorer Component
+// =========================================================================
+const ThreeCampusExplorer = ({ lang = 'EN' }) => {
+  const containerRef = useRef(null);
   const [selectedBuilding, setSelectedBuilding] = useState(null);
-  const [activeTheme, setActiveTheme] = useState('day');
-  const dragStartPos = useRef({ x: 0, y: 0 });
+  const [isNight, setIsNight] = useState(false);
+  const [autoRotate, setAutoRotate] = useState(true);
+  const [hoveredBuilding, setHoveredBuilding] = useState(null);
 
-  const buildingsData = {
-    EN: [
-      { id: 'main', name: 'Discovery Academic Hall', type: 'Academic', x: 220, y: 180, height: 110, color: '#f59e0b', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: 'Central academic hub of SSS featuring modern lecture halls, collaborative student study zones, and administrative leadership offices.' },
-      { id: 'stem', name: 'STEM & Robotics Center', type: 'Technology', x: 380, y: 140, height: 95, color: '#38bdf8', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: 'Cutting-edge biotech laboratories, makerspaces, 3D printing suites, and AI robotics testing arenas.' },
-      { id: 'arts', name: 'Performing Arts & Theater', type: 'Arts', x: 120, y: 320, height: 100, color: '#f43f5e', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: 'State-of-the-art 650-seat auditorium, acoustics orchestra hall, black box drama theater, and fine arts sculpture studios.' },
-      { id: 'sports', name: 'Athletic Arena & Complex', type: 'Athletics', x: 400, y: 340, height: 80, color: '#6366f1', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: 'Olympic-length aquatic center, indoor basketball gymnasiums, strength & conditioning pavilion, and synthetic turf stadium.' },
-      { id: 'library', name: 'Learning Resource Library', type: 'Library', x: 260, y: 300, height: 85, color: '#a855f7', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: 'Over 50,000 volumes, silent study sanctuaries, multimedia creation suites, and worldwide research archive databases.' },
-      { id: 'nature', name: '75-Acre Forest Sanctuary', type: 'Outdoors', x: 100, y: 100, height: 40, color: '#10b981', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: 'Pristine Pacific Northwest evergreen trails, outdoor learning amphitheaters, organic gardens, and ecological ponds.' }
-    ],
-    TH: [
-      { id: 'main', name: 'อาคารวิชาการหลัก Discovery Hall', type: 'วิชาการ', x: 220, y: 180, height: 110, color: '#f59e0b', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: 'ศูนย์กลางวิชาการของ SSS ประกอบด้วยห้องบรรยายทันสมัย พื้นที่ทำงานร่วมกันของนักเรียน และสำนักงานบริหารโรงเรียน' },
-      { id: 'stem', name: 'ศูนย์นวัตกรรม STEM และหุ่นยนต์', type: 'เทคโนโลยี', x: 380, y: 140, height: 95, color: '#38bdf8', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: 'ห้องปฏิบัติการวิทยาศาสตร์ขั้นสูง ศูนย์วิจัยหุ่นยนต์ AI เครื่องพิมพ์ 3 มิติ และห้องทดลองชีววิทยาศาสตร์' },
-      { id: 'arts', name: 'ศูนย์ศิลปะการแสดงและโรงละคร', type: 'ศิลปะ', x: 120, y: 320, height: 100, color: '#f43f5e', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: 'หอประชุมและโรงละคร 650 ที่นั่ง ห้องซ้อมดนตรีออร์เคสตรามาตรฐานระดับโลก และสตูดิโอประติมากรรม' },
-      { id: 'sports', name: 'ศูนย์กีฬาและสระว่ายน้ำโอลิมปิก', type: 'กีฬา', x: 400, y: 340, height: 80, color: '#6366f1', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: 'สระว่ายน้ำมาตรฐานโอลิมปิก สนามบาสเกตบอลในร่ม สนามฟุตบอลหญ้าเทียม และศูนย์ฟิตเนสครบวงจร' },
-      { id: 'library', name: 'หอสมุดและศูนย์วิทยบริการ', type: 'ห้องสมุด', x: 260, y: 300, height: 85, color: '#a855f7', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: 'หนังสือและสื่อค้นคว้ากว่า 50,000 รายการ พื้นที่อ่านหนังสือเงียบสงบ และระบบฐานข้อมูลวิจัยดิจิทัลระดับสากล' },
-      { id: 'nature', name: 'พื้นที่ป่าธรรมชาติ 75 เอเคอร์ (190 ไร่)', type: 'ธรรมชาติ', x: 100, y: 100, height: 40, color: '#10b981', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: 'เส้นทางเดินสำรวจธรรมชาติอันอุดมสมบูรณ์ ลานเรียนรู้กลางแจ้ง สวนเกษตรอินทรีย์ และสระน้ำเชิงนิเวศ' }
-    ],
-    CN: [
-      { id: 'main', name: 'SSS探索主教学楼 Discovery Hall', type: '学术', x: 220, y: 180, height: 110, color: '#f59e0b', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: 'SSS核心教学主楼，配备现代化多功能阶梯教室、学生协同研讨区及学校行政办公中心。' },
-      { id: 'stem', name: 'STEM人工智能与科研中心', type: '科技', x: 380, y: 140, height: 95, color: '#38bdf8', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: '配备前沿生物科学实验室、创客工坊、3D打印研发套件及AI机器人竞技训练场。' },
-      { id: 'arts', name: '大剧院与表演艺术中心', type: '艺术', x: 120, y: 320, height: 100, color: '#f43f5e', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: '拥有650座的专业声学剧场、交响乐排练大厅、黑匣子实验剧场及雕塑艺术工作室。' },
-      { id: 'sports', name: '综合体育中心与游泳馆', type: '体育', x: 400, y: 340, height: 80, color: '#6366f1', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: '国际奥林匹克标准恒温泳池、室内篮球馆、专业健身房及全天候人工草坪运动场。' },
-      { id: 'library', name: '学术图书馆与信息资源中心', type: '图书馆', x: 260, y: 300, height: 85, color: '#a855f7', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: '馆藏50,000余册实体学术典籍，设静谧自习专区、多媒体交互研讨室及全球数字文献库。' },
-      { id: 'nature', name: '75英亩自然生态探究林区', type: '户外生态', x: 100, y: 100, height: 40, color: '#10b981', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: '纯净的常青树森林步道、户外圆形阶梯剧场、有机植物研习园及生态湿地探索区。' }
-    ],
-    JP: [
-      { id: 'main', name: 'SSSディスカバリー本校舎', type: '学術', x: 220, y: 180, height: 110, color: '#f59e0b', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: '最新の講義室、生徒の協働学習ラウンジ、学校本部が集約されたSSSキャンパスの中心校舎。' },
-      { id: 'stem', name: 'STEM＆ロボティクス先端棟', type: 'テクノロジー', x: 380, y: 140, height: 95, color: '#38bdf8', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: '最先端のバイオ実験室、メイカースペース、3Dプリンティング設備、AIロボット実証フィールド。' },
-      { id: 'arts', name: 'パフォーミングアーツ大劇場', type: '芸術', x: 120, y: 320, height: 100, color: '#f43f5e', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: '音響設計に優れた650席の大講堂、オーケストラホール、ブラックボックステアター、造形アトリエ。' },
-      { id: 'sports', name: '総合アリーナ＆オリンピックプール', type: 'スポーツ', x: 400, y: 340, height: 80, color: '#6366f1', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: 'オリンピック規格の温水プール、屋内バスケットボールコート、トレーニング施設、全天候型スタジアム。' },
-      { id: 'library', name: '学術図書館・メディアセンター', type: '図書館', x: 260, y: 300, height: 85, color: '#a855f7', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: '5万冊以上の蔵書を誇り、静寂な個別自習ブース、マルチメディア編集室、デジタル論文DBを完備。' },
-      { id: 'nature', name: '75エーカー自然保護林・野外教室', type: '大自然', x: 100, y: 100, height: 40, color: '#10b981', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: '広大な常緑樹の森林トレイル、オープンエアの野外円形教室、有機ガーデン、自然観察池。' }
-    ]
+  const buildingsInfo = {
+    EN: {
+      main: { name: 'Discovery Academic Hall & Clock Tower', type: 'Main Campus', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: 'Central collegiate neoclassical hall with lecture amphitheatres, administrative offices, and our iconic clock tower.' },
+      stem: { name: 'STEM Innovation & Robotics Complex', type: 'Sciences & Tech', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: 'Futuristic research laboratories, astronomical observatory dome, AI robotics testing arenas, and biotech cleanrooms.' },
+      theater: { name: 'Grand Performing Arts Center', type: 'Arts & Music', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: '650-seat acoustically tuned concert hall, orchestra studios, black box drama theater, and digital recording suites.' },
+      stadium: { name: 'Olympic Athletics Stadium & Arena', type: 'Athletics', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: 'Full FIFA-grade turf football pitch, 8-lane running track, aquatic center, indoor basketball courts, and spectator grandstands.' },
+      library: { name: 'Grand Rotunda Library & Archive', type: 'Learning Center', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: 'Circular glass atrium library holding 50,000+ volumes, individual study pods, digital archives, and panoramic forest views.' },
+      lake: { name: '75-Acre Forest Trails & Eco Lake', type: 'Nature Reserve', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: 'Pristine Pacific Northwest evergreen trails, outdoor learning amphitheaters, organic gardens, and natural water reserve.' }
+    },
+    TH: {
+      main: { name: 'อาคารวิชาการหลัก Discovery Hall และหอนาฬิกา', type: 'ศูนย์กลางวิชาการ', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: 'อาคารสถาปัตยกรรมคลาสสิกอันเป็นสัญลักษณ์ของ SSS ประกอบด้วยห้องบรรยายขนาดใหญ่ สำนักงานอำนวยการ และหอนาฬิกาประจำโรงเรียน' },
+      stem: { name: 'ศูนย์นวัตกรรม STEM และดาราศาสตร์', type: 'วิทยาศาสตร์และเทคโนโลยี', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: 'อาคารกระจกนวัตกรรมล้ำสมัย พร้อมหอดูดาว ห้องปฏิบัติการหุ่นยนต์ AI ห้องวิจัยชีววิทยาศาสตร์ และเครื่องพิมพ์ 3 มิติ' },
+      theater: { name: 'ศูนย์ศิลปะการแสดงและโรงละครใหญ่', type: 'ศิลปะและดนตรี', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: 'หอประชุมใหญ่ 650 ที่นั่ง พร้อมระบบเสียงมาตรฐานระดับสากล ห้องซ้อมดนตรีออร์เคสตรา และโรงละครแบล็กบ็อกซ์' },
+      stadium: { name: 'สนามกีฬาโอลิมปิกและสระว่ายน้ำ', type: 'กีฬาและพลศึกษา', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: 'สนามฟุตบอลหญ้าเทียมมาตรฐานสากล ลู่วิ่งกรีฑา 8 ช่อง อัฒจันทร์เชียร์ สระว่ายน้ำโอลิมปิก และศูนย์ฟิตเนส' },
+      library: { name: 'หอสมุดทรงกลมและศูนย์วิทยบริการ', type: 'ศูนย์การเรียนรู้', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: 'หอสมุดโดมกระจกโปร่งแสง หนังสือวิชาการกว่า 50,000 เล่ม พื้นที่ค้นคว้าเงียบสงบ และระบบสืบค้นข้อมูลทั่วโลก' },
+      lake: { name: 'เส้นทางธรรมชาติและทะเลสาบเชิงนิเวศ 190 ไร่', type: 'ธรรมชาติและสิ่งแวดล้อม', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: 'พื้นที่ป่าธรรมชาติ 75 เอเคอร์ เส้นทางเดินศึกษาธรรมชาติ ลานเรียนรู้กลางแจ้ง สวนพฤกษศาสตร์ และทะเลสาบธรรมชาติ' }
+    },
+    CN: {
+      main: { name: 'SSS主教学楼与钟楼 Discovery Hall', type: '学术中心', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: 'SSS核心古典现代综合主楼，内设大型阶梯讲堂、行政中枢及标志性钟楼。' },
+      stem: { name: 'STEM前沿科技与天文科研中心', type: '科技创新', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: '配备专业天文台圆顶、AI机器人竞赛场地、基因生物实验室及3D研发智造工坊。' },
+      theater: { name: '表演艺术大剧院与交响乐大厅', type: '艺术文化', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: '650座高规格专业声学剧场、交响乐排练室、戏剧黑匣子剧场及数字录音棚。' },
+      stadium: { name: '奥林匹克综合运动场馆与游泳中心', type: '体育竞技', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: '标准天然足球草坪、8道专业田径跑道、室内恒温泳池、篮球馆及千人观礼看台。' },
+      library: { name: '穹顶全景学术图书馆', type: '信息资源', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: '环形采光玻璃穹顶建筑，藏书逾50,000册，设个人研习舱与全球期刊数据库。' },
+      lake: { name: '75英亩自然生态保护林与湖泊', type: '户外生态', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: '纯净的常青树森林步道、户外圆形剧场、有机农艺研学基地与生态湖区。' }
+    },
+    JP: {
+      main: { name: 'SSS本校舎＆シンボル時計塔', type: '学術本部', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: '伝統と先進が調和するSSSのシンボル校舎。大講堂、学校本部、象徴的な時計塔を備えます。' },
+      stem: { name: 'STEMイノベーション＆天文観測棟', type: '先端科学', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: '天体観測ドーム、AIロボティクス研究室、バイオ実験室、次世代3Dラボを完備。' },
+      theater: { name: 'パフォーミングアーツ大劇場', type: '芸術文化', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: '優れた音響を誇る650席の大劇場、オーケストラスタジオ、ブラックボックステアター。' },
+      stadium: { name: 'オリンピックスタジアム＆総合アリーナ', type: 'スポーツ施設', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: '公式人工芝サッカー場、8レーントラック、温水プール、アリーナ、観客スタンド。' },
+      library: { name: 'ガラスドーム学術図書館', type: 'メディアセンター', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: '5万冊の蔵書と個別自習ブース、広大な森林を見渡すパノラマ閲覧席を備えた円形図書館。' },
+      lake: { name: '75エーカー自然の森とエコレイク', type: '野外自然環境', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: '緑豊かな常緑樹の森、野外円形教室、オーガニックガーデン、生物多様性を育む湖。' }
+    }
   };
 
-  const buildings = buildingsData[lang] || buildingsData.EN;
+  const currentInfo = buildingsInfo[lang] || buildingsInfo.EN;
 
-  // Auto rotation loop
   useEffect(() => {
-    if (autoRotate && !isDragging) {
-      const interval = setInterval(() => {
-        setRotateZ(prev => (prev + 0.3) % 360);
-      }, 30);
-      return () => clearInterval(interval);
+    if (!containerRef.current) return;
+    const container = containerRef.current;
+    const width = container.clientWidth;
+    const height = container.clientHeight || 620;
+
+    // 1. Scene Setup
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(isNight ? 0x050c18 : 0x0a192f);
+    scene.fog = new THREE.FogExp2(isNight ? 0x050c18 : 0x0a192f, 0.008);
+
+    // 2. Camera Setup
+    const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
+    camera.position.set(90, 80, 110);
+    camera.lookAt(0, 0, 0);
+
+    // 3. Renderer Setup
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    container.innerHTML = '';
+    container.appendChild(renderer.domElement);
+
+    // 4. Lighting
+    const ambientLight = new THREE.AmbientLight(isNight ? 0x223355 : 0xffffff, isNight ? 1.2 : 1.8);
+    scene.add(ambientLight);
+
+    const sunLight = new THREE.DirectionalLight(isNight ? 0x60a5fa : 0xfff7ed, isNight ? 1.5 : 2.8);
+    sunLight.position.set(80, 120, 60);
+    sunLight.castShadow = true;
+    sunLight.shadow.mapSize.width = 2048;
+    sunLight.shadow.mapSize.height = 2048;
+    sunLight.shadow.camera.near = 10;
+    sunLight.shadow.camera.far = 300;
+    sunLight.shadow.camera.left = -90;
+    sunLight.shadow.camera.right = 90;
+    sunLight.shadow.camera.top = 90;
+    sunLight.shadow.camera.bottom = -90;
+    scene.add(sunLight);
+
+    // Subtle blue rim light
+    const rimLight = new THREE.DirectionalLight(0x38bdf8, 1.2);
+    rimLight.position.set(-60, 40, -60);
+    scene.add(rimLight);
+
+    // Interactive Objects array for raycasting
+    const interactiveObjects = [];
+
+    // Helper Materials
+    const wallMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.3, metalness: 0.1 });
+    const navyMat = new THREE.MeshStandardMaterial({ color: 0x0f284e, roughness: 0.4, metalness: 0.3 });
+    const glassMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.1, metalness: 0.9, transparent: true, opacity: 0.85 });
+    const goldMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.2, metalness: 0.8 });
+    const roofSlateMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.5 });
+    const grassMat = new THREE.MeshStandardMaterial({ color: isNight ? 0x0f291e : 0x15803d, roughness: 0.8 });
+    const roadMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.9 });
+    const trackMat = new THREE.MeshStandardMaterial({ color: 0xb91c1c, roughness: 0.7 });
+    const waterMat = new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.1, metalness: 0.8, transparent: true, opacity: 0.85 });
+
+    // -------------------------------------------------------------
+    // Terrain Island Base (75-Acre Campus)
+    // -------------------------------------------------------------
+    const groundGeo = new THREE.BoxGeometry(160, 4, 140);
+    const ground = new THREE.Mesh(groundGeo, grassMat);
+    ground.position.y = -2;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    // Campus Ring Road & Walkways
+    const roadGeo = new THREE.RingGeometry(45, 52, 40);
+    const road = new THREE.Mesh(roadGeo, roadMat);
+    road.rotation.x = -Math.PI / 2;
+    road.position.set(0, 0.05, 0);
+    road.receiveShadow = true;
+    scene.add(road);
+
+    // Cross Paths
+    const path1 = new THREE.Mesh(new THREE.PlaneGeometry(6, 90), roadMat);
+    path1.rotation.x = -Math.PI / 2;
+    path1.position.set(0, 0.06, 0);
+    scene.add(path1);
+
+    const path2 = new THREE.Mesh(new THREE.PlaneGeometry(90, 6), roadMat);
+    path2.rotation.x = -Math.PI / 2;
+    path2.position.set(0, 0.06, 0);
+    scene.add(path2);
+
+    // -------------------------------------------------------------
+    // 1. SSS Discovery Main Academic Hall & Clock Tower (Central Quad)
+    // -------------------------------------------------------------
+    const mainGroup = new THREE.Group();
+    mainGroup.position.set(-15, 0, -10);
+    mainGroup.userData = { id: 'main' };
+
+    // Base building
+    const mainBase = new THREE.Mesh(new THREE.BoxGeometry(26, 14, 18), wallMat);
+    mainBase.position.y = 7;
+    mainBase.castShadow = true;
+    mainBase.receiveShadow = true;
+    mainGroup.add(mainBase);
+
+    // Grand Entrance Columns (Portico)
+    for (let i = -8; i <= 8; i += 4) {
+      const col = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.6, 12, 12), goldMat);
+      col.position.set(i, 6, 9.5);
+      col.castShadow = true;
+      mainGroup.add(col);
     }
-  }, [autoRotate, isDragging]);
+    const pediment = new THREE.Mesh(new THREE.ConeGeometry(10, 4, 4), navyMat);
+    pediment.rotation.y = Math.PI / 4;
+    pediment.position.set(0, 14, 9.5);
+    mainGroup.add(pediment);
 
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    setAutoRotate(false);
-    dragStartPos.current = { x: e.clientX, y: e.clientY };
-  };
+    // Pitched Roof
+    const mainRoof = new THREE.Mesh(new THREE.ConeGeometry(19, 7, 4), roofSlateMat);
+    mainRoof.rotation.y = Math.PI / 4;
+    mainRoof.position.y = 17.5;
+    mainRoof.castShadow = true;
+    mainGroup.add(mainRoof);
 
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    const deltaX = e.clientX - dragStartPos.current.x;
-    const deltaY = e.clientY - dragStartPos.current.y;
-    setRotateZ(prev => prev + deltaX * 0.4);
-    setRotateX(prev => Math.min(80, Math.max(20, prev - deltaY * 0.3)));
-    dragStartPos.current = { x: e.clientX, y: e.clientY };
-  };
+    // Clock Tower
+    const tower = new THREE.Mesh(new THREE.BoxGeometry(6, 16, 6), wallMat);
+    tower.position.set(0, 22, 0);
+    tower.castShadow = true;
+    mainGroup.add(tower);
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
+    const towerCap = new THREE.Mesh(new THREE.ConeGeometry(4.5, 8, 4), goldMat);
+    towerCap.rotation.y = Math.PI / 4;
+    towerCap.position.set(0, 34, 0);
+    towerCap.castShadow = true;
+    mainGroup.add(towerCap);
 
-  const handleWheel = (e) => {
-    e.preventDefault();
-    if (e.deltaY < 0) {
-      setZoom(prev => Math.min(1.6, prev + 0.08));
-    } else {
-      setZoom(prev => Math.max(0.6, prev - 0.08));
+    // Waving SSS Flag on top
+    const flagpole = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 6), goldMat);
+    flagpole.position.set(0, 39, 0);
+    mainGroup.add(flagpole);
+
+    const flag = new THREE.Mesh(new THREE.PlaneGeometry(3, 1.8), new THREE.MeshBasicMaterial({ color: 0xf59e0b, side: THREE.DoubleSide }));
+    flag.position.set(1.5, 40.5, 0);
+    mainGroup.add(flag);
+
+    scene.add(mainGroup);
+    interactiveObjects.push(mainBase);
+
+    // -------------------------------------------------------------
+    // 2. STEM & Biotech Innovation Complex (High-Tech Glass & Dome)
+    // -------------------------------------------------------------
+    const stemGroup = new THREE.Group();
+    stemGroup.position.set(38, 0, -25);
+    stemGroup.userData = { id: 'stem' };
+
+    const stemBase = new THREE.Mesh(new THREE.CylinderGeometry(12, 14, 12, 16), glassMat);
+    stemBase.position.y = 6;
+    stemBase.castShadow = true;
+    stemGroup.add(stemBase);
+
+    const stemRoof = new THREE.Mesh(new THREE.CylinderGeometry(14, 14, 1.5, 16), navyMat);
+    stemRoof.position.y = 12.5;
+    stemGroup.add(stemRoof);
+
+    // Astronomical Observatory Dome
+    const dome = new THREE.Mesh(new THREE.SphereGeometry(6, 16, 12, 0, Math.PI * 2, 0, Math.PI / 2), goldMat);
+    dome.position.set(0, 13, 0);
+    dome.castShadow = true;
+    stemGroup.add(dome);
+
+    // Solar panels wing
+    const solarWing = new THREE.Mesh(new THREE.BoxGeometry(16, 2, 8), navyMat);
+    solarWing.position.set(-10, 6, 8);
+    solarWing.rotation.y = 0.4;
+    stemGroup.add(solarWing);
+
+    scene.add(stemGroup);
+    interactiveObjects.push(stemBase);
+
+    // -------------------------------------------------------------
+    // 3. Grand Performing Arts Center (Sculptural Curved Theater)
+    // -------------------------------------------------------------
+    const theaterGroup = new THREE.Group();
+    theaterGroup.position.set(-45, 0, 25);
+    theaterGroup.userData = { id: 'theater' };
+
+    const theaterBody = new THREE.Mesh(new THREE.CylinderGeometry(15, 17, 10, 8, 1, false, 0, Math.PI * 1.3), navyMat);
+    theaterBody.position.y = 5;
+    theaterBody.castShadow = true;
+    theaterGroup.add(theaterBody);
+
+    const theaterGlass = new THREE.Mesh(new THREE.CylinderGeometry(14.8, 16.8, 9.8, 8, 1, false, Math.PI * 1.3, Math.PI * 0.7), glassMat);
+    theaterGlass.position.y = 5;
+    theaterGroup.add(theaterGlass);
+
+    const theaterFly = new THREE.Mesh(new THREE.BoxGeometry(12, 16, 12), wallMat);
+    theaterFly.position.set(0, 8, -6);
+    theaterFly.castShadow = true;
+    theaterGroup.add(theaterFly);
+
+    scene.add(theaterGroup);
+    interactiveObjects.push(theaterBody);
+
+    // -------------------------------------------------------------
+    // 4. Olympic Athletics Stadium (Turf Pitch, Running Track, Arena)
+    // -------------------------------------------------------------
+    const stadiumGroup = new THREE.Group();
+    stadiumGroup.position.set(40, 0, 32);
+    stadiumGroup.userData = { id: 'stadium' };
+
+    // Red Running Track Oval
+    const track = new THREE.Mesh(new THREE.BoxGeometry(34, 0.4, 24), trackMat);
+    track.position.y = 0.2;
+    stadiumGroup.add(track);
+
+    // Green Football Pitch
+    const pitch = new THREE.Mesh(new THREE.BoxGeometry(26, 0.6, 16), new THREE.MeshStandardMaterial({ color: 0x16a34a }));
+    pitch.position.y = 0.3;
+    stadiumGroup.add(pitch);
+
+    // Stadium Grandstand Seating
+    const grandstand = new THREE.Mesh(new THREE.BoxGeometry(32, 6, 5), navyMat);
+    grandstand.position.set(0, 3, -12);
+    grandstand.castShadow = true;
+    stadiumGroup.add(grandstand);
+
+    // Stadium Canopy Roof
+    const canopy = new THREE.Mesh(new THREE.BoxGeometry(34, 1, 8), wallMat);
+    canopy.position.set(0, 7.5, -9);
+    canopy.rotation.x = 0.2;
+    canopy.castShadow = true;
+    stadiumGroup.add(canopy);
+
+    // Floodlight Towers
+    for (let fx of [-16, 16]) {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.4, 18), goldMat);
+      pole.position.set(fx, 9, 11);
+      stadiumGroup.add(pole);
+      const lightHead = new THREE.Mesh(new THREE.BoxGeometry(3, 1.5, 1), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+      lightHead.position.set(fx, 18, 11);
+      stadiumGroup.add(lightHead);
     }
-  };
 
-  const resetView = () => {
-    setRotateX(55);
-    setRotateZ(35);
-    setZoom(1);
-    setAutoRotate(true);
-    setSelectedBuilding(null);
-  };
+    scene.add(stadiumGroup);
+    interactiveObjects.push(pitch);
+
+    // -------------------------------------------------------------
+    // 5. Grand Rotunda Library & Archive
+    // -------------------------------------------------------------
+    const libGroup = new THREE.Group();
+    libGroup.position.set(-18, 0, 38);
+    libGroup.userData = { id: 'library' };
+
+    const libRotunda = new THREE.Mesh(new THREE.CylinderGeometry(9, 9, 10, 20), wallMat);
+    libRotunda.position.y = 5;
+    libRotunda.castShadow = true;
+    libGroup.add(libRotunda);
+
+    const libGlassBand = new THREE.Mesh(new THREE.CylinderGeometry(9.2, 9.2, 3, 20), glassMat);
+    libGlassBand.position.y = 6;
+    libGroup.add(libGlassBand);
+
+    const libDome = new THREE.Mesh(new THREE.SphereGeometry(8.5, 16, 12, 0, Math.PI * 2, 0, Math.PI / 2), goldMat);
+    libDome.position.y = 10;
+    libDome.castShadow = true;
+    libGroup.add(libDome);
+
+    scene.add(libGroup);
+    interactiveObjects.push(libRotunda);
+
+    // -------------------------------------------------------------
+    // 6. Ecological Lake & Pine Forest
+    // -------------------------------------------------------------
+    const lakeGeo = new THREE.CylinderGeometry(14, 16, 0.8, 16);
+    const lake = new THREE.Mesh(lakeGeo, waterMat);
+    lake.position.set(-50, 0.1, -35);
+    lake.userData = { id: 'lake' };
+    scene.add(lake);
+    interactiveObjects.push(lake);
+
+    // Procedural 3D Pine Trees around the campus
+    const treePositions = [
+      [-65, -45], [-55, -55], [-40, -50], [-70, -20], [-60, 5],
+      [-55, 48], [-38, 52], [5, 50], [20, 52], [65, 45],
+      [68, 15], [65, -15], [58, -48], [35, -55], [10, -52],
+      [-30, -18], [-2, -28], [22, -8], [15, 20], [-5, 18]
+    ];
+
+    treePositions.forEach(([tx, tz]) => {
+      const treeGroup = new THREE.Group();
+      treeGroup.position.set(tx, 0, tz);
+
+      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.6, 3), new THREE.MeshStandardMaterial({ color: 0x5c3a21 }));
+      trunk.position.y = 1.5;
+      trunk.castShadow = true;
+      treeGroup.add(trunk);
+
+      const foliageHeights = [5, 7.5, 9.5];
+      const foliageRadii = [2.8, 2.2, 1.4];
+      const treeMat = new THREE.MeshStandardMaterial({ color: isNight ? 0x064e3b : 0x15803d, roughness: 0.7 });
+
+      for (let i = 0; i < 3; i++) {
+        const foliage = new THREE.Mesh(new THREE.ConeGeometry(foliageRadii[i], 3.2, 7), treeMat);
+        foliage.position.y = foliageHeights[i];
+        foliage.castShadow = true;
+        treeGroup.add(foliage);
+      }
+      scene.add(treeGroup);
+    });
+
+    // -------------------------------------------------------------
+    // SSS Campus Bus on the ring road
+    // -------------------------------------------------------------
+    const busGroup = new THREE.Group();
+    const busBody = new THREE.Mesh(new THREE.BoxGeometry(3, 2.2, 6), goldMat);
+    busBody.position.y = 1.3;
+    busBody.castShadow = true;
+    busGroup.add(busBody);
+    const busRoof = new THREE.Mesh(new THREE.BoxGeometry(2.8, 0.4, 5.8), wallMat);
+    busRoof.position.y = 2.5;
+    busGroup.add(busRoof);
+    busGroup.position.set(48, 0, 0);
+    scene.add(busGroup);
+
+    // -------------------------------------------------------------
+    // Mouse Interaction & Orbit Dragging
+    // -------------------------------------------------------------
+    let isMouseDown = false;
+    let prevMousePos = { x: 0, y: 0 };
+    let cameraAngle = 0.8;
+    let cameraElevation = 0.6;
+    let cameraDistance = 140;
+
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    const onMouseDown = (e) => {
+      isMouseDown = true;
+      setAutoRotate(false);
+      prevMousePos = { x: e.clientX, y: e.clientY };
+    };
+
+    const onMouseMove = (e) => {
+      const rect = container.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / height) * 2 + 1;
+
+      // Raycast hover
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(interactiveObjects, true);
+
+      if (intersects.length > 0) {
+        let parent = intersects[0].object;
+        while (parent && !parent.userData?.id && parent.parent) {
+          parent = parent.parent;
+        }
+        if (parent?.userData?.id) {
+          container.style.cursor = 'pointer';
+          setHoveredBuilding(currentInfo[parent.userData.id]);
+        }
+      } else {
+        container.style.cursor = isMouseDown ? 'grabbing' : 'grab';
+        setHoveredBuilding(null);
+      }
+
+      if (!isMouseDown) return;
+      const deltaX = e.clientX - prevMousePos.x;
+      const deltaY = e.clientY - prevMousePos.y;
+
+      cameraAngle -= deltaX * 0.008;
+      cameraElevation = Math.max(0.15, Math.min(1.3, cameraElevation + deltaY * 0.008));
+      prevMousePos = { x: e.clientX, y: e.clientY };
+    };
+
+    const onMouseUp = (e) => {
+      if (Math.abs(e.clientX - prevMousePos.x) < 3 && Math.abs(e.clientY - prevMousePos.y) < 3) {
+        // Click raycast
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(interactiveObjects, true);
+        if (intersects.length > 0) {
+          let parent = intersects[0].object;
+          while (parent && !parent.userData?.id && parent.parent) {
+            parent = parent.parent;
+          }
+          if (parent?.userData?.id) {
+            setSelectedBuilding(currentInfo[parent.userData.id]);
+          }
+        }
+      }
+      isMouseDown = false;
+    };
+
+    const onWheel = (e) => {
+      e.preventDefault();
+      cameraDistance = Math.max(60, Math.min(220, cameraDistance + e.deltaY * 0.1));
+    };
+
+    container.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+    container.addEventListener('wheel', onWheel, { passive: false });
+
+    // -------------------------------------------------------------
+    // Animation Loop
+    // -------------------------------------------------------------
+    let animId;
+    let busAngle = 0;
+
+    const animate = () => {
+      animId = requestAnimationFrame(animate);
+
+      if (autoRotate && !isMouseDown) {
+        cameraAngle += 0.0025;
+      }
+
+      // Smooth camera position
+      camera.position.x = Math.sin(cameraAngle) * Math.cos(cameraElevation) * cameraDistance;
+      camera.position.z = Math.cos(cameraAngle) * Math.cos(cameraElevation) * cameraDistance;
+      camera.position.y = Math.sin(cameraElevation) * cameraDistance;
+      camera.lookAt(0, 8, 0);
+
+      // Animate bus around ring road
+      busAngle += 0.008;
+      busGroup.position.x = Math.cos(busAngle) * 48.5;
+      busGroup.position.z = Math.sin(busAngle) * 48.5;
+      busGroup.rotation.y = -busAngle + Math.PI / 2;
+
+      // Animate flag wave
+      flag.rotation.y = Math.sin(Date.now() * 0.005) * 0.2;
+
+      renderer.render(scene, camera);
+    };
+
+    animate();
+
+    // Resize Handler
+    const handleResize = () => {
+      if (!container) return;
+      const newW = container.clientWidth;
+      const newH = container.clientHeight || 620;
+      camera.aspect = newW / newH;
+      camera.updateProjectionMatrix();
+      renderer.setSize(newW, newH);
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      container.removeEventListener('mousedown', onMouseDown);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+      container.removeEventListener('wheel', onWheel);
+      window.removeEventListener('resize', handleResize);
+      renderer.dispose();
+    };
+  }, [isNight, autoRotate, lang]);
 
   return (
-    <div className="w-full relative select-none rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(15,23,42,0.9)] border border-blue-500/20 bg-gradient-to-b from-[#0a192f] via-[#020c1b] to-[#01060f]">
+    <div className="w-full relative select-none rounded-3xl overflow-hidden shadow-[0_25px_70px_rgba(15,23,42,0.9)] border-2 border-blue-500/30 bg-gradient-to-b from-[#0a192f] via-[#030a16] to-[#01050c]">
       
       {/* Top Floating Control Bar */}
       <div className="absolute top-6 left-6 right-6 z-30 flex flex-wrap justify-between items-center gap-4 pointer-events-none">
-        <div className="flex items-center gap-2 pointer-events-auto bg-slate-900/80 backdrop-blur-md px-4 py-2 rounded-full border border-blue-400/30 text-xs font-bold text-white shadow-xl">
-          <Sparkles size={14} className="text-[#f59e0b]" />
-          <span className="tracking-wider">SSS 3D LIVE DIGITAL TWIN</span>
-          <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse ml-1"></span>
+        <div className="flex items-center gap-2.5 pointer-events-auto bg-slate-950/85 backdrop-blur-md px-5 py-2.5 rounded-full border border-blue-400/40 text-xs font-black text-white shadow-2xl">
+          <Sparkles size={16} className="text-[#f59e0b] animate-pulse" />
+          <span className="tracking-widest">SSS REAL-TIME 3D DIGITAL TWIN</span>
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping ml-1"></span>
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-2 pointer-events-auto bg-slate-900/80 backdrop-blur-md p-1.5 rounded-full border border-blue-400/30 shadow-xl">
+        <div className="flex items-center gap-2 pointer-events-auto bg-slate-950/85 backdrop-blur-md p-2 rounded-full border border-blue-400/40 shadow-2xl">
           <button 
             onClick={() => setAutoRotate(!autoRotate)} 
-            className={`p-2 rounded-full transition-all text-xs font-bold flex items-center gap-1.5 ${autoRotate ? 'bg-blue-600 text-white shadow-md' : 'bg-white/10 text-white hover:bg-white/20'}`}
-            title="Auto Rotate"
+            className={`p-2 rounded-full transition-all text-xs font-bold flex items-center gap-1.5 ${autoRotate ? 'bg-blue-600 text-white shadow-lg' : 'bg-white/10 text-slate-300 hover:bg-white/20'}`}
+            title="Toggle Orbit"
           >
             {autoRotate ? <Pause size={14} /> : <Play size={14} />}
             <span className="hidden sm:inline">{autoRotate ? 'Auto Orbit' : 'Paused'}</span>
           </button>
           
-          <button onClick={() => setZoom(prev => Math.min(1.6, prev + 0.15))} className="p-2 text-white hover:bg-white/20 rounded-full transition-colors" title="Zoom In">
-            <ZoomIn size={16} />
-          </button>
-          <button onClick={() => setZoom(prev => Math.max(0.6, prev - 0.15))} className="p-2 text-white hover:bg-white/20 rounded-full transition-colors" title="Zoom Out">
-            <ZoomOut size={16} />
-          </button>
-          <button onClick={resetView} className="p-2 text-white hover:bg-white/20 rounded-full transition-colors" title="Reset Camera">
-            <RotateCcw size={16} />
-          </button>
-          <button onClick={() => setActiveTheme(activeTheme === 'day' ? 'night' : 'day')} className="px-3 py-1 text-xs font-bold text-[#f59e0b] hover:bg-white/10 rounded-full transition-colors">
-            {activeTheme === 'day' ? '🌙 Night Glow' : '☀️ Royal Day'}
-          </button>
-        </div>
-      </div>
-
-      {/* 3D Viewport Scene Area */}
-      <div 
-        className="w-full h-[620px] cursor-grab active:cursor-grabbing flex items-center justify-center overflow-hidden relative"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-        onWheel={handleWheel}
-        style={{ perspective: '1200px' }}
-      >
-        {/* Background Grid & Ambient Royal Glow */}
-        <div className={`absolute inset-0 transition-opacity duration-700 pointer-events-none ${activeTheme === 'night' ? 'bg-[radial-gradient(circle_at_center,#1e3a8a_0%,#020617_75%)]' : 'bg-[radial-gradient(circle_at_center,#172554_0%,#020617_85%)]'}`}></div>
-        
-        {/* 3D World Transform Board */}
-        <div 
-          className="relative w-[560px] h-[560px] transition-transform duration-75"
-          style={{
-            transform: `scale(${zoom}) rotateX(${rotateX}deg) rotateZ(${rotateZ}deg)`,
-            transformStyle: 'preserve-3d'
-          }}
-        >
-          {/* Ground Terrain (75-Acre SSS Woodland Grid) */}
-          <div 
-            className={`absolute inset-0 rounded-[3rem] border-4 shadow-[0_0_80px_rgba(30,58,138,0.7)] transition-colors duration-500 ${activeTheme === 'night' ? 'bg-[#06152d] border-blue-400/40' : 'bg-[#0a1e3f] border-blue-400/60'}`}
-            style={{ 
-              transformStyle: 'preserve-3d',
-              backgroundImage: 'radial-gradient(#38bdf8 1.5px, transparent 1.5px), linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)',
-              backgroundSize: '35px 35px, 70px 70px, 70px 70px'
-            }}
+          <button 
+            onClick={() => setIsNight(!isNight)} 
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-full bg-white/10 text-[#f59e0b] hover:bg-white/20 transition-all"
           >
-            {/* Campus Pathways / Trails */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-70">
-              <path d="M 80 80 Q 220 180 380 140 T 400 340 T 260 300 T 120 320 Z" fill="none" stroke="#f59e0b" strokeWidth="4" strokeDasharray="8 6" />
-              <path d="M 220 180 L 260 300 L 380 140" fill="none" stroke="#93c5fd" strokeWidth="3" />
-              <circle cx="280" cy="240" r="45" fill="rgba(59,130,246,0.2)" stroke="#60a5fa" strokeWidth="2" />
-            </svg>
-
-            {/* Central Quad Lawn */}
-            <div className="absolute top-[200px] left-[200px] w-[140px] h-[100px] rounded-2xl bg-blue-500/20 border-2 border-blue-400/50 flex items-center justify-center shadow-inner">
-              <span className="text-[10px] font-black text-blue-200 uppercase tracking-widest pointer-events-none">SSS CENTRAL QUAD</span>
-            </div>
-
-            {/* Decorative Evergreen Trees */}
-            {[
-              {x: 60, y: 70}, {x: 80, y: 130}, {x: 140, y: 60}, {x: 480, y: 90}, {x: 450, y: 220}, 
-              {x: 80, y: 440}, {x: 160, y: 460}, {x: 340, y: 450}, {x: 470, y: 440}, {x: 50, y: 220}
-            ].map((tree, idx) => (
-              <div 
-                key={idx} 
-                className="absolute w-6 h-6 flex items-center justify-center pointer-events-none text-emerald-400 text-lg"
-                style={{ 
-                  left: tree.x, 
-                  top: tree.y,
-                  transform: `translateZ(15px) rotateX(-${rotateX}deg) rotateZ(-${rotateZ}deg)`,
-                  transformStyle: 'preserve-3d'
-                }}
-              >
-                🌲
-              </div>
-            ))}
-
-            {/* 3D Buildings with Clickable Hotspots */}
-            {buildings.map((b) => (
-              <div 
-                key={b.id}
-                onClick={(e) => { e.stopPropagation(); setSelectedBuilding(b); }}
-                className="absolute group cursor-pointer"
-                style={{
-                  left: b.x,
-                  top: b.y,
-                  width: '90px',
-                  height: '70px',
-                  transformStyle: 'preserve-3d'
-                }}
-              >
-                {/* 3D Extruded Building Mesh */}
-                <div 
-                  className={`w-full h-full rounded-xl transition-all duration-300 relative ${selectedBuilding?.id === b.id ? 'ring-4 ring-[#f59e0b] shadow-[0_0_35px_#f59e0b]' : 'group-hover:ring-2 group-hover:ring-white'}`}
-                  style={{
-                    backgroundColor: b.color,
-                    transform: `translateZ(${b.height / 2}px)`,
-                    boxShadow: `0 0 30px ${b.color}90, inset 0 0 15px rgba(255,255,255,0.4)`
-                  }}
-                >
-                  {/* Roof Glow */}
-                  <div className="absolute inset-1 rounded-lg bg-white/25 border border-white/50 flex items-center justify-center">
-                    <span className="text-[10px] font-black text-slate-900 uppercase tracking-tighter truncate px-1">{b.type}</span>
-                  </div>
-                </div>
-
-                {/* Floating Interactive 3D Pin & Name Tag */}
-                <div 
-                  className="absolute left-1/2 -top-8 -translate-x-1/2 flex flex-col items-center pointer-events-none"
-                  style={{
-                    transform: `translateZ(${b.height + 25}px) rotateX(-${rotateX}deg) rotateZ(-${rotateZ}deg)`,
-                    transformStyle: 'preserve-3d'
-                  }}
-                >
-                  <div className="bg-slate-950/90 text-white font-extrabold text-xs px-3 py-1 rounded-full border border-blue-400/40 shadow-2xl flex items-center gap-1.5 whitespace-nowrap backdrop-blur-md group-hover:scale-110 group-hover:border-[#f59e0b] transition-all">
-                    <div className="w-2.5 h-2.5 rounded-full animate-ping" style={{ backgroundColor: b.color }}></div>
-                    <span>{b.name}</span>
-                  </div>
-                  <div className="w-1 h-3 bg-white/70"></div>
-                </div>
-              </div>
-            ))}
-
-          </div>
+            {isNight ? <Sun size={14} /> : <Moon size={14} />}
+            <span className="hidden sm:inline">{isNight ? 'Day Mode' : 'Night Mode'}</span>
+          </button>
         </div>
       </div>
+
+      {/* Three.js WebGL Canvas Mount Container */}
+      <div 
+        ref={containerRef} 
+        className="w-full h-[640px] cursor-grab active:cursor-grabbing relative overflow-hidden"
+      ></div>
+
+      {/* Hovered Building Tooltip Tag */}
+      {hoveredBuilding && !selectedBuilding && (
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 z-30 pointer-events-none bg-slate-950/90 text-white px-5 py-2 rounded-full border border-[#f59e0b] shadow-2xl backdrop-blur-md animate-fade-in flex items-center gap-2">
+          <div className="w-2.5 h-2.5 rounded-full bg-[#f59e0b] animate-ping"></div>
+          <span className="font-extrabold text-xs uppercase tracking-wider">{hoveredBuilding.name}</span>
+          <span className="text-[10px] text-blue-300">({hoveredBuilding.type})</span>
+        </div>
+      )}
 
       {/* Floating Selected Building Detail Card */}
       {selectedBuilding && (
-        <div className="absolute bottom-6 left-6 right-6 md:left-auto md:right-6 md:w-[380px] z-40 bg-slate-950/95 backdrop-blur-xl p-6 rounded-3xl border-2 border-[#f59e0b] shadow-[0_15px_50px_rgba(0,0,0,0.9)] animate-fade-in text-white">
+        <div className="absolute bottom-6 left-6 right-6 md:left-auto md:right-6 md:w-[400px] z-40 bg-slate-950/95 backdrop-blur-2xl p-6 rounded-3xl border-2 border-[#f59e0b] shadow-[0_20px_60px_rgba(0,0,0,0.95)] animate-fade-in text-white">
           <div className="flex justify-between items-start mb-3">
             <div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#f59e0b] bg-amber-400/20 px-2 py-0.5 rounded border border-[#f59e0b]/40">
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#f59e0b] bg-amber-400/20 px-2.5 py-0.5 rounded-md border border-[#f59e0b]/40 inline-block">
                 {selectedBuilding.type}
               </span>
               <h4 className="text-xl font-black mt-1 text-white">{selectedBuilding.name}</h4>
             </div>
-            <button onClick={() => setSelectedBuilding(null)} className="p-1 hover:bg-white/20 rounded-full transition-colors text-gray-400 hover:text-white">
+            <button onClick={() => setSelectedBuilding(null)} className="p-1.5 hover:bg-white/20 rounded-full transition-colors text-slate-400 hover:text-white">
               <X size={18} />
             </button>
           </div>
           
-          <img src={selectedBuilding.img} alt={selectedBuilding.name} className="w-full h-36 object-cover rounded-2xl mb-3 shadow-md border border-white/10" />
+          <img src={selectedBuilding.img} alt={selectedBuilding.name} className="w-full h-40 object-cover rounded-2xl mb-4 shadow-xl border border-white/10" />
           
-          <p className="text-xs text-slate-300 leading-relaxed mb-4 font-normal">
+          <p className="text-xs text-slate-200 leading-relaxed mb-5 font-normal">
             {selectedBuilding.desc}
           </p>
 
           <div className="flex gap-2">
-            <button onClick={() => setSelectedBuilding(null)} className="flex-1 bg-blue-900 hover:bg-blue-800 py-2.5 rounded-xl text-xs font-bold text-white transition-colors border border-blue-400/40 flex items-center justify-center gap-1.5 shadow-md">
-              <Eye size={14} /> Explore Campus Facilities
+            <button onClick={() => setSelectedBuilding(null)} className="flex-1 bg-gradient-to-r from-blue-900 to-[#0c1b33] hover:brightness-110 py-3 rounded-xl text-xs font-black text-white transition-all border border-blue-400/40 flex items-center justify-center gap-2 shadow-lg">
+              <Eye size={14} className="text-[#f59e0b]" /> Explore Facilities & Booking
             </button>
           </div>
         </div>
       )}
 
-      {/* Bottom Help Tip */}
-      <div className="absolute bottom-4 left-6 z-20 pointer-events-none hidden md:flex items-center gap-2 text-xs font-bold text-slate-300 bg-slate-900/70 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-white/10">
-        <Compass size={14} className="text-[#f59e0b]" />
-        <span>Drag to rotate 3D view • Scroll wheel to zoom • Click any building for details</span>
+      {/* Bottom Interactive Help Bar */}
+      <div className="absolute bottom-4 left-6 z-20 pointer-events-none hidden md:flex items-center gap-3 text-xs font-bold text-slate-300 bg-slate-950/80 backdrop-blur-md px-4 py-2 rounded-full border border-blue-400/30">
+        <Compass size={16} className="text-[#f59e0b]" />
+        <span>Left-click + Drag to Orbit • Scroll Wheel to Zoom • Click any 3D building to inspect</span>
       </div>
 
     </div>
   );
 };
 
+// =========================================================================
+// Main Landing Page Component
+// =========================================================================
 const translations = {
   EN: {
     utility: [
@@ -422,8 +733,8 @@ const translations = {
     acresTitle: "75 Acres of Possibility",
     acresDesc: "Our sprawling 75-acre campus feels like stepping into another world. Forest trails entice explorers, meadows host gatherings, and every corner invites a moment to pause, reflect, or dream. We've created this special place where nature's calm meets the buzz of learning—giving students room to breathe while keeping them anchored to vibrant energy.",
     tourTitle: "Explore Our 3D Campus",
-    tourDesc: "Take an interactive virtual tour of our state-of-the-art facilities. Click and drag to rotate the 3D model, scroll to zoom in and out, or click on any building for full details.",
-    live3d: "INTERACTIVE 3D",
+    tourDesc: "Take an interactive virtual tour of our state-of-the-art facilities rendered in real-time 3D WebGL. Click and drag to rotate, scroll to zoom, and click any building for detailed information.",
+    live3d: "REAL-TIME 3D WEBGL",
     onlyTitle: "Only at SSS",
     onlySubtitle: "Where dynamic, authentic experiences shape tomorrow’s leaders.",
     cards: [
@@ -539,8 +850,8 @@ const translations = {
     campusTags: "ระดับท้องถิ่น • ระดับภูมิภาค • ระดับโลก",
     acresTitle: "พื้นที่แห่งโอกาสไร้ขีดจำกัด (75 เอเคอร์)",
     acresDesc: "วิทยาเขตอันกว้างขวาง 190 ไร่ของเราให้ความรู้สึกเหมือนก้าวสู่อีกโลกหนึ่ง เส้นทางเดินป่า ลานสนามหญ้า และทุกมุมเชิญชวนให้พักผ่อน สะท้อนคิด หรือฝันถึงอนาคต ผสมผสานความสงบของธรรมชาติเข้ากับพลังการเรียนรู้อย่างลงตัว",
-    tourTitle: "สำรวจโรงเรียนแบบจำลอง 3 มิติ (SSS 3D Campus)",
-    tourDesc: "ทัวร์เสมือนจริงชมสิ่งอำนวยความสะดวกที่ทันสมัย คลิกและลากเพื่อหมุนโมเดล 3D ได้รอบทิศทาง เลื่อนลูกกลิ้งเมาส์เพื่อซูมเข้า-ออก หรือคลิกที่อาคารเพื่อดูรายละเอียด",
+    tourTitle: "สำรวจโรงเรียนโมเดล 3 มิติสมจริง (SSS 3D WebGL Campus)",
+    tourDesc: "ทัวร์เสมือนจริงชมสถาปัตยกรรมอาคารเรียนแบบ 3D WebGL เรนเดอร์แบบเรียลไทม์ คลิกและลากเพื่อหมุนโมเดล 360 องศา เลื่อนลูกกลิ้งเมาส์เพื่อซูม หรือคลิกที่อาคารเพื่อดูรายละเอียด",
     live3d: "โมเดล 3D แบบอินเทอร์แอคทีฟ",
     onlyTitle: "เอกลักษณ์เฉพาะที่ SSS",
     onlySubtitle: "ประสบการณ์จริงที่หล่อหลอมและขับเคลื่อนผู้นำแห่งอนาคต",
@@ -658,8 +969,8 @@ const translations = {
     acresTitle: "75英亩无限可能",
     acresDesc: "广阔的75英亩校园宛如另一个宁静的世界。森林步道吸引探索者，草坪承载欢聚，处处皆是沉思与梦想的理想场所。大自然的宁静与求知的热烈在此完美融合。",
     tourTitle: "探索SSS 3D数字孪生校园",
-    tourDesc: "开启现代化校园虚拟实景之旅。点击并拖拽可360度旋转3D模型，滚动鼠标滚轮可自由缩放查看细节，点击任意建筑即可查看详细介绍。",
-    live3d: "实时3D交互渲染",
+    tourDesc: "开启现代化校园虚拟实景之旅。基于WebGL实时3D渲染，点击并拖拽可360度旋转，滚动缩放，点击任意建筑即可查看详细介绍。",
+    live3d: "实时3D WEBGL",
     onlyTitle: "SSS独具特色",
     onlySubtitle: "在充满活力与真实的体验中塑造未来的行业领袖。",
     cards: [
@@ -776,8 +1087,8 @@ const translations = {
     acresTitle: "75エーカーの無限の可能性",
     acresDesc: "広大な75エーカーのキャンパスは、別世界のような静けさに包まれています。森のトレイル、緑の広場、豊かな自然と最先端の教育が融合し、集中して学べます。",
     tourTitle: "SSS 3Dバーチャルキャンパス体験",
-    tourDesc: "最新の校舎設備をバーチャルツアーで体験。ドラッグ操作で3Dモデルを360度回転させ、マウスホイールで自在にズームイン・アウトできます。",
-    live3d: "リアルタイム3Dビューア",
+    tourDesc: "最新の校舎設備をバーチャルツアーで体験。リアルタイム3D WebGLによるレンダリングで、ドラッグ操作による回転、ズーム、各建物の詳細確認が可能です。",
+    live3d: "リアルタイム3D WebGL",
     onlyTitle: "SSSならではの魅力",
     onlySubtitle: "実践的でダイナミックな体験が未来のリーダーを育みます。",
     cards: [
@@ -1126,7 +1437,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* 100% Reliable Native 3D Interactive Campus Map Explorer Section (Royal Navy Deep Canvas) */}
+      {/* 100% Reliable Native 3D WebGL Three.js Campus Map Explorer Section */}
       <div className="w-full bg-[#050c18] text-white py-32 px-4 md:px-8 relative overflow-hidden border-t-4 border-[#f59e0b] shadow-[0_-20px_50px_rgba(0,0,0,0.9)] z-30">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           <div className="flex items-center gap-3 mb-4">
@@ -1139,8 +1450,8 @@ const LandingPage = () => {
             {t.tourDesc}
           </p>
           
-          {/* Integrated 3D Interactive Component */}
-          <Campus3DExplorer lang={currentLang.code} />
+          {/* Integrated Real 3D WebGL Three.js Component */}
+          <ThreeCampusExplorer lang={currentLang.code} />
         </div>
       </div>
 
