@@ -53,7 +53,7 @@ const SchoolInformationView = () => {
       id: 1,
       title: "Digital E-Library",
       desc: "Access over 10,000 academic journals, e-books, and research papers from anywhere.",
-      link: "https://library.stmarks.ac.th",
+      link: "https://library.overlake.org",
       type: "Portal"
     },
     {
