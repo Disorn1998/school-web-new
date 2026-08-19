@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as THREE from 'three';
-import { Search, Menu, X, ChevronDown, Lock, ArrowRight, Users, ShieldAlert, Globe, MapPin, Compass, BookOpen, Heart, RotateCcw, ZoomIn, ZoomOut, Play, Pause, Eye, Sparkles, Sun, Moon, Maximize2 } from 'lucide-react';
+import { Search, Menu, X, ChevronDown, Lock, ArrowRight, Users, ShieldAlert, Globe, MapPin, Compass, BookOpen, Heart, RotateCcw, ZoomIn, ZoomOut, Play, Pause, Eye, Sparkles, Sun, Moon, ChevronLeft, ChevronRight as ChevronRightIcon, Award, Film, CheckCircle2 } from 'lucide-react';
 
 // Crisp, colorful country flag component using CDN
 const FlagIcon = ({ code, className = "w-6 h-4" }) => {
@@ -140,20 +140,12 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.width = 2048;
     sunLight.shadow.mapSize.height = 2048;
-    sunLight.shadow.camera.near = 10;
-    sunLight.shadow.camera.far = 300;
-    sunLight.shadow.camera.left = -90;
-    sunLight.shadow.camera.right = 90;
-    sunLight.shadow.camera.top = 90;
-    sunLight.shadow.camera.bottom = -90;
     scene.add(sunLight);
 
-    // Subtle blue rim light
     const rimLight = new THREE.DirectionalLight(0x38bdf8, 1.2);
     rimLight.position.set(-60, 40, -60);
     scene.add(rimLight);
 
-    // Interactive Objects array for raycasting
     const interactiveObjects = [];
 
     // Helper Materials
@@ -167,16 +159,14 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
     const trackMat = new THREE.MeshStandardMaterial({ color: 0xb91c1c, roughness: 0.7 });
     const waterMat = new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.1, metalness: 0.8, transparent: true, opacity: 0.85 });
 
-    // -------------------------------------------------------------
-    // Terrain Island Base (75-Acre Campus)
-    // -------------------------------------------------------------
+    // Terrain Island Base
     const groundGeo = new THREE.BoxGeometry(160, 4, 140);
     const ground = new THREE.Mesh(groundGeo, grassMat);
     ground.position.y = -2;
     ground.receiveShadow = true;
     scene.add(ground);
 
-    // Campus Ring Road & Walkways
+    // Campus Ring Road
     const roadGeo = new THREE.RingGeometry(45, 52, 40);
     const road = new THREE.Mesh(roadGeo, roadMat);
     road.rotation.x = -Math.PI / 2;
@@ -184,32 +174,17 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
     road.receiveShadow = true;
     scene.add(road);
 
-    // Cross Paths
-    const path1 = new THREE.Mesh(new THREE.PlaneGeometry(6, 90), roadMat);
-    path1.rotation.x = -Math.PI / 2;
-    path1.position.set(0, 0.06, 0);
-    scene.add(path1);
-
-    const path2 = new THREE.Mesh(new THREE.PlaneGeometry(90, 6), roadMat);
-    path2.rotation.x = -Math.PI / 2;
-    path2.position.set(0, 0.06, 0);
-    scene.add(path2);
-
-    // -------------------------------------------------------------
-    // 1. SSS Discovery Main Academic Hall & Clock Tower (Central Quad)
-    // -------------------------------------------------------------
+    // 1. SSS Discovery Main Academic Hall & Clock Tower
     const mainGroup = new THREE.Group();
     mainGroup.position.set(-15, 0, -10);
     mainGroup.userData = { id: 'main' };
 
-    // Base building
     const mainBase = new THREE.Mesh(new THREE.BoxGeometry(26, 14, 18), wallMat);
     mainBase.position.y = 7;
     mainBase.castShadow = true;
     mainBase.receiveShadow = true;
     mainGroup.add(mainBase);
 
-    // Grand Entrance Columns (Portico)
     for (let i = -8; i <= 8; i += 4) {
       const col = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.6, 12, 12), goldMat);
       col.position.set(i, 6, 9.5);
@@ -221,14 +196,12 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
     pediment.position.set(0, 14, 9.5);
     mainGroup.add(pediment);
 
-    // Pitched Roof
     const mainRoof = new THREE.Mesh(new THREE.ConeGeometry(19, 7, 4), roofSlateMat);
     mainRoof.rotation.y = Math.PI / 4;
     mainRoof.position.y = 17.5;
     mainRoof.castShadow = true;
     mainGroup.add(mainRoof);
 
-    // Clock Tower
     const tower = new THREE.Mesh(new THREE.BoxGeometry(6, 16, 6), wallMat);
     tower.position.set(0, 22, 0);
     tower.castShadow = true;
@@ -240,7 +213,6 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
     towerCap.castShadow = true;
     mainGroup.add(towerCap);
 
-    // Waving SSS Flag on top
     const flagpole = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 6), goldMat);
     flagpole.position.set(0, 39, 0);
     mainGroup.add(flagpole);
@@ -252,9 +224,7 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
     scene.add(mainGroup);
     interactiveObjects.push(mainBase);
 
-    // -------------------------------------------------------------
-    // 2. STEM & Biotech Innovation Complex (High-Tech Glass & Dome)
-    // -------------------------------------------------------------
+    // 2. STEM & Biotech Innovation Complex
     const stemGroup = new THREE.Group();
     stemGroup.position.set(38, 0, -25);
     stemGroup.userData = { id: 'stem' };
@@ -268,24 +238,15 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
     stemRoof.position.y = 12.5;
     stemGroup.add(stemRoof);
 
-    // Astronomical Observatory Dome
     const dome = new THREE.Mesh(new THREE.SphereGeometry(6, 16, 12, 0, Math.PI * 2, 0, Math.PI / 2), goldMat);
     dome.position.set(0, 13, 0);
     dome.castShadow = true;
     stemGroup.add(dome);
 
-    // Solar panels wing
-    const solarWing = new THREE.Mesh(new THREE.BoxGeometry(16, 2, 8), navyMat);
-    solarWing.position.set(-10, 6, 8);
-    solarWing.rotation.y = 0.4;
-    stemGroup.add(solarWing);
-
     scene.add(stemGroup);
     interactiveObjects.push(stemBase);
 
-    // -------------------------------------------------------------
-    // 3. Grand Performing Arts Center (Sculptural Curved Theater)
-    // -------------------------------------------------------------
+    // 3. Grand Performing Arts Center
     const theaterGroup = new THREE.Group();
     theaterGroup.position.set(-45, 0, 25);
     theaterGroup.userData = { id: 'theater' };
@@ -299,60 +260,31 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
     theaterGlass.position.y = 5;
     theaterGroup.add(theaterGlass);
 
-    const theaterFly = new THREE.Mesh(new THREE.BoxGeometry(12, 16, 12), wallMat);
-    theaterFly.position.set(0, 8, -6);
-    theaterFly.castShadow = true;
-    theaterGroup.add(theaterFly);
-
     scene.add(theaterGroup);
     interactiveObjects.push(theaterBody);
 
-    // -------------------------------------------------------------
-    // 4. Olympic Athletics Stadium (Turf Pitch, Running Track, Arena)
-    // -------------------------------------------------------------
+    // 4. Olympic Athletics Stadium
     const stadiumGroup = new THREE.Group();
     stadiumGroup.position.set(40, 0, 32);
     stadiumGroup.userData = { id: 'stadium' };
 
-    // Red Running Track Oval
     const track = new THREE.Mesh(new THREE.BoxGeometry(34, 0.4, 24), trackMat);
     track.position.y = 0.2;
     stadiumGroup.add(track);
 
-    // Green Football Pitch
     const pitch = new THREE.Mesh(new THREE.BoxGeometry(26, 0.6, 16), new THREE.MeshStandardMaterial({ color: 0x16a34a }));
     pitch.position.y = 0.3;
     stadiumGroup.add(pitch);
 
-    // Stadium Grandstand Seating
     const grandstand = new THREE.Mesh(new THREE.BoxGeometry(32, 6, 5), navyMat);
     grandstand.position.set(0, 3, -12);
     grandstand.castShadow = true;
     stadiumGroup.add(grandstand);
 
-    // Stadium Canopy Roof
-    const canopy = new THREE.Mesh(new THREE.BoxGeometry(34, 1, 8), wallMat);
-    canopy.position.set(0, 7.5, -9);
-    canopy.rotation.x = 0.2;
-    canopy.castShadow = true;
-    stadiumGroup.add(canopy);
-
-    // Floodlight Towers
-    for (let fx of [-16, 16]) {
-      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.4, 18), goldMat);
-      pole.position.set(fx, 9, 11);
-      stadiumGroup.add(pole);
-      const lightHead = new THREE.Mesh(new THREE.BoxGeometry(3, 1.5, 1), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-      lightHead.position.set(fx, 18, 11);
-      stadiumGroup.add(lightHead);
-    }
-
     scene.add(stadiumGroup);
     interactiveObjects.push(pitch);
 
-    // -------------------------------------------------------------
-    // 5. Grand Rotunda Library & Archive
-    // -------------------------------------------------------------
+    // 5. Grand Rotunda Library
     const libGroup = new THREE.Group();
     libGroup.position.set(-18, 0, 38);
     libGroup.userData = { id: 'library' };
@@ -362,10 +294,6 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
     libRotunda.castShadow = true;
     libGroup.add(libRotunda);
 
-    const libGlassBand = new THREE.Mesh(new THREE.CylinderGeometry(9.2, 9.2, 3, 20), glassMat);
-    libGlassBand.position.y = 6;
-    libGroup.add(libGlassBand);
-
     const libDome = new THREE.Mesh(new THREE.SphereGeometry(8.5, 16, 12, 0, Math.PI * 2, 0, Math.PI / 2), goldMat);
     libDome.position.y = 10;
     libDome.castShadow = true;
@@ -374,9 +302,7 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
     scene.add(libGroup);
     interactiveObjects.push(libRotunda);
 
-    // -------------------------------------------------------------
-    // 6. Ecological Lake & Pine Forest
-    // -------------------------------------------------------------
+    // 6. Lake
     const lakeGeo = new THREE.CylinderGeometry(14, 16, 0.8, 16);
     const lake = new THREE.Mesh(lakeGeo, waterMat);
     lake.position.set(-50, 0.1, -35);
@@ -384,53 +310,32 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
     scene.add(lake);
     interactiveObjects.push(lake);
 
-    // Procedural 3D Pine Trees around the campus
+    // Procedural Trees
     const treePositions = [
       [-65, -45], [-55, -55], [-40, -50], [-70, -20], [-60, 5],
       [-55, 48], [-38, 52], [5, 50], [20, 52], [65, 45],
-      [68, 15], [65, -15], [58, -48], [35, -55], [10, -52],
-      [-30, -18], [-2, -28], [22, -8], [15, 20], [-5, 18]
+      [68, 15], [65, -15], [58, -48], [35, -55], [10, -52]
     ];
-
     treePositions.forEach(([tx, tz]) => {
       const treeGroup = new THREE.Group();
       treeGroup.position.set(tx, 0, tz);
-
       const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.6, 3), new THREE.MeshStandardMaterial({ color: 0x5c3a21 }));
       trunk.position.y = 1.5;
-      trunk.castShadow = true;
       treeGroup.add(trunk);
-
-      const foliageHeights = [5, 7.5, 9.5];
-      const foliageRadii = [2.8, 2.2, 1.4];
-      const treeMat = new THREE.MeshStandardMaterial({ color: isNight ? 0x064e3b : 0x15803d, roughness: 0.7 });
-
-      for (let i = 0; i < 3; i++) {
-        const foliage = new THREE.Mesh(new THREE.ConeGeometry(foliageRadii[i], 3.2, 7), treeMat);
-        foliage.position.y = foliageHeights[i];
-        foliage.castShadow = true;
-        treeGroup.add(foliage);
-      }
+      const foliage = new THREE.Mesh(new THREE.ConeGeometry(2.8, 6, 7), new THREE.MeshStandardMaterial({ color: isNight ? 0x064e3b : 0x15803d }));
+      foliage.position.y = 5;
+      treeGroup.add(foliage);
       scene.add(treeGroup);
     });
 
-    // -------------------------------------------------------------
-    // SSS Campus Bus on the ring road
-    // -------------------------------------------------------------
+    // Campus Bus
     const busGroup = new THREE.Group();
     const busBody = new THREE.Mesh(new THREE.BoxGeometry(3, 2.2, 6), goldMat);
     busBody.position.y = 1.3;
-    busBody.castShadow = true;
     busGroup.add(busBody);
-    const busRoof = new THREE.Mesh(new THREE.BoxGeometry(2.8, 0.4, 5.8), wallMat);
-    busRoof.position.y = 2.5;
-    busGroup.add(busRoof);
-    busGroup.position.set(48, 0, 0);
     scene.add(busGroup);
 
-    // -------------------------------------------------------------
-    // Mouse Interaction & Orbit Dragging
-    // -------------------------------------------------------------
+    // Controls
     let isMouseDown = false;
     let prevMousePos = { x: 0, y: 0 };
     let cameraAngle = 0.8;
@@ -451,7 +356,6 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
       mouse.x = ((e.clientX - rect.left) / width) * 2 - 1;
       mouse.y = -((e.clientY - rect.top) / height) * 2 + 1;
 
-      // Raycast hover
       raycaster.setFromCamera(mouse, camera);
       const intersects = raycaster.intersectObjects(interactiveObjects, true);
 
@@ -480,7 +384,6 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
 
     const onMouseUp = (e) => {
       if (Math.abs(e.clientX - prevMousePos.x) < 3 && Math.abs(e.clientY - prevMousePos.y) < 3) {
-        // Click raycast
         raycaster.setFromCamera(mouse, camera);
         const intersects = raycaster.intersectObjects(interactiveObjects, true);
         if (intersects.length > 0) {
@@ -506,9 +409,6 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
     window.addEventListener('mouseup', onMouseUp);
     container.addEventListener('wheel', onWheel, { passive: false });
 
-    // -------------------------------------------------------------
-    // Animation Loop
-    // -------------------------------------------------------------
     let animId;
     let busAngle = 0;
 
@@ -519,19 +419,16 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
         cameraAngle += 0.0025;
       }
 
-      // Smooth camera position
       camera.position.x = Math.sin(cameraAngle) * Math.cos(cameraElevation) * cameraDistance;
       camera.position.z = Math.cos(cameraAngle) * Math.cos(cameraElevation) * cameraDistance;
       camera.position.y = Math.sin(cameraElevation) * cameraDistance;
       camera.lookAt(0, 8, 0);
 
-      // Animate bus around ring road
       busAngle += 0.008;
       busGroup.position.x = Math.cos(busAngle) * 48.5;
       busGroup.position.z = Math.sin(busAngle) * 48.5;
       busGroup.rotation.y = -busAngle + Math.PI / 2;
 
-      // Animate flag wave
       flag.rotation.y = Math.sin(Date.now() * 0.005) * 0.2;
 
       renderer.render(scene, camera);
@@ -539,7 +436,6 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
 
     animate();
 
-    // Resize Handler
     const handleResize = () => {
       if (!container) return;
       const newW = container.clientWidth;
@@ -563,8 +459,6 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
 
   return (
     <div className="w-full relative select-none rounded-3xl overflow-hidden shadow-[0_25px_70px_rgba(15,23,42,0.9)] border-2 border-blue-500/30 bg-gradient-to-b from-[#0a192f] via-[#030a16] to-[#01050c]">
-      
-      {/* Top Floating Control Bar */}
       <div className="absolute top-6 left-6 right-6 z-30 flex flex-wrap justify-between items-center gap-4 pointer-events-none">
         <div className="flex items-center gap-2.5 pointer-events-auto bg-slate-950/85 backdrop-blur-md px-5 py-2.5 rounded-full border border-blue-400/40 text-xs font-black text-white shadow-2xl">
           <Sparkles size={16} className="text-[#f59e0b] animate-pulse" />
@@ -572,7 +466,6 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping ml-1"></span>
         </div>
 
-        {/* Action Controls */}
         <div className="flex items-center gap-2 pointer-events-auto bg-slate-950/85 backdrop-blur-md p-2 rounded-full border border-blue-400/40 shadow-2xl">
           <button 
             onClick={() => setAutoRotate(!autoRotate)} 
@@ -593,13 +486,11 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
         </div>
       </div>
 
-      {/* Three.js WebGL Canvas Mount Container */}
       <div 
         ref={containerRef} 
         className="w-full h-[640px] cursor-grab active:cursor-grabbing relative overflow-hidden"
       ></div>
 
-      {/* Hovered Building Tooltip Tag */}
       {hoveredBuilding && !selectedBuilding && (
         <div className="absolute top-20 left-1/2 -translate-x-1/2 z-30 pointer-events-none bg-slate-950/90 text-white px-5 py-2 rounded-full border border-[#f59e0b] shadow-2xl backdrop-blur-md animate-fade-in flex items-center gap-2">
           <div className="w-2.5 h-2.5 rounded-full bg-[#f59e0b] animate-ping"></div>
@@ -608,7 +499,6 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
         </div>
       )}
 
-      {/* Floating Selected Building Detail Card */}
       {selectedBuilding && (
         <div className="absolute bottom-6 left-6 right-6 md:left-auto md:right-6 md:w-[400px] z-40 bg-slate-950/95 backdrop-blur-2xl p-6 rounded-3xl border-2 border-[#f59e0b] shadow-[0_20px_60px_rgba(0,0,0,0.95)] animate-fade-in text-white">
           <div className="flex justify-between items-start mb-3">
@@ -637,12 +527,217 @@ const ThreeCampusExplorer = ({ lang = 'EN' }) => {
         </div>
       )}
 
-      {/* Bottom Interactive Help Bar */}
       <div className="absolute bottom-4 left-6 z-20 pointer-events-none hidden md:flex items-center gap-3 text-xs font-bold text-slate-300 bg-slate-950/80 backdrop-blur-md px-4 py-2 rounded-full border border-blue-400/30">
         <Compass size={16} className="text-[#f59e0b]" />
         <span>Left-click + Drag to Orbit • Scroll Wheel to Zoom • Click any 3D building to inspect</span>
       </div>
+    </div>
+  );
+};
 
+// =========================================================================
+// Interactive Story Gallery Component (Auto-play + Manual slider)
+// =========================================================================
+const CampusStoryGallery = ({ lang = 'EN' }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const storiesData = {
+    EN: [
+      {
+        tag: "STEM & Bio-Robotics",
+        title: "The Spark of Scientific Discovery",
+        desc: "In our state-of-the-art STEM innovation laboratories, curiosity transforms into real-world breakthroughs. Students conduct university-level biotech research, design autonomous AI robotics, and pitch patents under the mentorship of industry experts.",
+        image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=1200",
+        stat: "Top 1% Robotics"
+      },
+      {
+        tag: "Performing & Fine Arts",
+        title: "Finding Voice on the Grand Stage",
+        desc: "From classical symphony orchestra performances to breathtaking dramatic stage productions in our 650-seat grand theater, SSS students develop the confidence, emotional depth, and creative courage to express their authentic voice.",
+        image: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=1200",
+        stat: "30+ Annual Shows"
+      },
+      {
+        tag: "Athletics & Teamwork",
+        title: "Grit, Resilience & Champion Spirit",
+        desc: "On our 75-acre athletics complex, our student-athletes learn the transformative value of dedication, mental toughness, and mutual trust as they compete for regional and national championship honors.",
+        image: "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=1200",
+        stat: "15+ Varsity Sports"
+      },
+      {
+        tag: "75-Acre Outdoor Learning",
+        title: "Nature as the Ultimate Classroom",
+        desc: "Surrounded by Pacific Northwest forest canopies, students step beyond traditional walls into open-air ecological reserves. From organic sustainability projects to wilderness leadership treks, learning is vibrant and alive.",
+        image: "https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=1200",
+        stat: "75 Acres Forest"
+      },
+      {
+        tag: "Global Community",
+        title: "A Family of 30+ Nationalities",
+        desc: "SSS is a welcoming, vibrant international family. In every classroom debate and cultural celebration, students forge lifelong global connections that broaden their world perspective and build lifelong empathy.",
+        image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200",
+        stat: "30+ Nations"
+      },
+      {
+        tag: "University Acceptance",
+        title: "Launchpad to Ivy League & World Elite",
+        desc: "With a dedicated 4-year individualized college counseling roadmap, 100% of SSS graduates gain admission to leading global universities, armed with intellect, character, and global vision.",
+        image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1200",
+        stat: "100% Acceptance"
+      }
+    ],
+    TH: [
+      {
+        tag: "นวัตกรรม STEM และหุ่นยนต์",
+        title: "จุดประกายการค้นพบทางวิทยาศาสตร์",
+        desc: "ในห้องปฏิบัติการนวัตกรรม STEM ที่ทันสมัย ความอยากรู้อยากเห็นของนักเรียนเปลี่ยนเป็นผลงานจริง นักเรียนได้ทำวิจัยชีววิทยาศาสตร์ระดับมหาวิทยาลัย ออกแบบหุ่นยนต์ AI และสร้างสรรค์โครงงานร่วมกับผู้เชี่ยวชาญ",
+        image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=1200",
+        stat: "อันดับ 1 หุ่นยนต์เยาวชน"
+      },
+      {
+        tag: "ศิลปะและการแสดง",
+        title: "ค้นพบพลังแห่งความคิดสร้างสรรค์บนเวทีใหญ่",
+        desc: "จากการบรรเลงวงดุริยางค์ซิมโฟนี ไปจนถึงการแสดงละครเวทีสุดตระการตา ณ โรงละคร 650 ที่นั่ง นักเรียน SSS ได้พัฒนาความมั่นใจ ความคิดสร้างสรรค์ และความกล้าหาญในการแสดงออกอย่างงดงาม",
+        image: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=1200",
+        stat: "30+ การแสดงต่อปี"
+      },
+      {
+        tag: "การกีฬาและการทำงานเป็นทีม",
+        title: "พลังแห่งความมุ่งมั่นและจิตวิญญาณแห่งชัยชนะ",
+        desc: "ในสนามกีฬามาตรฐานโอลิมปิก นักกีฬาของ SSS ได้เรียนรู้คุณค่าของความพยายาม น้ำใจนักกีฬา และความสามัคคีในการแข่งขันระดับประเทศ",
+        image: "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=1200",
+        stat: "15+ ชนิดกีฬาชั้นนำ"
+      },
+      {
+        tag: "ห้องเรียนธรรมชาติ 190 ไร่",
+        title: "เมื่อธรรมชาติกลายเป็นห้องเรียนที่ยิ่งใหญ่",
+        desc: "ท่ามกลางร่มเงาต้นไม้เขียวชอุ่ม 75 เอเคอร์ การเรียนรู้ไม่ได้จำกัดอยู่แค่ในห้องสี่เหลี่ยม แต่ขยายสู่ธรรมชาติ ทั้งการศึกษาเชิงนิเวศ การทำเกษตรอินทรีย์ และการสร้างภาวะผู้นำกลางแจ้ง",
+        image: "https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=1200",
+        stat: "พื้นที่ธรรมชาติ 190 ไร่"
+      },
+      {
+        tag: "ชุมชนนานาชาติ",
+        title: "ครอบครัวอบอุ่นจากกว่า 30 สัญชาติทั่วโลก",
+        desc: "SSS คือชุมชนการศึกษาที่เปิดกว้างและเปี่ยมด้วยมิตรภาพ ในทุกการแลกเปลี่ยนความคิดเห็นและกิจกรรมวัฒนธรรม นักเรียนได้สร้างมิตรภาพไร้พรมแดนและความเข้าใจในความหลากหลาย",
+        image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200",
+        stat: "30+ สัญชาตินานาชาติ"
+      },
+      {
+        tag: "ความสำเร็จสู่มหาวิทยาลัย",
+        title: "ก้าวสู่มหาวิทยาลัยชั้นนำระดับโลก 100%",
+        desc: "ด้วยการแนะแนวศึกษาต่อแบบเข้มข้นรายบุคคลตลอด 4 ปี นักเรียน SSS ได้รับการตอบรับเข้าศึกษาต่อในมหาวิทยาลัยระดับโลกและกลุ่ม Ivy League ครบ 100%",
+        image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1200",
+        stat: "100% สอบติดมหาวิทยาลัยชั้นนำ"
+      }
+    ]
+  };
+
+  const stories = storiesData[lang] || storiesData.EN;
+
+  // Auto-play interval
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % stories.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [isPaused, stories.length]);
+
+  const activeStory = stories[currentIndex];
+
+  return (
+    <div 
+      className="w-full bg-[#0a192f] text-white py-24 px-4 md:px-8 relative overflow-hidden border-t border-blue-500/20"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <div className="max-w-7xl mx-auto">
+        
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
+          <div>
+            <span className="text-xs font-black uppercase tracking-widest text-[#f59e0b] bg-amber-400/10 px-3.5 py-1 rounded-full border border-[#f59e0b]/30 inline-block mb-3">
+              ✨ Campus Life & Inspiring Stories
+            </span>
+            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white drop-shadow-sm">
+              {lang === 'TH' ? 'เรื่องราวแห่งการเติบโต ณ SSS' : 'Stories of SSS: Life, Wonder & Community'}
+            </h2>
+          </div>
+
+          {/* Navigation Controls */}
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => setCurrentIndex((prev) => (prev === 0 ? stories.length - 1 : prev - 1))}
+              className="w-12 h-12 rounded-full bg-slate-900/90 border border-blue-400/30 text-white hover:bg-[#f59e0b] hover:text-slate-950 transition-all flex items-center justify-center shadow-lg active:scale-90"
+              aria-label="Previous story"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button 
+              onClick={() => setCurrentIndex((prev) => (prev + 1) % stories.length)}
+              className="w-12 h-12 rounded-full bg-slate-900/90 border border-blue-400/30 text-white hover:bg-[#f59e0b] hover:text-slate-950 transition-all flex items-center justify-center shadow-lg active:scale-90"
+              aria-label="Next story"
+            >
+              <ChevronRightIcon size={20} />
+            </button>
+          </div>
+        </div>
+
+        {/* Featured Story Display Card */}
+        <div className="relative rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.8)] border border-blue-500/30 bg-slate-950 flex flex-col lg:flex-row min-h-[460px]">
+          
+          {/* Image Area */}
+          <div className="w-full lg:w-3/5 relative h-72 lg:h-auto overflow-hidden">
+            <img 
+              src={activeStory.image} 
+              alt={activeStory.title} 
+              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-slate-950"></div>
+            
+            <div className="absolute top-6 left-6 bg-slate-950/80 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 text-xs font-black text-[#f59e0b]">
+              {activeStory.tag}
+            </div>
+          </div>
+
+          {/* Story Narrative Content Area */}
+          <div className="w-full lg:w-2/5 p-8 lg:p-12 flex flex-col justify-between bg-gradient-to-b from-slate-950 to-[#0c1b33]">
+            <div>
+              <div className="flex items-center gap-2 text-xs font-bold text-blue-300 uppercase tracking-widest mb-3">
+                <Award size={16} className="text-[#f59e0b]" /> {activeStory.stat}
+              </div>
+              
+              <h3 className="text-2xl md:text-3xl font-black text-white uppercase tracking-tight mb-4 leading-snug">
+                {activeStory.title}
+              </h3>
+              
+              <p className="text-slate-300 leading-relaxed text-sm md:text-base font-normal">
+                {activeStory.desc}
+              </p>
+            </div>
+
+            {/* Pagination Thumbnails */}
+            <div className="mt-8 pt-6 border-t border-slate-800 flex items-center justify-between">
+              <div className="flex gap-2">
+                {stories.map((s, idx) => (
+                  <button 
+                    key={idx}
+                    onClick={() => setCurrentIndex(idx)}
+                    className={`h-2 rounded-full transition-all duration-300 ${currentIndex === idx ? 'w-8 bg-[#f59e0b]' : 'w-2 bg-slate-700 hover:bg-slate-500'}`}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+              <span className="text-xs font-bold text-slate-500">
+                0{currentIndex + 1} / 0{stories.length}
+              </span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 };
@@ -715,6 +810,17 @@ const translations = {
     ourPurposeDesc: "SSS cultivates bold changemakers who learn by doing amid challenging curriculum, sparking a lifelong passion to create positive change in the world beyond our classrooms and campus.",
     ourPromiseTitle: "Our Promise",
     ourPromiseDesc: "Students are at the heart of everything we do, and SSS is an academic community with strong co-curriculars where wellbeing, deep connections, and purpose drive discovery—because education is an adventure.",
+    
+    // Video section
+    videoTitle: "Experience Life at SSS",
+    videoSubtitle: "Take an immersive look into our vibrant campus, student innovations, and inspiring academic journey.",
+    videoHighlights: [
+      "100% University & Ivy League Acceptance Rate",
+      "75-Acre Pristine Forest & Ecological Sanctuary",
+      "7:1 Student-to-Teacher Ratio for Personal Mentorship",
+      "Over 50+ Student Clubs, Varsity Sports & Arts Ensembles"
+    ],
+
     owlsEyeTitle: "A Comprehensive View of SSS",
     stat1Number: "575",
     stat1Desc: "Young students from grades 5-12 all finding their unique paths at SSS",
@@ -833,6 +939,16 @@ const translations = {
     ourPurposeDesc: "SSS มุ่งบ่มเพาะผู้นำการเปลี่ยนแปลงที่กล้าหาญ ผ่านการลงมือปฏิบัติจริงควบคู่กับหลักสูตรวิชาการที่ท้าทาย เพื่อสร้างแรงบันดาลใจในการสร้างสรรค์สิ่งดีงามให้แก่โลก",
     ourPromiseTitle: "คำมั่นสัญญาของเรา",
     ourPromiseDesc: "นักเรียนคือหัวใจสำคัญในทุกสิ่งที่เราทำ SSS เป็นชุมชนวิชาการที่ผสานกิจกรรมเสริมสร้างสุขภาวะ ความผูกพัน และเป้าหมายชีวิต เพราะการศึกษาคือการผจญภัยที่ไม่มีที่สิ้นสุด",
+    
+    videoTitle: "สัมผัสบรรยากาศการเรียนรู้ ณ SSS",
+    videoSubtitle: "เปิดประสบการณ์ชมวิทยาเขตที่ทันสมัย การสร้างสรรค์นวัตกรรมของนักเรียน และการเดินทางทางการศึกษาที่น่าประทับใจ",
+    videoHighlights: [
+      "อัตราการสอบติดมหาวิทยาลัยชั้นนำระดับโลก 100%",
+      "พื้นที่ธรรมชาติ 75 เอเคอร์ (190 ไร่) อันอุดมสมบูรณ์",
+      "อัตราส่วนนักเรียนต่อครู 7:1 ดูแลใกล้ชิดทุกมิติ",
+      "ชมรมและกิจกรรมมากกว่า 50 ชมรม ทั้งกีฬา ดนตรี และนวัตกรรม"
+    ],
+
     owlsEyeTitle: "ภาพรวมสถิติแห่งความสำเร็จของ SSS",
     stat1Number: "575",
     stat1Desc: "นักเรียนระดับเกรด 5-12 ที่กำลังค้นพบเส้นทางเฉพาะตัว ณ SSS",
@@ -951,6 +1067,16 @@ const translations = {
     ourPurposeDesc: "SSS在挑战性课程中注重知行合一，培养勇敢的变革者，激发终身创造积极世界影响的热情。",
     ourPromiseTitle: "我们的承诺",
     ourPromiseDesc: "学生是我们一切工作的核心。SSS是一个学术氛围浓厚、课外活动丰富的社区，在健康、信任与使命感的引领下探索未知——因为教育是一场探索之旅。",
+    
+    videoTitle: "沉浸体验SSS校园风采",
+    videoSubtitle: "领略现代化绿色生态校园、学生创新项目与启发式求学之旅。",
+    videoHighlights: [
+      "100% 全球顶尖大学及名校录取率",
+      "75英亩（190亩）常青生态林地",
+      "1:7 关怀型师生比例，全程导师引领",
+      "50余个专业学术社团、竞技校队与艺术团"
+    ],
+
     owlsEyeTitle: "SSS核心数据概览",
     stat1Number: "575",
     stat1Desc: "5-12年级学生在SSS探索并走出属于自己的独特道路",
@@ -1069,6 +1195,16 @@ const translations = {
     ourPurposeDesc: "SSSは挑戦的なカリキュラムの実践を通じて、教室やキャンパスの枠を超え、世界により良い変革をもたらす情熱とリーダーシップを育てます。",
     ourPromiseTitle: "私たちの約束",
     ourPromiseDesc: "生徒一人ひとりが中心です。学業と課外活動が調和し、ウェルビーイングと深い信頼関係が探究心を育みます——教育とは終わりのない冒険です。",
+    
+    videoTitle: "SSSスクール紹介ムービー",
+    videoSubtitle: "緑あふれるキャンパス、生徒たちの探究心、感動に満ちたスクールライフをご覧ください。",
+    videoHighlights: [
+      "世界トップ大学への進学率 100%",
+      "75エーカーの広大な自然環境とエコキャンパス",
+      "生徒7名に対し教員1名のきめ細やかな個別指導",
+      "50以上の多彩なクラブ・スポーツ・芸術プログラム"
+    ],
+
     owlsEyeTitle: "SSSのデータで見る実績",
     stat1Number: "575名",
     stat1Desc: "5年生から12年生の生徒たちがSSSで自らの可能性を切り拓いています",
@@ -1378,6 +1514,53 @@ const LandingPage = () => {
         </div>
       </div>
 
+      {/* NEW: SSS Promotional School Introduction Video Section */}
+      <div className="w-full bg-[#050c18] py-28 px-4 md:px-8 relative overflow-hidden border-t-2 border-blue-500/20">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12">
+          
+          {/* Video Player Box */}
+          <div className="w-full lg:w-3/5 rounded-3xl overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.9)] border-2 border-blue-400/30 bg-slate-950 aspect-video relative group">
+            <iframe 
+              className="w-full h-full object-cover"
+              src="https://www.youtube.com/embed/zpOULjyy-n8?autoplay=0&rel=0&modestbranding=1" 
+              title="SSS Official Promotional Video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          {/* Video Highlights & Overview */}
+          <div className="w-full lg:w-2/5 flex flex-col justify-center text-white">
+            <div className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#f59e0b] bg-amber-400/10 px-3.5 py-1 rounded-full border border-[#f59e0b]/30 w-max mb-4">
+              <Film size={14} /> {currentLang.code === 'TH' ? 'วิดีโอแนะนำโรงเรียน' : 'Featured Video Spotlight'}
+            </div>
+            
+            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight mb-4 text-white">
+              {t.videoTitle}
+            </h2>
+            
+            <p className="text-slate-300 text-sm md:text-base leading-relaxed mb-8">
+              {t.videoSubtitle}
+            </p>
+
+            <div className="space-y-4 mb-8">
+              {t.videoHighlights.map((highlight, idx) => (
+                <div key={idx} className="flex items-start gap-3 bg-white/5 p-3.5 rounded-2xl border border-white/10">
+                  <CheckCircle2 size={20} className="text-[#f59e0b] shrink-0 mt-0.5" />
+                  <span className="text-sm font-semibold text-slate-200">{highlight}</span>
+                </div>
+              ))}
+            </div>
+
+            <button onClick={() => navigate('/apply')} className="bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-slate-950 px-8 py-4 rounded-full font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl w-max flex items-center gap-2">
+              <span>{currentLang.code === 'TH' ? 'นัดหมายเยี่ยมชมสถานที่จริง' : 'Book a Private Campus Tour'}</span>
+              <ArrowRight size={16} />
+            </button>
+          </div>
+
+        </div>
+      </div>
+
       {/* SSS Comprehensive Stats (Crisp White & Ice Slate) */}
       <div className="w-full bg-[#f8fafc] py-32 px-8 text-center relative overflow-hidden border-y border-slate-200">
         <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-20 text-[#0c1b33]">{t.owlsEyeTitle}</h2>
@@ -1528,6 +1711,9 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
+
+      {/* NEW: Interactive Story Photo Gallery Section (Autoplay + Manual Slider) */}
+      <CampusStoryGallery lang={currentLang.code} />
 
       {/* Demo Notice Banner */}
       <div className="w-full bg-red-600 text-white font-black text-center py-4 text-sm uppercase tracking-widest flex items-center justify-center gap-2 shadow-[inset_0_5px_15px_rgba(0,0,0,0.3)] relative z-40">
