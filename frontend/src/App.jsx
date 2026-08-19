@@ -7,6 +7,7 @@ import StudentLogin from './pages/StudentLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import StudentDashboard from './pages/StudentDashboard';
 import ApplicationForm from './pages/ApplicationForm';
+import LandingPage from './pages/LandingPage';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Public Routes */}
+          <Route path="/" element={<LandingPage />} />
           <Route path="/apply" element={<ApplicationForm />} />
           <Route path="/login" element={<StudentLogin />} />
           <Route path="/admin/login" element={<AdminLogin />} />
@@ -38,9 +40,8 @@ function App() {
             } 
           />
 
-          {/* Default Redirect */}
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          {/* Catch-all Redirect */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
