@@ -137,16 +137,16 @@ const PublicPage = () => {
   return (
     <div className="w-full min-h-screen font-sans bg-white text-slate-800 flex flex-col">
       
-      {/* Utility Top Bar */}
-      <div className="hidden md:flex w-full bg-[#00523e] text-white py-2 px-8 justify-end text-xs font-semibold uppercase tracking-wider items-center gap-6 z-50 shadow-md">
-        <span onClick={() => navigate('/login')} className="hover:text-[#f2a900] cursor-pointer transition-colors">Portals</span>
-        <span onClick={() => navigate('/')} className="hover:text-[#f2a900] cursor-pointer transition-colors">Home</span>
+      {/* Luxury Royal Navy Top Utility Bar */}
+      <div className="hidden md:flex w-full bg-gradient-to-r from-[#0c1b33] via-[#0f284e] to-[#0a192f] text-white py-2 px-8 justify-end text-xs font-semibold uppercase tracking-wider items-center gap-6 z-50 shadow-md border-b border-blue-500/20">
+        <span onClick={() => navigate('/login')} className="hover:text-[#f59e0b] cursor-pointer transition-colors">Portals</span>
+        <span onClick={() => navigate('/')} className="hover:text-[#f59e0b] cursor-pointer transition-colors">Home</span>
         
         {/* Language Switcher */}
         <div className="relative ml-4 border-l border-white/20 pl-6">
           <button 
             onClick={() => setLangOpen(!langOpen)} 
-            className="flex items-center gap-2.5 bg-gradient-to-b from-white/25 to-white/10 hover:from-white/35 hover:to-white/15 px-3.5 py-1.5 rounded-full transition-all border border-white/30 shadow-sm active:scale-95 cursor-pointer"
+            className="flex items-center gap-2.5 bg-gradient-to-b from-white/20 to-white/5 hover:from-white/30 hover:to-white/10 px-3.5 py-1.5 rounded-full transition-all border border-blue-300/30 shadow-sm active:scale-95 cursor-pointer"
           >
             <FlagIcon code={currentLang.code} className="w-5 h-3.5 shadow-sm" />
             <span className="font-extrabold text-white text-xs tracking-wider">{currentLang.code}</span>
@@ -154,12 +154,12 @@ const PublicPage = () => {
           </button>
           
           {langOpen && (
-            <div className="absolute top-[125%] right-0 mt-1 w-44 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50 transform origin-top-right animate-fade-in">
+            <div className="absolute top-[125%] right-0 mt-1 w-44 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden z-50 transform origin-top-right animate-fade-in">
               {languages.map(lang => (
                 <div 
                   key={lang.code} 
                   onClick={() => changeLanguage(lang)} 
-                  className={`flex items-center gap-3 px-4 py-3 hover:bg-[#f0fdf4] cursor-pointer transition-all duration-150 border-b border-gray-50 last:border-0 ${currentLang.code === lang.code ? 'bg-[#f0fdf4] font-black text-[#00523e]' : 'text-gray-700'}`}
+                  className={`flex items-center gap-3 px-4 py-3 hover:bg-blue-50 cursor-pointer transition-all duration-150 border-b border-slate-50 last:border-0 ${currentLang.code === lang.code ? 'bg-blue-50 font-black text-blue-900' : 'text-slate-700'}`}
                 >
                   <FlagIcon code={lang.code} className="w-6 h-4 shadow-sm" />
                   <span className="font-bold text-xs uppercase tracking-wider">{lang.label}</span>
@@ -170,63 +170,68 @@ const PublicPage = () => {
         </div>
       </div>
 
-      {/* Main Navigation */}
-      <nav className="w-full z-40 bg-[#00523e] py-4 px-8 flex justify-between items-center shadow-lg sticky top-0">
+      {/* Main Luxury Navy Navigation */}
+      <nav className="w-full z-40 bg-[#0c1b33] py-4 px-8 flex justify-between items-center shadow-lg sticky top-0 border-b border-blue-900/40">
         <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
-          <div className="w-12 h-12 rounded-full flex items-center justify-center font-black text-2xl bg-white text-[#00523e] shadow-md group-hover:scale-105 transition-transform">
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center font-black text-2xl bg-gradient-to-br from-white to-blue-50 text-[#0c1b33] shadow-md group-hover:scale-105 transition-transform border border-white/40">
             S
           </div>
-          <span className="text-3xl font-black tracking-tight uppercase text-white">
-            SSS
-          </span>
+          <div className="flex flex-col">
+            <span className="text-3xl font-black tracking-tight uppercase text-white leading-none">
+              SSS
+            </span>
+            <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#f59e0b]">
+              ACADEMY
+            </span>
+          </div>
         </div>
 
         <div className="flex items-center gap-4">
-          <button onClick={() => navigate('/')} className="text-white hover:text-[#f2a900] font-bold text-sm uppercase tracking-wider hidden md:block">
+          <button onClick={() => navigate('/')} className="text-white/90 hover:text-[#f59e0b] font-bold text-sm uppercase tracking-wider hidden md:block transition-colors">
             ← {currentLang.code === 'TH' ? 'กลับหน้าแรก' : 'Back to Home'}
           </button>
-          <button onClick={() => navigate('/apply')} className="bg-[#f2a900] text-[#00523e] px-6 py-2.5 rounded-full font-bold uppercase tracking-wider text-xs hover:bg-white transition-all shadow-md">
+          <button onClick={() => navigate('/apply')} className="bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-slate-950 px-6 py-2.5 rounded-full font-black uppercase tracking-wider text-xs hover:shadow-[0_0_20px_rgba(245,158,11,0.5)] hover:scale-105 transition-all shadow-md">
             {currentLang.code === 'TH' ? 'สมัครเรียนออนไลน์' : 'Inquire / Apply'}
           </button>
         </div>
       </nav>
 
-      {/* Hero Banner */}
-      <div className="w-full h-80 md:h-[420px] relative overflow-hidden bg-gray-900">
-        <img src={pageData.img} alt={pageData.title} className="w-full h-full object-cover opacity-60" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#00523e] via-[#00523e]/50 to-transparent"></div>
+      {/* Hero Banner (Luxury Royal Navy Deep Gradient) */}
+      <div className="w-full h-80 md:h-[420px] relative overflow-hidden bg-slate-950">
+        <img src={pageData.img} alt={pageData.title} className="w-full h-full object-cover opacity-50" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0c1b33] via-[#0c1b33]/60 to-transparent"></div>
         <div className="absolute bottom-0 left-0 p-8 md:p-16 w-full max-w-7xl mx-auto">
-          <div className="flex items-center gap-2 text-[#f2a900] font-bold text-sm uppercase tracking-wider mb-4">
+          <div className="flex items-center gap-2 text-[#f59e0b] font-bold text-sm uppercase tracking-wider mb-4">
             <Link to="/" className="hover:text-white transition-colors">{currentLang.code === 'TH' ? 'หน้าหลัก' : 'Home'}</Link>
             <ChevronRight size={14} />
             <span>{pageData.category}</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tight drop-shadow-lg">
+          <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tight drop-shadow-xl">
             {pageData.title}
           </h1>
         </div>
       </div>
 
-      {/* Content Section */}
+      {/* Content Section (Pure Crisp White & Ice Slate) */}
       <div className="flex-1 w-full max-w-7xl mx-auto px-8 py-16 flex flex-col md:flex-row gap-12">
         <div className="w-full md:w-1/4 hidden md:block">
-          <div className="bg-[#f4f4f4] p-6 rounded-2xl border-t-4 border-[#00523e] shadow-sm">
-            <h3 className="font-black text-xl text-[#00523e] uppercase tracking-wider mb-6 pb-4 border-b border-gray-200">
+          <div className="bg-[#f8fafc] p-6 rounded-3xl border-t-4 border-blue-900 shadow-md">
+            <h3 className="font-black text-lg text-[#0c1b33] uppercase tracking-wider mb-6 pb-4 border-b border-slate-200">
               {pageData.category}
             </h3>
-            <ul className="space-y-4 text-sm font-bold text-gray-600">
-              <li onClick={() => navigate('/page/diversity')} className="hover:text-[#00523e] cursor-pointer flex items-center gap-2 hover:translate-x-1 transition-transform"><ArrowRight size={12}/> Diversity & Inclusion</li>
-              <li onClick={() => navigate('/page/approach')} className="hover:text-[#00523e] cursor-pointer flex items-center gap-2 hover:translate-x-1 transition-transform"><ArrowRight size={12}/> Academic Approach</li>
-              <li onClick={() => navigate('/page/life')} className="hover:text-[#00523e] cursor-pointer flex items-center gap-2 hover:translate-x-1 transition-transform"><ArrowRight size={12}/> Life at SSS</li>
-              <li onClick={() => navigate('/page/journey')} className="hover:text-[#00523e] cursor-pointer flex items-center gap-2 hover:translate-x-1 transition-transform"><ArrowRight size={12}/> Admissions Journey</li>
-              <li onClick={() => navigate('/page/affording')} className="hover:text-[#00523e] cursor-pointer flex items-center gap-2 hover:translate-x-1 transition-transform"><ArrowRight size={12}/> Tuition & Financial Aid</li>
+            <ul className="space-y-4 text-sm font-bold text-slate-600">
+              <li onClick={() => navigate('/page/diversity')} className="hover:text-blue-900 cursor-pointer flex items-center gap-2 hover:translate-x-1 transition-transform"><ArrowRight size={12} className="text-[#f59e0b]"/> Diversity & Inclusion</li>
+              <li onClick={() => navigate('/page/approach')} className="hover:text-blue-900 cursor-pointer flex items-center gap-2 hover:translate-x-1 transition-transform"><ArrowRight size={12} className="text-[#f59e0b]"/> Academic Approach</li>
+              <li onClick={() => navigate('/page/life')} className="hover:text-blue-900 cursor-pointer flex items-center gap-2 hover:translate-x-1 transition-transform"><ArrowRight size={12} className="text-[#f59e0b]"/> Life at SSS</li>
+              <li onClick={() => navigate('/page/journey')} className="hover:text-blue-900 cursor-pointer flex items-center gap-2 hover:translate-x-1 transition-transform"><ArrowRight size={12} className="text-[#f59e0b]"/> Admissions Journey</li>
+              <li onClick={() => navigate('/page/affording')} className="hover:text-blue-900 cursor-pointer flex items-center gap-2 hover:translate-x-1 transition-transform"><ArrowRight size={12} className="text-[#f59e0b]"/> Tuition & Financial Aid</li>
             </ul>
           </div>
           
-          <div className="mt-8 p-6 bg-[#00523e] text-white rounded-2xl text-center shadow-md">
-            <h4 className="font-bold uppercase tracking-wider mb-2 text-[#f2a900]">{currentLang.code === 'TH' ? 'เยี่ยมชมโรงเรียน' : 'Visit Our Campus'}</h4>
-            <p className="text-sm opacity-90 mb-4">{currentLang.code === 'TH' ? 'สัมผัสบรรยากาศการเรียนรู้ในพื้นที่ธรรมชาติ 75 เอเคอร์' : 'Experience learning in our 75-acre natural setting.'}</p>
-            <button onClick={() => navigate('/apply')} className="bg-[#f2a900] text-[#00523e] px-4 py-2.5 text-xs font-black uppercase tracking-wider w-full rounded-full hover:bg-white transition-colors">
+          <div className="mt-8 p-6 bg-gradient-to-br from-blue-900 to-[#0c1b33] text-white rounded-3xl text-center shadow-xl border border-blue-800/40">
+            <h4 className="font-black uppercase tracking-wider mb-2 text-[#f59e0b]">{currentLang.code === 'TH' ? 'เยี่ยมชมโรงเรียน SSS' : 'Visit SSS Campus'}</h4>
+            <p className="text-xs text-blue-100 mb-4">{currentLang.code === 'TH' ? 'สัมผัสบรรยากาศการเรียนรู้ในพื้นที่ธรรมชาติ 75 เอเคอร์' : 'Experience learning in our 75-acre natural woodland setting.'}</p>
+            <button onClick={() => navigate('/apply')} className="bg-[#f59e0b] text-slate-950 px-4 py-2.5 text-xs font-black uppercase tracking-wider w-full rounded-full hover:bg-white transition-all shadow-md">
               {currentLang.code === 'TH' ? 'นัดหมายเยี่ยมชม' : 'Schedule a Tour'}
             </button>
           </div>
@@ -234,27 +239,27 @@ const PublicPage = () => {
 
         <div className="w-full md:w-3/4">
           <div className="prose max-w-none">
-            <p className="text-2xl text-gray-700 leading-relaxed font-semibold mb-8">
+            <p className="text-2xl text-slate-800 leading-relaxed font-semibold mb-8">
               {pageData.content}
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-12">
-              <img src={pageData.img} alt="Detail" className="w-full h-56 object-cover rounded-2xl shadow-md" />
-              <div className="bg-[#f4f4f4] p-8 rounded-2xl shadow-sm flex flex-col justify-center border-l-4 border-[#f2a900]">
-                <h4 className="text-xl font-black text-[#00523e] uppercase mb-3">{currentLang.code === 'TH' ? 'จุดเด่นของหลักสูตร SSS' : 'Academic Excellence'}</h4>
-                <p className="text-gray-600 text-sm leading-relaxed">
+              <img src={pageData.img} alt="Detail" className="w-full h-56 object-cover rounded-3xl shadow-lg border-2 border-slate-100" />
+              <div className="bg-[#f8fafc] p-8 rounded-3xl shadow-sm flex flex-col justify-center border-l-4 border-[#f59e0b]">
+                <h4 className="text-xl font-black text-[#0c1b33] uppercase mb-3">{currentLang.code === 'TH' ? 'จุดเด่นของหลักสูตร SSS' : 'Academic Excellence'}</h4>
+                <p className="text-slate-600 text-sm leading-relaxed font-medium">
                   {currentLang.code === 'TH'
-                    ? 'หลักสูตรของเรามุ่งเน้นการพัฒนาผู้เรียนรอบด้าน ทั้งทางวิชาการ คุณธรรม และทักษะการเป็นผู้นำแห่งอนาคต'
+                    ? 'หลักสูตรของ SSS มุ่งเน้นการพัฒนาผู้เรียนรอบด้าน ทั้งทางวิชาการ คุณธรรม และทักษะการเป็นผู้นำแห่งอนาคต'
                     : 'Our programs empower students to discover their passions, think critically, and lead with empathy in a complex world.'}
                 </p>
               </div>
             </div>
 
             <div className="flex gap-4 mt-8">
-              <button onClick={() => navigate('/apply')} className="bg-[#00523e] text-white px-8 py-3.5 rounded-full font-bold uppercase tracking-wider text-xs hover:bg-[#f2a900] hover:text-[#00523e] transition-colors shadow-md">
+              <button onClick={() => navigate('/apply')} className="bg-gradient-to-r from-blue-900 to-[#0c1b33] text-white px-8 py-3.5 rounded-full font-black uppercase tracking-wider text-xs hover:brightness-110 transition-all shadow-md border border-blue-800">
                 {currentLang.code === 'TH' ? 'กรอกใบสมัครออนไลน์' : 'Inquire Online'}
               </button>
-              <button onClick={() => navigate('/')} className="border-2 border-[#00523e] text-[#00523e] px-8 py-3.5 rounded-full font-bold uppercase tracking-wider text-xs hover:bg-[#00523e] hover:text-white transition-colors">
+              <button onClick={() => navigate('/')} className="border-2 border-blue-900 text-blue-900 px-8 py-3.5 rounded-full font-black uppercase tracking-wider text-xs hover:bg-blue-900 hover:text-white transition-all">
                 {currentLang.code === 'TH' ? 'กลับสู่หน้าหลัก' : 'Back to Home'}
               </button>
             </div>
@@ -267,22 +272,22 @@ const PublicPage = () => {
         ⚠️ This is a demo version / ระบบนี้เป็นเพียงเวอร์ชันทดลอง ⚠️
       </div>
 
-      {/* Footer */}
-      <footer className="w-full bg-[#111] text-white py-12 px-8 mt-auto">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 border-b border-gray-800 pb-8 mb-6">
+      {/* Footer (Luxury Midnight Black & Royal Navy) */}
+      <footer className="w-full bg-[#030914] text-white py-12 px-8 mt-auto border-t border-slate-900">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 border-b border-slate-800 pb-8 mb-6">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-[#00523e] text-white rounded-xl flex items-center justify-center font-black text-2xl">S</div>
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-900 to-[#0c1b33] text-white rounded-2xl flex items-center justify-center font-black text-2xl border border-blue-500/40">S</div>
             <div>
               <div className="font-black text-xl uppercase tracking-widest">Simple School System (SSS)</div>
-              <div className="text-gray-400 text-sm">20301 SSS Campus Way, Redmond, WA 98053 • questions@simpleschool.com</div>
+              <div className="text-slate-400 text-sm">20301 SSS Campus Way, Redmond, WA 98053 • questions@simpleschool.com</div>
             </div>
           </div>
           <div className="flex gap-4">
              <button onClick={() => navigate('/login')} className="border border-white/20 hover:border-white px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-colors">Portals</button>
-             <button onClick={() => navigate('/apply')} className="bg-[#f2a900] text-[#00523e] hover:bg-white px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-colors">Apply Now</button>
+             <button onClick={() => navigate('/apply')} className="bg-[#f59e0b] text-slate-950 hover:bg-white px-5 py-2 rounded-full text-xs font-black uppercase tracking-wider transition-all shadow-md">Apply Now</button>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto text-gray-500 text-xs text-center">
+        <div className="max-w-7xl mx-auto text-slate-500 text-xs text-center">
           &copy; {new Date().getFullYear()} Simple School System (SSS). All rights reserved.
         </div>
       </footer>

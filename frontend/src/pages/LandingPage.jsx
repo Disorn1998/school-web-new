@@ -20,7 +20,7 @@ const FlagIcon = ({ code, className = "w-6 h-4" }) => {
   );
 };
 
-// 3D Tilt Card Component
+// 3D Tilt Card Component with Luxury Royal Navy & White Aesthetic
 const TiltCard = ({ children, bgImage }) => {
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
   const handleMouseMove = (e) => {
@@ -39,18 +39,18 @@ const TiltCard = ({ children, bgImage }) => {
     <div 
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative h-[450px] rounded-2xl overflow-hidden shadow-2xl cursor-pointer"
+      className="relative h-[450px] rounded-3xl overflow-hidden shadow-[0_15px_35px_rgba(15,23,42,0.18)] hover:shadow-[0_25px_50px_rgba(30,58,138,0.3)] cursor-pointer border border-slate-100/50"
       style={{
         transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) scale3d(1.02, 1.02, 1.02)`,
         transformStyle: 'preserve-3d',
-        transition: 'transform 0.1s ease-out'
+        transition: 'transform 0.1s ease-out, box-shadow 0.3s ease'
       }}
     >
       <div 
         className="absolute inset-0 bg-cover bg-center transition-transform duration-500" 
         style={{ backgroundImage: `url(${bgImage})`, transform: 'translateZ(-50px) scale(1.15)' }}
       ></div>
-      <div className="absolute inset-0 bg-gradient-to-t from-[#00523e]/90 via-[#00523e]/40 to-transparent" style={{ transform: 'translateZ(0)' }}></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-[#09152b] via-[#0f284e]/60 to-transparent" style={{ transform: 'translateZ(0)' }}></div>
       <div className="absolute bottom-0 left-0 p-8 w-full" style={{ transform: 'translateZ(60px)' }}>
         {children}
       </div>
@@ -58,7 +58,7 @@ const TiltCard = ({ children, bgImage }) => {
   );
 };
 
-// 100% Reliable Native 3D Interactive Campus Explorer Component
+// 100% Reliable Native 3D Interactive Campus Explorer Component (Royal Navy Theme)
 const Campus3DExplorer = ({ lang = 'EN' }) => {
   const [rotateX, setRotateX] = useState(55);
   const [rotateZ, setRotateZ] = useState(35);
@@ -71,36 +71,36 @@ const Campus3DExplorer = ({ lang = 'EN' }) => {
 
   const buildingsData = {
     EN: [
-      { id: 'main', name: 'Discovery Academic Hall', type: 'Academic', x: 220, y: 180, height: 110, color: '#f2a900', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: 'Central academic hub of SSS featuring modern lecture halls, collaborative student study zones, and administrative leadership offices.' },
-      { id: 'stem', name: 'STEM & Robotics Center', type: 'Technology', x: 380, y: 140, height: 95, color: '#00c49f', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: 'Cutting-edge biotech laboratories, makerspaces, 3D printing suites, and AI robotics testing arenas.' },
-      { id: 'arts', name: 'Performing Arts & Theater', type: 'Arts', x: 120, y: 320, height: 100, color: '#ff7300', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: 'State-of-the-art 650-seat auditorium, acoustics orchestra hall, black box drama theater, and fine arts sculpture studios.' },
-      { id: 'sports', name: 'Athletic Arena & Complex', type: 'Athletics', x: 400, y: 340, height: 80, color: '#0088fe', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: 'Olympic-length aquatic center, indoor basketball gymnasiums, strength & conditioning pavilion, and synthetic turf stadium.' },
-      { id: 'library', name: 'Learning Resource Library', type: 'Library', x: 260, y: 300, height: 85, color: '#9966ff', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: 'Over 50,000 volumes, silent study sanctuaries, multimedia creation suites, and worldwide research archive databases.' },
-      { id: 'nature', name: '75-Acre Forest Sanctuary', type: 'Outdoors', x: 100, y: 100, height: 40, color: '#22c55e', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: 'Pristine Pacific Northwest evergreen trails, outdoor learning amphitheaters, organic gardens, and ecological ponds.' }
+      { id: 'main', name: 'Discovery Academic Hall', type: 'Academic', x: 220, y: 180, height: 110, color: '#f59e0b', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: 'Central academic hub of SSS featuring modern lecture halls, collaborative student study zones, and administrative leadership offices.' },
+      { id: 'stem', name: 'STEM & Robotics Center', type: 'Technology', x: 380, y: 140, height: 95, color: '#38bdf8', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: 'Cutting-edge biotech laboratories, makerspaces, 3D printing suites, and AI robotics testing arenas.' },
+      { id: 'arts', name: 'Performing Arts & Theater', type: 'Arts', x: 120, y: 320, height: 100, color: '#f43f5e', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: 'State-of-the-art 650-seat auditorium, acoustics orchestra hall, black box drama theater, and fine arts sculpture studios.' },
+      { id: 'sports', name: 'Athletic Arena & Complex', type: 'Athletics', x: 400, y: 340, height: 80, color: '#6366f1', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: 'Olympic-length aquatic center, indoor basketball gymnasiums, strength & conditioning pavilion, and synthetic turf stadium.' },
+      { id: 'library', name: 'Learning Resource Library', type: 'Library', x: 260, y: 300, height: 85, color: '#a855f7', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: 'Over 50,000 volumes, silent study sanctuaries, multimedia creation suites, and worldwide research archive databases.' },
+      { id: 'nature', name: '75-Acre Forest Sanctuary', type: 'Outdoors', x: 100, y: 100, height: 40, color: '#10b981', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: 'Pristine Pacific Northwest evergreen trails, outdoor learning amphitheaters, organic gardens, and ecological ponds.' }
     ],
     TH: [
-      { id: 'main', name: 'อาคารวิชาการหลัก Discovery Hall', type: 'วิชาการ', x: 220, y: 180, height: 110, color: '#f2a900', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: 'ศูนย์กลางวิชาการของ SSS ประกอบด้วยห้องบรรยายทันสมัย พื้นที่ทำงานร่วมกันของนักเรียน และสำนักงานบริหารโรงเรียน' },
-      { id: 'stem', name: 'ศูนย์นวัตกรรม STEM และหุ่นยนต์', type: 'เทคโนโลยี', x: 380, y: 140, height: 95, color: '#00c49f', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: 'ห้องปฏิบัติการวิทยาศาสตร์ขั้นสูง ศูนย์วิจัยหุ่นยนต์ AI เครื่องพิมพ์ 3 มิติ และห้องทดลองชีววิทยาศาสตร์' },
-      { id: 'arts', name: 'ศูนย์ศิลปะการแสดงและโรงละคร', type: 'ศิลปะ', x: 120, y: 320, height: 100, color: '#ff7300', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: 'หอประชุมและโรงละคร 650 ที่นั่ง ห้องซ้อมดนตรีออร์เคสตรามาตรฐานระดับโลก และสตูดิโอประติมากรรม' },
-      { id: 'sports', name: 'ศูนย์กีฬาและสระว่ายน้ำโอลิมปิก', type: 'กีฬา', x: 400, y: 340, height: 80, color: '#0088fe', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: 'สระว่ายน้ำมาตรฐานโอลิมปิก สนามบาสเกตบอลในร่ม สนามฟุตบอลหญ้าเทียม และศูนย์ฟิตเนสครบวงจร' },
-      { id: 'library', name: 'หอสมุดและศูนย์วิทยบริการ', type: 'ห้องสมุด', x: 260, y: 300, height: 85, color: '#9966ff', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: 'หนังสือและสื่อค้นคว้ากว่า 50,000 รายการ พื้นที่อ่านหนังสือเงียบสงบ และระบบฐานข้อมูลวิจัยดิจิทัลระดับสากล' },
-      { id: 'nature', name: 'พื้นที่ป่าธรรมชาติ 75 เอเคอร์ (190 ไร่)', type: 'ธรรมชาติ', x: 100, y: 100, height: 40, color: '#22c55e', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: 'เส้นทางเดินสำรวจธรรมชาติอันอุดมสมบูรณ์ ลานเรียนรู้กลางแจ้ง สวนเกษตรอินทรีย์ และสระน้ำเชิงนิเวศ' }
+      { id: 'main', name: 'อาคารวิชาการหลัก Discovery Hall', type: 'วิชาการ', x: 220, y: 180, height: 110, color: '#f59e0b', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: 'ศูนย์กลางวิชาการของ SSS ประกอบด้วยห้องบรรยายทันสมัย พื้นที่ทำงานร่วมกันของนักเรียน และสำนักงานบริหารโรงเรียน' },
+      { id: 'stem', name: 'ศูนย์นวัตกรรม STEM และหุ่นยนต์', type: 'เทคโนโลยี', x: 380, y: 140, height: 95, color: '#38bdf8', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: 'ห้องปฏิบัติการวิทยาศาสตร์ขั้นสูง ศูนย์วิจัยหุ่นยนต์ AI เครื่องพิมพ์ 3 มิติ และห้องทดลองชีววิทยาศาสตร์' },
+      { id: 'arts', name: 'ศูนย์ศิลปะการแสดงและโรงละคร', type: 'ศิลปะ', x: 120, y: 320, height: 100, color: '#f43f5e', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: 'หอประชุมและโรงละคร 650 ที่นั่ง ห้องซ้อมดนตรีออร์เคสตรามาตรฐานระดับโลก และสตูดิโอประติมากรรม' },
+      { id: 'sports', name: 'ศูนย์กีฬาและสระว่ายน้ำโอลิมปิก', type: 'กีฬา', x: 400, y: 340, height: 80, color: '#6366f1', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: 'สระว่ายน้ำมาตรฐานโอลิมปิก สนามบาสเกตบอลในร่ม สนามฟุตบอลหญ้าเทียม และศูนย์ฟิตเนสครบวงจร' },
+      { id: 'library', name: 'หอสมุดและศูนย์วิทยบริการ', type: 'ห้องสมุด', x: 260, y: 300, height: 85, color: '#a855f7', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: 'หนังสือและสื่อค้นคว้ากว่า 50,000 รายการ พื้นที่อ่านหนังสือเงียบสงบ และระบบฐานข้อมูลวิจัยดิจิทัลระดับสากล' },
+      { id: 'nature', name: 'พื้นที่ป่าธรรมชาติ 75 เอเคอร์ (190 ไร่)', type: 'ธรรมชาติ', x: 100, y: 100, height: 40, color: '#10b981', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: 'เส้นทางเดินสำรวจธรรมชาติอันอุดมสมบูรณ์ ลานเรียนรู้กลางแจ้ง สวนเกษตรอินทรีย์ และสระน้ำเชิงนิเวศ' }
     ],
     CN: [
-      { id: 'main', name: 'SSS探索主教学楼 Discovery Hall', type: '学术', x: 220, y: 180, height: 110, color: '#f2a900', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: 'SSS核心教学主楼，配备现代化多功能阶梯教室、学生协同研讨区及学校行政办公中心。' },
-      { id: 'stem', name: 'STEM人工智能与科研中心', type: '科技', x: 380, y: 140, height: 95, color: '#00c49f', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: '配备前沿生物科学实验室、创客工坊、3D打印研发套件及AI机器人竞技训练场。' },
-      { id: 'arts', name: '大剧院与表演艺术中心', type: '艺术', x: 120, y: 320, height: 100, color: '#ff7300', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: '拥有650座的专业声学剧场、交响乐排练大厅、黑匣子实验剧场及雕塑艺术工作室。' },
-      { id: 'sports', name: '综合体育中心与游泳馆', type: '体育', x: 400, y: 340, height: 80, color: '#0088fe', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: '国际奥林匹克标准恒温泳池、室内篮球馆、专业健身房及全天候人工草坪运动场。' },
-      { id: 'library', name: '学术图书馆与信息资源中心', type: '图书馆', x: 260, y: 300, height: 85, color: '#9966ff', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: '馆藏50,000余册实体学术典籍，设静谧自习专区、多媒体交互研讨室及全球数字文献库。' },
-      { id: 'nature', name: '75英亩自然生态探究林区', type: '户外生态', x: 100, y: 100, height: 40, color: '#22c55e', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: '纯净的常青树森林步道、户外圆形阶梯剧场、有机植物研习园及生态湿地探索区。' }
+      { id: 'main', name: 'SSS探索主教学楼 Discovery Hall', type: '学术', x: 220, y: 180, height: 110, color: '#f59e0b', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: 'SSS核心教学主楼，配备现代化多功能阶梯教室、学生协同研讨区及学校行政办公中心。' },
+      { id: 'stem', name: 'STEM人工智能与科研中心', type: '科技', x: 380, y: 140, height: 95, color: '#38bdf8', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: '配备前沿生物科学实验室、创客工坊、3D打印研发套件及AI机器人竞技训练场。' },
+      { id: 'arts', name: '大剧院与表演艺术中心', type: '艺术', x: 120, y: 320, height: 100, color: '#f43f5e', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: '拥有650座的专业声学剧场、交响乐排练大厅、黑匣子实验剧场及雕塑艺术工作室。' },
+      { id: 'sports', name: '综合体育中心与游泳馆', type: '体育', x: 400, y: 340, height: 80, color: '#6366f1', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: '国际奥林匹克标准恒温泳池、室内篮球馆、专业健身房及全天候人工草坪运动场。' },
+      { id: 'library', name: '学术图书馆与信息资源中心', type: '图书馆', x: 260, y: 300, height: 85, color: '#a855f7', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: '馆藏50,000余册实体学术典籍，设静谧自习专区、多媒体交互研讨室及全球数字文献库。' },
+      { id: 'nature', name: '75英亩自然生态探究林区', type: '户外生态', x: 100, y: 100, height: 40, color: '#10b981', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: '纯净的常青树森林步道、户外圆形阶梯剧场、有机植物研习园及生态湿地探索区。' }
     ],
     JP: [
-      { id: 'main', name: 'SSSディスカバリー本校舎', type: '学術', x: 220, y: 180, height: 110, color: '#f2a900', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: '最新の講義室、生徒の協働学習ラウンジ、学校本部が集約されたSSSキャンパスの中心校舎。' },
-      { id: 'stem', name: 'STEM＆ロボティクス先端棟', type: 'テクノロジー', x: 380, y: 140, height: 95, color: '#00c49f', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: '最先端のバイオ実験室、メイカースペース、3Dプリンティング設備、AIロボット実証フィールド。' },
-      { id: 'arts', name: 'パフォーミングアーツ大劇場', type: '芸術', x: 120, y: 320, height: 100, color: '#ff7300', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: '音響設計に優れた650席の大講堂、オーケストラホール、ブラックボックステアター、造形アトリエ。' },
-      { id: 'sports', name: '総合アリーナ＆オリンピックプール', type: 'スポーツ', x: 400, y: 340, height: 80, color: '#0088fe', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: 'オリンピック規格の温水プール、屋内バスケットボールコート、トレーニング施設、全天候型スタジアム。' },
-      { id: 'library', name: '学術図書館・メディアセンター', type: '図書館', x: 260, y: 300, height: 85, color: '#9966ff', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: '5万冊以上の蔵書を誇り、静寂な個別自習ブース、マルチメディア編集室、デジタル論文DBを完備。' },
-      { id: 'nature', name: '75エーカー自然保護林・野外教室', type: '大自然', x: 100, y: 100, height: 40, color: '#22c55e', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: '広大な常緑樹の森林トレイル、オープンエアの野外円形教室、有機ガーデン、自然観察池。' }
+      { id: 'main', name: 'SSSディスカバリー本校舎', type: '学術', x: 220, y: 180, height: 110, color: '#f59e0b', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800', desc: '最新の講義室、生徒の協働学習ラウンジ、学校本部が集約されたSSSキャンパスの中心校舎。' },
+      { id: 'stem', name: 'STEM＆ロボティクス先端棟', type: 'テクノロジー', x: 380, y: 140, height: 95, color: '#38bdf8', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800', desc: '最先端のバイオ実験室、メイカースペース、3Dプリンティング設備、AIロボット実証フィールド。' },
+      { id: 'arts', name: 'パフォーミングアーツ大劇場', type: '芸術', x: 120, y: 320, height: 100, color: '#f43f5e', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800', desc: '音響設計に優れた650席の大講堂、オーケストラホール、ブラックボックステアター、造形アトリエ。' },
+      { id: 'sports', name: '総合アリーナ＆オリンピックプール', type: 'スポーツ', x: 400, y: 340, height: 80, color: '#6366f1', img: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800', desc: 'オリンピック規格の温水プール、屋内バスケットボールコート、トレーニング施設、全天候型スタジアム。' },
+      { id: 'library', name: '学術図書館・メディアセンター', type: '図書館', x: 260, y: 300, height: 85, color: '#a855f7', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800', desc: '5万冊以上の蔵書を誇り、静寂な個別自習ブース、マルチメディア編集室、デジタル論文DBを完備。' },
+      { id: 'nature', name: '75エーカー自然保護林・野外教室', type: '大自然', x: 100, y: 100, height: 40, color: '#10b981', img: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800', desc: '広大な常緑樹の森林トレイル、オープンエアの野外円形教室、有機ガーデン、自然観察池。' }
     ]
   };
 
@@ -153,21 +153,21 @@ const Campus3DExplorer = ({ lang = 'EN' }) => {
   };
 
   return (
-    <div className="w-full relative select-none rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] border border-white/15 bg-gradient-to-b from-[#0a1410] via-[#020906] to-[#010403]">
+    <div className="w-full relative select-none rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(15,23,42,0.9)] border border-blue-500/20 bg-gradient-to-b from-[#0a192f] via-[#020c1b] to-[#01060f]">
       
       {/* Top Floating Control Bar */}
       <div className="absolute top-6 left-6 right-6 z-30 flex flex-wrap justify-between items-center gap-4 pointer-events-none">
-        <div className="flex items-center gap-2 pointer-events-auto bg-black/70 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 text-xs font-bold text-white shadow-lg">
-          <Sparkles size={14} className="text-[#f2a900]" />
-          <span>SSS 3D LIVE DIGITAL TWIN</span>
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-1"></span>
+        <div className="flex items-center gap-2 pointer-events-auto bg-slate-900/80 backdrop-blur-md px-4 py-2 rounded-full border border-blue-400/30 text-xs font-bold text-white shadow-xl">
+          <Sparkles size={14} className="text-[#f59e0b]" />
+          <span className="tracking-wider">SSS 3D LIVE DIGITAL TWIN</span>
+          <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse ml-1"></span>
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-2 pointer-events-auto bg-black/70 backdrop-blur-md p-1.5 rounded-full border border-white/20 shadow-lg">
+        <div className="flex items-center gap-2 pointer-events-auto bg-slate-900/80 backdrop-blur-md p-1.5 rounded-full border border-blue-400/30 shadow-xl">
           <button 
             onClick={() => setAutoRotate(!autoRotate)} 
-            className={`p-2 rounded-full transition-all text-xs font-bold flex items-center gap-1.5 ${autoRotate ? 'bg-[#00523e] text-emerald-300' : 'bg-white/10 text-white hover:bg-white/20'}`}
+            className={`p-2 rounded-full transition-all text-xs font-bold flex items-center gap-1.5 ${autoRotate ? 'bg-blue-600 text-white shadow-md' : 'bg-white/10 text-white hover:bg-white/20'}`}
             title="Auto Rotate"
           >
             {autoRotate ? <Pause size={14} /> : <Play size={14} />}
@@ -183,8 +183,8 @@ const Campus3DExplorer = ({ lang = 'EN' }) => {
           <button onClick={resetView} className="p-2 text-white hover:bg-white/20 rounded-full transition-colors" title="Reset Camera">
             <RotateCcw size={16} />
           </button>
-          <button onClick={() => setActiveTheme(activeTheme === 'day' ? 'night' : 'day')} className="px-3 py-1 text-xs font-bold text-[#f2a900] hover:bg-white/10 rounded-full transition-colors">
-            {activeTheme === 'day' ? '🌙 Night Mode' : '☀️ Day Mode'}
+          <button onClick={() => setActiveTheme(activeTheme === 'day' ? 'night' : 'day')} className="px-3 py-1 text-xs font-bold text-[#f59e0b] hover:bg-white/10 rounded-full transition-colors">
+            {activeTheme === 'day' ? '🌙 Night Glow' : '☀️ Royal Day'}
           </button>
         </div>
       </div>
@@ -199,8 +199,8 @@ const Campus3DExplorer = ({ lang = 'EN' }) => {
         onWheel={handleWheel}
         style={{ perspective: '1200px' }}
       >
-        {/* Background Grid & Ambient Glow */}
-        <div className={`absolute inset-0 transition-opacity duration-700 pointer-events-none ${activeTheme === 'night' ? 'bg-[radial-gradient(circle_at_center,#00523e_0%,#000_70%)]' : 'bg-[radial-gradient(circle_at_center,#022c22_0%,#000_80%)]'}`}></div>
+        {/* Background Grid & Ambient Royal Glow */}
+        <div className={`absolute inset-0 transition-opacity duration-700 pointer-events-none ${activeTheme === 'night' ? 'bg-[radial-gradient(circle_at_center,#1e3a8a_0%,#020617_75%)]' : 'bg-[radial-gradient(circle_at_center,#172554_0%,#020617_85%)]'}`}></div>
         
         {/* 3D World Transform Board */}
         <div 
@@ -212,23 +212,23 @@ const Campus3DExplorer = ({ lang = 'EN' }) => {
         >
           {/* Ground Terrain (75-Acre SSS Woodland Grid) */}
           <div 
-            className={`absolute inset-0 rounded-[3rem] border-4 shadow-[0_0_80px_rgba(0,82,62,0.6)] transition-colors duration-500 ${activeTheme === 'night' ? 'bg-[#021d15] border-emerald-500/40' : 'bg-[#043325] border-emerald-400/60'}`}
+            className={`absolute inset-0 rounded-[3rem] border-4 shadow-[0_0_80px_rgba(30,58,138,0.7)] transition-colors duration-500 ${activeTheme === 'night' ? 'bg-[#06152d] border-blue-400/40' : 'bg-[#0a1e3f] border-blue-400/60'}`}
             style={{ 
               transformStyle: 'preserve-3d',
-              backgroundImage: 'radial-gradient(#10b981 1.5px, transparent 1.5px), linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)',
+              backgroundImage: 'radial-gradient(#38bdf8 1.5px, transparent 1.5px), linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)',
               backgroundSize: '35px 35px, 70px 70px, 70px 70px'
             }}
           >
             {/* Campus Pathways / Trails */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-60">
-              <path d="M 80 80 Q 220 180 380 140 T 400 340 T 260 300 T 120 320 Z" fill="none" stroke="#f2a900" strokeWidth="4" strokeDasharray="8 6" />
-              <path d="M 220 180 L 260 300 L 380 140" fill="none" stroke="#6ee7b7" strokeWidth="3" />
-              <circle cx="280" cy="240" r="45" fill="rgba(16,185,129,0.2)" stroke="#34d399" strokeWidth="2" />
+            <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-70">
+              <path d="M 80 80 Q 220 180 380 140 T 400 340 T 260 300 T 120 320 Z" fill="none" stroke="#f59e0b" strokeWidth="4" strokeDasharray="8 6" />
+              <path d="M 220 180 L 260 300 L 380 140" fill="none" stroke="#93c5fd" strokeWidth="3" />
+              <circle cx="280" cy="240" r="45" fill="rgba(59,130,246,0.2)" stroke="#60a5fa" strokeWidth="2" />
             </svg>
 
             {/* Central Quad Lawn */}
-            <div className="absolute top-[200px] left-[200px] w-[140px] h-[100px] rounded-2xl bg-emerald-500/20 border-2 border-emerald-400/40 flex items-center justify-center">
-              <span className="text-[10px] font-black text-emerald-300 uppercase tracking-widest pointer-events-none">SSS CENTRAL QUAD</span>
+            <div className="absolute top-[200px] left-[200px] w-[140px] h-[100px] rounded-2xl bg-blue-500/20 border-2 border-blue-400/50 flex items-center justify-center shadow-inner">
+              <span className="text-[10px] font-black text-blue-200 uppercase tracking-widest pointer-events-none">SSS CENTRAL QUAD</span>
             </div>
 
             {/* Decorative Evergreen Trees */}
@@ -266,16 +266,16 @@ const Campus3DExplorer = ({ lang = 'EN' }) => {
               >
                 {/* 3D Extruded Building Mesh */}
                 <div 
-                  className={`w-full h-full rounded-xl transition-all duration-300 relative ${selectedBuilding?.id === b.id ? 'ring-4 ring-[#f2a900] shadow-[0_0_30px_#f2a900]' : 'group-hover:ring-2 group-hover:ring-white'}`}
+                  className={`w-full h-full rounded-xl transition-all duration-300 relative ${selectedBuilding?.id === b.id ? 'ring-4 ring-[#f59e0b] shadow-[0_0_35px_#f59e0b]' : 'group-hover:ring-2 group-hover:ring-white'}`}
                   style={{
                     backgroundColor: b.color,
                     transform: `translateZ(${b.height / 2}px)`,
-                    boxShadow: `0 0 25px ${b.color}80, inset 0 0 15px rgba(255,255,255,0.4)`
+                    boxShadow: `0 0 30px ${b.color}90, inset 0 0 15px rgba(255,255,255,0.4)`
                   }}
                 >
                   {/* Roof Glow */}
-                  <div className="absolute inset-1 rounded-lg bg-white/20 border border-white/40 flex items-center justify-center">
-                    <span className="text-[10px] font-black text-black/80 uppercase tracking-tighter truncate px-1">{b.type}</span>
+                  <div className="absolute inset-1 rounded-lg bg-white/25 border border-white/50 flex items-center justify-center">
+                    <span className="text-[10px] font-black text-slate-900 uppercase tracking-tighter truncate px-1">{b.type}</span>
                   </div>
                 </div>
 
@@ -287,11 +287,11 @@ const Campus3DExplorer = ({ lang = 'EN' }) => {
                     transformStyle: 'preserve-3d'
                   }}
                 >
-                  <div className="bg-black/90 text-white font-extrabold text-xs px-3 py-1 rounded-full border border-white/30 shadow-xl flex items-center gap-1.5 whitespace-nowrap backdrop-blur-md group-hover:scale-110 group-hover:border-[#f2a900] transition-all">
+                  <div className="bg-slate-950/90 text-white font-extrabold text-xs px-3 py-1 rounded-full border border-blue-400/40 shadow-2xl flex items-center gap-1.5 whitespace-nowrap backdrop-blur-md group-hover:scale-110 group-hover:border-[#f59e0b] transition-all">
                     <div className="w-2.5 h-2.5 rounded-full animate-ping" style={{ backgroundColor: b.color }}></div>
                     <span>{b.name}</span>
                   </div>
-                  <div className="w-1 h-3 bg-white/60"></div>
+                  <div className="w-1 h-3 bg-white/70"></div>
                 </div>
               </div>
             ))}
@@ -302,10 +302,10 @@ const Campus3DExplorer = ({ lang = 'EN' }) => {
 
       {/* Floating Selected Building Detail Card */}
       {selectedBuilding && (
-        <div className="absolute bottom-6 left-6 right-6 md:left-auto md:right-6 md:w-[380px] z-40 bg-black/90 backdrop-blur-xl p-6 rounded-2xl border-2 border-[#f2a900] shadow-[0_10px_40px_rgba(0,0,0,0.9)] animate-fade-in text-white">
+        <div className="absolute bottom-6 left-6 right-6 md:left-auto md:right-6 md:w-[380px] z-40 bg-slate-950/95 backdrop-blur-xl p-6 rounded-3xl border-2 border-[#f59e0b] shadow-[0_15px_50px_rgba(0,0,0,0.9)] animate-fade-in text-white">
           <div className="flex justify-between items-start mb-3">
             <div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#f2a900] bg-[#f2a900]/20 px-2 py-0.5 rounded border border-[#f2a900]/40">
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#f59e0b] bg-amber-400/20 px-2 py-0.5 rounded border border-[#f59e0b]/40">
                 {selectedBuilding.type}
               </span>
               <h4 className="text-xl font-black mt-1 text-white">{selectedBuilding.name}</h4>
@@ -315,23 +315,23 @@ const Campus3DExplorer = ({ lang = 'EN' }) => {
             </button>
           </div>
           
-          <img src={selectedBuilding.img} alt={selectedBuilding.name} className="w-full h-36 object-cover rounded-xl mb-3 shadow-md border border-white/10" />
+          <img src={selectedBuilding.img} alt={selectedBuilding.name} className="w-full h-36 object-cover rounded-2xl mb-3 shadow-md border border-white/10" />
           
-          <p className="text-xs text-gray-300 leading-relaxed mb-4">
+          <p className="text-xs text-slate-300 leading-relaxed mb-4 font-normal">
             {selectedBuilding.desc}
           </p>
 
           <div className="flex gap-2">
-            <button onClick={() => setSelectedBuilding(null)} className="flex-1 bg-[#00523e] hover:bg-[#003d2e] py-2 rounded-xl text-xs font-bold text-white transition-colors border border-emerald-500/40 flex items-center justify-center gap-1">
-              <Eye size={12} /> Explore More
+            <button onClick={() => setSelectedBuilding(null)} className="flex-1 bg-blue-900 hover:bg-blue-800 py-2.5 rounded-xl text-xs font-bold text-white transition-colors border border-blue-400/40 flex items-center justify-center gap-1.5 shadow-md">
+              <Eye size={14} /> Explore Campus Facilities
             </button>
           </div>
         </div>
       )}
 
       {/* Bottom Help Tip */}
-      <div className="absolute bottom-4 left-6 z-20 pointer-events-none hidden md:flex items-center gap-2 text-xs font-bold text-gray-400 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
-        <Compass size={14} className="text-[#f2a900]" />
+      <div className="absolute bottom-4 left-6 z-20 pointer-events-none hidden md:flex items-center gap-2 text-xs font-bold text-slate-300 bg-slate-900/70 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-white/10">
+        <Compass size={14} className="text-[#f59e0b]" />
         <span>Drag to rotate 3D view • Scroll wheel to zoom • Click any building for details</span>
       </div>
 
@@ -854,17 +854,17 @@ const LandingPage = () => {
   return (
     <div className="w-full min-h-screen font-sans bg-white text-slate-800 overflow-x-hidden">
       
-      {/* Utility Top Bar */}
-      <div className="hidden md:flex w-full bg-gradient-to-r from-[#003d2e] to-[#00523e] text-white py-2 px-8 justify-end text-xs font-semibold uppercase tracking-wider items-center gap-6 z-50 relative shadow-[0_5px_15px_rgba(0,0,0,0.3)] border-b border-white/10">
+      {/* Luxury Royal Navy Top Utility Bar */}
+      <div className="hidden md:flex w-full bg-gradient-to-r from-[#0c1b33] via-[#0f284e] to-[#0a192f] text-white py-2 px-8 justify-end text-xs font-semibold uppercase tracking-wider items-center gap-6 z-50 relative shadow-[0_5px_20px_rgba(10,25,47,0.4)] border-b border-blue-500/20">
         {t.utility.map(link => (
-          <span key={link.name} onClick={() => navigate(link.path)} className="hover:text-[#f2a900] cursor-pointer transition-transform hover:-translate-y-0.5 duration-200 block">{link.name}</span>
+          <span key={link.name} onClick={() => navigate(link.path)} className="hover:text-[#f59e0b] cursor-pointer transition-transform hover:-translate-y-0.5 duration-200 block">{link.name}</span>
         ))}
         
         {/* Colorful Country Flag Language Switcher */}
         <div className="relative ml-4 border-l border-white/20 pl-6">
           <button 
             onClick={() => setLangOpen(!langOpen)} 
-            className="flex items-center gap-2.5 bg-gradient-to-b from-white/25 to-white/10 hover:from-white/35 hover:to-white/15 px-3.5 py-1.5 rounded-full transition-all border border-white/30 shadow-[0_2px_8px_rgba(0,0,0,0.3)] active:scale-95 cursor-pointer"
+            className="flex items-center gap-2.5 bg-gradient-to-b from-white/20 to-white/5 hover:from-white/30 hover:to-white/10 px-3.5 py-1.5 rounded-full transition-all border border-blue-300/30 shadow-[0_2px_8px_rgba(0,0,0,0.3)] active:scale-95 cursor-pointer"
           >
             <FlagIcon code={currentLang.code} className="w-5 h-3.5 shadow-sm" />
             <span className="font-extrabold text-white text-xs tracking-wider">{currentLang.code}</span>
@@ -872,12 +872,12 @@ const LandingPage = () => {
           </button>
           
           {langOpen && (
-            <div className="absolute top-[125%] right-0 mt-1 w-44 bg-white rounded-xl shadow-[0_12px_30px_rgba(0,0,0,0.25)] border border-gray-100 overflow-hidden z-50 transform origin-top-right animate-fade-in" style={{ perspective: '1000px' }}>
+            <div className="absolute top-[125%] right-0 mt-1 w-44 bg-white rounded-2xl shadow-[0_15px_35px_rgba(15,23,42,0.25)] border border-slate-100 overflow-hidden z-50 transform origin-top-right animate-fade-in" style={{ perspective: '1000px' }}>
               {languages.map(lang => (
                 <div 
                   key={lang.code} 
                   onClick={() => changeLanguage(lang)} 
-                  className={`flex items-center gap-3 px-4 py-3 hover:bg-[#f0fdf4] cursor-pointer transition-all duration-150 border-b border-gray-50 last:border-0 ${currentLang.code === lang.code ? 'bg-[#f0fdf4] font-black text-[#00523e]' : 'text-gray-700'}`}
+                  className={`flex items-center gap-3 px-4 py-3 hover:bg-blue-50/80 cursor-pointer transition-all duration-150 border-b border-slate-50 last:border-0 ${currentLang.code === lang.code ? 'bg-blue-50 font-black text-blue-900' : 'text-slate-700'}`}
                 >
                   <FlagIcon code={lang.code} className="w-6 h-4 shadow-sm" />
                   <span className="font-bold text-xs uppercase tracking-wider">{lang.label}</span>
@@ -888,15 +888,20 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Main Navigation */}
-      <nav className={`w-full z-40 transition-all duration-500 ${isScrolled ? 'fixed top-0 bg-white/95 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.1)] py-4' : 'absolute top-12 bg-transparent py-6'} px-8 flex justify-between items-center`}>
+      {/* Main Luxury Navigation */}
+      <nav className={`w-full z-40 transition-all duration-500 ${isScrolled ? 'fixed top-0 bg-white/95 backdrop-blur-md shadow-[0_10px_30px_rgba(15,23,42,0.08)] py-4 border-b border-slate-100' : 'absolute top-12 bg-transparent py-6'} px-8 flex justify-between items-center`}>
         <div className="flex items-center gap-3 cursor-pointer group" onClick={() => window.scrollTo(0, 0)}>
-          <div className={`w-12 h-12 rounded-full flex items-center justify-center font-black text-2xl transition-all duration-300 group-hover:rotate-12 shadow-lg ${isScrolled ? 'bg-[#00523e] text-white' : 'bg-white text-[#00523e]'}`}>
+          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black text-2xl transition-all duration-300 group-hover:rotate-6 shadow-xl ${isScrolled ? 'bg-gradient-to-br from-[#0c1b33] to-[#1e3a8a] text-white border border-blue-900/30' : 'bg-white text-[#0c1b33] border border-white/50'}`}>
             S
           </div>
-          <span className={`text-3xl font-black tracking-tight uppercase transition-colors duration-300 ${isScrolled ? 'text-[#00523e]' : 'text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]'}`}>
-            SSS
-          </span>
+          <div className="flex flex-col">
+            <span className={`text-3xl font-black tracking-tight uppercase transition-colors duration-300 leading-none ${isScrolled ? 'text-[#0c1b33]' : 'text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]'}`}>
+              SSS
+            </span>
+            <span className={`text-[10px] font-extrabold uppercase tracking-widest ${isScrolled ? 'text-blue-900' : 'text-amber-300 drop-shadow-md'}`}>
+              ACADEMY
+            </span>
+          </div>
         </div>
 
         <div className="hidden lg:flex items-center gap-6 h-full">
@@ -907,12 +912,12 @@ const LandingPage = () => {
               onMouseEnter={() => setActiveDropdown(nav.name)}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              <span className={`font-bold uppercase tracking-wider text-[13px] flex items-center gap-1 cursor-pointer transition-colors ${isScrolled ? 'text-[#00523e] hover:text-[#f2a900]' : 'text-white drop-shadow-md hover:text-[#f2a900]'}`}>
-                {nav.name} <ChevronDown size={14} className={`transition-transform duration-300 ${activeDropdown === nav.name ? 'rotate-180' : ''}`} />
+              <span className={`font-bold uppercase tracking-wider text-[13px] flex items-center gap-1 cursor-pointer transition-colors ${isScrolled ? 'text-[#0c1b33] hover:text-[#f59e0b]' : 'text-white drop-shadow-md hover:text-[#f59e0b]'}`}>
+                {nav.name} <ChevronDown size={14} className={`transition-transform duration-300 ${activeDropdown === nav.name ? 'rotate-180 text-[#f59e0b]' : ''}`} />
               </span>
               
               <div 
-                className={`absolute top-[120%] left-0 w-64 bg-gradient-to-b from-[#00523e] to-[#003d2e] text-white shadow-[0_15px_35px_rgba(0,0,0,0.3)] border-t-4 border-[#f2a900] rounded-b-lg transition-all duration-300 transform origin-top ${activeDropdown === nav.name ? 'rotate-x-0 opacity-100 visible' : '-rotate-x-12 opacity-0 invisible'}`}
+                className={`absolute top-[120%] left-0 w-64 bg-gradient-to-b from-[#0c1b33] to-[#081224] text-white shadow-[0_20px_40px_rgba(10,25,47,0.4)] border-t-4 border-[#f59e0b] rounded-b-2xl transition-all duration-300 transform origin-top ${activeDropdown === nav.name ? 'rotate-x-0 opacity-100 visible' : '-rotate-x-12 opacity-0 invisible'}`}
                 style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}
               >
                 <div className="py-3 flex flex-col">
@@ -920,7 +925,7 @@ const LandingPage = () => {
                     <span 
                       key={sublink.path} 
                       onClick={() => { setActiveDropdown(null); navigate(`/page/${sublink.path}`); }}
-                      className="px-6 py-3 text-sm font-bold uppercase tracking-wider hover:bg-white/10 hover:text-[#f2a900] hover:pl-8 cursor-pointer transition-all duration-200 block border-b border-white/5 last:border-0"
+                      className="px-6 py-3 text-sm font-bold uppercase tracking-wider hover:bg-white/10 hover:text-[#f59e0b] hover:pl-8 cursor-pointer transition-all duration-200 block border-b border-white/5 last:border-0"
                     >
                       {sublink.name}
                     </span>
@@ -929,7 +934,7 @@ const LandingPage = () => {
               </div>
             </div>
           ))}
-          <button onClick={() => navigate('/apply')} className="bg-gradient-to-r from-[#f2a900] to-[#d89600] text-white px-7 py-3 ml-4 rounded-full font-bold uppercase tracking-wider text-[13px] hover:shadow-[0_0_20px_rgba(242,169,0,0.5)] hover:scale-105 transition-all active:scale-95 shadow-md">
+          <button onClick={() => navigate('/apply')} className="bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-slate-950 px-7 py-3 ml-4 rounded-full font-black uppercase tracking-wider text-[13px] hover:shadow-[0_0_25px_rgba(245,158,11,0.5)] hover:scale-105 transition-all active:scale-95 shadow-lg border border-amber-300/40">
             {t.inquireBtn}
           </button>
         </div>
@@ -944,21 +949,21 @@ const LandingPage = () => {
             <span className="font-bold text-white text-xs">{currentLang.code}</span>
           </button>
 
-          <div className="z-50 cursor-pointer p-2 rounded-full bg-white/10 backdrop-blur-md" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X size={28} className={isScrolled ? "text-[#00523e]" : "text-white"} /> : <Menu size={28} className={isScrolled ? "text-[#00523e]" : "text-white"} />}
+          <div className="z-50 cursor-pointer p-2 rounded-2xl bg-white/10 backdrop-blur-md" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? <X size={28} className={isScrolled ? "text-[#0c1b33]" : "text-white"} /> : <Menu size={28} className={isScrolled ? "text-[#0c1b33]" : "text-white"} />}
           </div>
         </div>
       </nav>
 
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 bg-[#00523e]/95 backdrop-blur-xl z-40 flex flex-col pt-28 px-8 pb-8 overflow-y-auto animate-fade-in">
+        <div className="fixed inset-0 bg-[#0c1b33]/98 backdrop-blur-2xl z-40 flex flex-col pt-28 px-8 pb-8 overflow-y-auto animate-fade-in text-white">
           <div className="flex gap-2 mb-6 pb-4 border-b border-white/20 overflow-x-auto">
             {languages.map(lang => (
               <button 
                 key={lang.code}
                 onClick={() => changeLanguage(lang)}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold ${currentLang.code === lang.code ? 'bg-[#f2a900] text-[#00523e] border-[#f2a900]' : 'bg-white/10 text-white border-white/20'}`}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold ${currentLang.code === lang.code ? 'bg-[#f59e0b] text-slate-950 border-[#f59e0b]' : 'bg-white/10 text-white border-white/20'}`}
               >
                 <FlagIcon code={lang.code} className="w-4 h-3" />
                 {lang.label}
@@ -966,16 +971,16 @@ const LandingPage = () => {
             ))}
           </div>
 
-          <div className="flex flex-col gap-6 text-white font-black text-2xl uppercase tracking-wider">
+          <div className="flex flex-col gap-6 font-black text-2xl uppercase tracking-wider">
             {t.mainNav.map(nav => (
               <div key={nav.name} className="flex flex-col border-b border-white/10 pb-4">
-                <span className="flex justify-between items-center mb-2">{nav.name}</span>
+                <span className="flex justify-between items-center mb-2 text-[#f59e0b]">{nav.name}</span>
                 <div className="flex flex-col gap-4 pl-4 mt-2">
                   {nav.links.map(sublink => (
                     <span 
                       key={sublink.path} 
                       onClick={() => { setMobileMenuOpen(false); navigate(`/page/${sublink.path}`); }}
-                      className="text-sm text-white/70 font-bold hover:text-[#f2a900] active:scale-95 transition-all"
+                      className="text-sm text-white/80 font-bold hover:text-[#f59e0b] active:scale-95 transition-all"
                     >
                       {sublink.name}
                     </span>
@@ -984,145 +989,153 @@ const LandingPage = () => {
               </div>
             ))}
             <div className="flex flex-col gap-4 mt-4 text-lg font-bold">
-               <span onClick={() => { setMobileMenuOpen(false); navigate('/login'); }} className="flex items-center gap-2 text-white bg-white/10 px-6 py-4 rounded-xl"><Users size={20}/> {t.studentLoginBtn}</span>
-               <span onClick={() => { setMobileMenuOpen(false); navigate('/admin/login'); }} className="flex items-center gap-2 text-white bg-white/10 px-6 py-4 rounded-xl"><ShieldAlert size={20}/> {t.staffLoginBtn}</span>
-               <span onClick={() => { setMobileMenuOpen(false); navigate('/apply'); }} className="flex items-center gap-2 text-[#00523e] bg-[#f2a900] px-6 py-4 rounded-xl">{t.inquireBtn} / {t.actionApply}</span>
+               <span onClick={() => { setMobileMenuOpen(false); navigate('/login'); }} className="flex items-center gap-2 text-white bg-white/10 px-6 py-4 rounded-2xl"><Users size={20}/> {t.studentLoginBtn}</span>
+               <span onClick={() => { setMobileMenuOpen(false); navigate('/admin/login'); }} className="flex items-center gap-2 text-white bg-blue-900/60 px-6 py-4 rounded-2xl border border-blue-400/30"><ShieldAlert size={20} className="text-[#f59e0b]"/> {t.staffLoginBtn}</span>
+               <span onClick={() => { setMobileMenuOpen(false); navigate('/apply'); }} className="flex items-center gap-2 text-slate-950 bg-gradient-to-r from-[#f59e0b] to-[#d97706] px-6 py-4 rounded-2xl font-black">{t.inquireBtn} / {t.actionApply}</span>
             </div>
           </div>
         </div>
       )}
 
-      {/* Hero Section */}
+      {/* Hero Section with Luxury Royal Navy Parallax Video Background */}
       <div className="relative w-full h-[100vh] overflow-hidden flex items-center justify-center pb-24 px-8 md:px-16" style={{ perspective: '1000px' }}>
         <div 
-          className="absolute inset-0 z-0 bg-[#00523e] scale-110"
+          className="absolute inset-0 z-0 bg-[#0c1b33] scale-110"
           style={{ transform: `translateY(${scrollY * 0.4}px)` }}
         >
           <iframe 
-            className="absolute top-1/2 left-1/2 w-[100vw] h-[56.25vw] min-h-[100vh] min-w-[177.77vh] -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-80 mix-blend-screen"
+            className="absolute top-1/2 left-1/2 w-[100vw] h-[56.25vw] min-h-[100vh] min-w-[177.77vh] -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-75 mix-blend-screen"
             src="https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&mute=1&controls=0&loop=1&playlist=ScMzIvxBSi4&showinfo=0&rel=0&modestbranding=1" 
             title="SSS Background" 
             frameBorder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
           ></iframe>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#00523e] via-black/40 to-transparent z-10"></div>
+        
+        {/* Luxury Navy & Black Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0c1b33] via-slate-950/60 to-black/40 z-10"></div>
         
         <div className="relative z-20 w-full max-w-7xl mx-auto flex flex-col items-center text-center mt-20" style={{ transform: `translateZ(${scrollY * 0.1}px)` }}>
-          <h1 className="text-5xl md:text-7xl lg:text-9xl font-black text-white uppercase tracking-tighter leading-none mb-6 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
-            {t.heroTitle1}<br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-white">{t.heroTitle2}</span>
+          <div className="inline-flex items-center gap-2 bg-blue-950/80 backdrop-blur-md px-5 py-2 rounded-full border border-blue-400/40 text-xs font-black uppercase tracking-widest text-[#f59e0b] mb-6 shadow-xl animate-fade-in">
+            <Sparkles size={14} /> SIMPLE SCHOOL SYSTEM (SSS)
+          </div>
+
+          <h1 className="text-5xl md:text-7xl lg:text-9xl font-black text-white uppercase tracking-tighter leading-none mb-6 drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
+            {t.heroTitle1}<br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-slate-200">{t.heroTitle2}</span>
           </h1>
-          <div className="w-32 h-2 bg-[#f2a900] mb-8 shadow-[0_0_15px_rgba(242,169,0,0.6)] rounded-full"></div>
-          <p className="text-xl md:text-2xl text-white font-medium max-w-3xl drop-shadow-xl mb-6 leading-relaxed">
+          <div className="w-32 h-2 bg-gradient-to-r from-[#f59e0b] to-[#d97706] mb-8 shadow-[0_0_20px_rgba(245,158,11,0.7)] rounded-full"></div>
+          <p className="text-xl md:text-2xl text-blue-100 font-medium max-w-3xl drop-shadow-xl mb-8 leading-relaxed">
             {t.heroDesc}
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto px-4 mt-6">
-            <button onClick={() => navigate('/login')} className="px-10 py-5 rounded-full bg-gradient-to-br from-[#f2a900] to-[#d89600] text-[#00523e] font-black text-lg md:text-xl hover:scale-105 transition-all shadow-[0_10px_30px_rgba(242,169,0,0.4)] active:scale-95 flex items-center justify-center gap-3 border border-[#ffca4f] group">
+          <div className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto px-4 mt-4">
+            <button onClick={() => navigate('/login')} className="px-10 py-5 rounded-full bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-slate-950 font-black text-lg md:text-xl hover:scale-105 transition-all shadow-[0_10px_35px_rgba(245,158,11,0.5)] active:scale-95 flex items-center justify-center gap-3 border border-amber-300 group">
               <Users size={28} className="group-hover:scale-125 transition-transform duration-300" /> {t.studentLoginBtn}
             </button>
-            <button onClick={() => navigate('/admin/login')} className="px-10 py-5 rounded-full bg-gradient-to-br from-[#00523e]/90 to-[#003d2e]/90 text-white font-black text-lg md:text-xl hover:scale-105 transition-all shadow-[0_10px_30px_rgba(0,82,62,0.6)] active:scale-95 flex items-center justify-center gap-3 border border-white/20 backdrop-blur-lg group">
-              <ShieldAlert size={28} className="group-hover:scale-125 transition-transform duration-300 text-[#f2a900]" /> {t.staffLoginBtn}
+            <button onClick={() => navigate('/admin/login')} className="px-10 py-5 rounded-full bg-gradient-to-r from-[#0c1b33]/90 to-[#1e3a8a]/90 text-white font-black text-lg md:text-xl hover:scale-105 transition-all shadow-[0_10px_35px_rgba(30,58,138,0.7)] active:scale-95 flex items-center justify-center gap-3 border border-blue-400/40 backdrop-blur-xl group">
+              <ShieldAlert size={28} className="group-hover:scale-125 transition-transform duration-300 text-[#f59e0b]" /> {t.staffLoginBtn}
             </button>
           </div>
         </div>
       </div>
 
-      {/* About SSS Section */}
-      <div className="w-full bg-[#00523e] text-white py-24 px-8 border-t border-[#f2a900]/30 shadow-inner z-30 relative">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16">
+      {/* About SSS Section (Royal Navy Background) */}
+      <div className="w-full bg-[#0c1b33] text-white py-28 px-8 border-t border-blue-500/20 shadow-inner z-30 relative">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 items-center">
           <div className="w-full md:w-1/2 flex flex-col justify-center">
-            <h2 className="text-5xl font-black uppercase tracking-tight mb-4 text-[#f2a900]">{t.aboutTitle}</h2>
-            <p className="text-2xl font-medium mb-8 leading-snug">{t.aboutSubtitle}</p>
+            <span className="text-xs font-black uppercase tracking-widest text-[#f59e0b] mb-2">Heritage of Distinction</span>
+            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4 text-white drop-shadow-sm">{t.aboutTitle}</h2>
+            <p className="text-2xl font-medium mb-8 leading-snug text-blue-100">{t.aboutSubtitle}</p>
             
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold uppercase tracking-wider mb-2 flex items-center gap-2"><Compass className="text-[#f2a900]" /> {t.ourPurposeTitle}</h3>
-              <p className="text-gray-300 leading-relaxed text-base">
+            <div className="mb-8 p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+              <h3 className="text-xl font-bold uppercase tracking-wider mb-2 flex items-center gap-2 text-[#f59e0b]"><Compass /> {t.ourPurposeTitle}</h3>
+              <p className="text-slate-300 leading-relaxed text-sm">
                 {t.ourPurposeDesc}
               </p>
             </div>
             
-            <div>
-              <h3 className="text-2xl font-bold uppercase tracking-wider mb-2 flex items-center gap-2"><Heart className="text-[#f2a900]" /> {t.ourPromiseTitle}</h3>
-              <p className="text-gray-300 leading-relaxed text-base">
+            <div className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+              <h3 className="text-xl font-bold uppercase tracking-wider mb-2 flex items-center gap-2 text-[#f59e0b]"><Heart /> {t.ourPromiseTitle}</h3>
+              <p className="text-slate-300 leading-relaxed text-sm">
                 {t.ourPromiseDesc}
               </p>
             </div>
           </div>
           <div className="w-full md:w-1/2">
-             <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=800" alt="About SSS" className="w-full h-full object-cover rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-4 border-white/10 hover:scale-[1.02] transition-transform duration-500" />
+             <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=800" alt="About SSS" className="w-full h-full object-cover rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.6)] border-4 border-blue-900/40 hover:scale-[1.02] transition-transform duration-500" />
           </div>
         </div>
       </div>
 
-      {/* SSS Comprehensive Stats */}
-      <div className="w-full bg-[#f4f4f4] py-32 px-8 text-center relative overflow-hidden">
-        <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-20 text-[#00523e]">{t.owlsEyeTitle}</h2>
+      {/* SSS Comprehensive Stats (Crisp White & Ice Slate) */}
+      <div className="w-full bg-[#f8fafc] py-32 px-8 text-center relative overflow-hidden border-y border-slate-200">
+        <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-20 text-[#0c1b33]">{t.owlsEyeTitle}</h2>
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          <div className="group hover:-translate-y-4 transition-transform duration-300 flex flex-col items-center">
-            <div className="text-7xl font-black text-[#f2a900] mb-4 group-hover:scale-110 transition-transform">{t.stat1Number}</div>
-            <p className="text-[#00523e] font-medium px-4">{t.stat1Desc}</p>
+          <div className="group hover:-translate-y-4 transition-transform duration-300 flex flex-col items-center p-8 rounded-3xl bg-white shadow-xl border border-slate-100">
+            <div className="text-7xl font-black text-blue-900 mb-4 group-hover:scale-110 transition-transform">{t.stat1Number}</div>
+            <p className="text-slate-600 font-bold px-2 text-sm">{t.stat1Desc}</p>
           </div>
-          <div className="group hover:-translate-y-4 transition-transform duration-300 flex flex-col items-center">
-            <div className="text-7xl font-black text-[#f2a900] mb-4 group-hover:scale-110 transition-transform">{t.stat2Number}</div>
-            <p className="text-[#00523e] font-medium px-4">{t.stat2Desc}</p>
+          <div className="group hover:-translate-y-4 transition-transform duration-300 flex flex-col items-center p-8 rounded-3xl bg-white shadow-xl border border-slate-100">
+            <div className="text-7xl font-black text-blue-900 mb-4 group-hover:scale-110 transition-transform">{t.stat2Number}</div>
+            <p className="text-slate-600 font-bold px-2 text-sm">{t.stat2Desc}</p>
           </div>
-          <div className="group hover:-translate-y-4 transition-transform duration-300 flex flex-col items-center">
-            <div className="text-7xl font-black text-[#f2a900] mb-4 group-hover:scale-110 transition-transform">{t.stat3Number}</div>
-            <p className="text-[#00523e] font-medium px-4">{t.stat3Desc}</p>
+          <div className="group hover:-translate-y-4 transition-transform duration-300 flex flex-col items-center p-8 rounded-3xl bg-white shadow-xl border border-slate-100">
+            <div className="text-7xl font-black text-[#d97706] mb-4 group-hover:scale-110 transition-transform">{t.stat3Number}</div>
+            <p className="text-slate-600 font-bold px-2 text-sm">{t.stat3Desc}</p>
           </div>
-          <div className="group hover:-translate-y-4 transition-transform duration-300 flex flex-col items-center">
-            <div className="text-7xl font-black text-[#f2a900] mb-4 group-hover:scale-110 transition-transform">{t.stat4Number}</div>
-            <p className="text-[#00523e] font-medium px-4">{t.stat4Desc}</p>
+          <div className="group hover:-translate-y-4 transition-transform duration-300 flex flex-col items-center p-8 rounded-3xl bg-white shadow-xl border border-slate-100">
+            <div className="text-7xl font-black text-blue-900 mb-4 group-hover:scale-110 transition-transform">{t.stat4Number}</div>
+            <p className="text-slate-600 font-bold px-2 text-sm">{t.stat4Desc}</p>
           </div>
         </div>
       </div>
 
-      {/* Our Campus Section */}
-      <div className="w-full bg-white py-24 px-8 relative overflow-hidden">
+      {/* Our Campus Section (Pure Crisp White) */}
+      <div className="w-full bg-white py-28 px-8 relative overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-[#00523e] uppercase tracking-tight mb-4">{t.campusTitle}</h2>
-            <p className="text-xl text-gray-500 font-medium max-w-3xl mx-auto">{t.campusSubtitle}</p>
+            <span className="text-xs font-black uppercase tracking-widest text-[#d97706] mb-2 inline-block">Inspiring Grounds</span>
+            <h2 className="text-4xl md:text-5xl font-black text-[#0c1b33] uppercase tracking-tight mb-4">{t.campusTitle}</h2>
+            <p className="text-xl text-slate-500 font-medium max-w-3xl mx-auto">{t.campusSubtitle}</p>
           </div>
 
           <div className="flex flex-col md:flex-row gap-12 items-center mb-16">
             <div className="w-full md:w-1/2">
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+              <p className="text-lg text-slate-700 leading-relaxed mb-6 font-medium">
                 {t.campusP1}
               </p>
-              <h3 className="text-2xl font-bold text-[#00523e] mb-4">{t.campusHighlight}</h3>
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+              <h3 className="text-2xl font-black text-[#0c1b33] mb-4">{t.campusHighlight}</h3>
+              <p className="text-lg text-slate-700 leading-relaxed mb-6 font-medium">
                 {t.campusP2}
               </p>
-              <div className="flex gap-4 font-bold text-[#f2a900] uppercase tracking-widest text-sm">
+              <div className="flex gap-4 font-black text-[#d97706] uppercase tracking-widest text-sm">
                 <span>{t.campusTags}</span>
               </div>
             </div>
             <div className="w-full md:w-1/2">
-               <img src="https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&q=80&w=800" alt="Campus" className="w-full h-[500px] object-cover rounded-3xl shadow-2xl" />
+               <img src="https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&q=80&w=800" alt="Campus" className="w-full h-[500px] object-cover rounded-3xl shadow-2xl border-4 border-slate-100" />
             </div>
           </div>
           
-          <div className="bg-[#f4f4f4] rounded-3xl p-10 md:p-16 text-center shadow-inner">
-            <h3 className="text-3xl font-black text-[#00523e] uppercase tracking-tight mb-6">{t.acresTitle}</h3>
-            <p className="text-lg text-gray-700 leading-relaxed max-w-4xl mx-auto">
+          <div className="bg-gradient-to-r from-blue-900 to-[#0c1b33] text-white rounded-3xl p-10 md:p-16 text-center shadow-2xl border border-blue-800/50">
+            <h3 className="text-3xl font-black uppercase tracking-tight mb-6 text-[#f59e0b]">{t.acresTitle}</h3>
+            <p className="text-lg text-blue-100 leading-relaxed max-w-4xl mx-auto">
               {t.acresDesc}
             </p>
           </div>
         </div>
       </div>
 
-      {/* 100% Reliable Native 3D Interactive Campus Map Explorer Section */}
-      <div className="w-full bg-[#050e0a] text-white py-32 px-4 md:px-8 relative overflow-hidden border-t-4 border-[#f2a900] shadow-[0_-20px_50px_rgba(0,0,0,0.8)] z-30">
+      {/* 100% Reliable Native 3D Interactive Campus Map Explorer Section (Royal Navy Deep Canvas) */}
+      <div className="w-full bg-[#050c18] text-white py-32 px-4 md:px-8 relative overflow-hidden border-t-4 border-[#f59e0b] shadow-[0_-20px_50px_rgba(0,0,0,0.9)] z-30">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           <div className="flex items-center gap-3 mb-4">
-            <MapPin size={32} className="text-[#f2a900] animate-bounce" />
-            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-white drop-shadow-[0_0_20px_rgba(242,169,0,0.4)] text-center">
+            <MapPin size={32} className="text-[#f59e0b] animate-bounce" />
+            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-white drop-shadow-[0_0_25px_rgba(245,158,11,0.5)] text-center">
               {t.tourTitle}
             </h2>
           </div>
-          <p className="text-gray-400 mb-12 text-center max-w-2xl text-base md:text-lg">
+          <p className="text-blue-200 mb-12 text-center max-w-2xl text-base md:text-lg">
             {t.tourDesc}
           </p>
           
@@ -1132,11 +1145,12 @@ const LandingPage = () => {
       </div>
 
       {/* Only at SSS (Grid with 3D Tilt Cards) */}
-      <div className="w-full bg-gradient-to-b from-white to-gray-50 py-32 px-8 overflow-hidden relative">
+      <div className="w-full bg-gradient-to-b from-[#f8fafc] to-white py-32 px-8 overflow-hidden relative">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-black text-[#00523e] uppercase tracking-tight mb-4 drop-shadow-sm">{t.onlyTitle}</h2>
-            <p className="text-gray-500 font-medium text-xl">{t.onlySubtitle}</p>
+            <span className="text-xs font-black uppercase tracking-widest text-[#d97706] mb-2 inline-block">Signature SSS Pillars</span>
+            <h2 className="text-4xl md:text-6xl font-black text-[#0c1b33] uppercase tracking-tight mb-4 drop-shadow-sm">{t.onlyTitle}</h2>
+            <p className="text-slate-500 font-bold text-xl">{t.onlySubtitle}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -1152,8 +1166,8 @@ const LandingPage = () => {
               return (
                 <TiltCard key={card.title} bgImage={images[idx % images.length]}>
                   <h3 className="text-2xl font-black text-white uppercase tracking-tight mb-2">{card.title}</h3>
-                  <p className="text-white/90 text-sm mb-4">{card.desc}</p>
-                  <div className="text-[#f2a900] font-black uppercase text-xs tracking-widest flex items-center gap-2 bg-black/40 w-max px-3 py-1.5 rounded-full backdrop-blur-sm border border-white/10 hover:bg-[#f2a900] hover:text-[#00523e] transition-colors">
+                  <p className="text-blue-100 text-sm mb-4 font-medium">{card.desc}</p>
+                  <div className="text-[#f59e0b] font-black uppercase text-xs tracking-widest flex items-center gap-2 bg-slate-950/70 w-max px-3.5 py-1.5 rounded-full backdrop-blur-md border border-white/20 hover:bg-[#f59e0b] hover:text-slate-950 transition-colors">
                     {t.exploreBtn} <ArrowRight size={14} />
                   </div>
                 </TiltCard>
@@ -1163,37 +1177,43 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Here's what makes us, us */}
-      <div className="w-full bg-[#00523e] py-32 px-8 text-white relative">
+      {/* Here's what makes us, us (Royal Navy Deep Theme) */}
+      <div className="w-full bg-[#0c1b33] py-32 px-8 text-white relative">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4 text-[#f2a900]">{t.makesUsTitle}</h2>
-            <p className="text-xl font-medium max-w-3xl mx-auto text-white/90">{t.makesUsSubtitle}</p>
-            <p className="text-lg text-[#f2a900] mt-4 font-bold">{t.chartPath}</p>
+            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4 text-[#f59e0b]">{t.makesUsTitle}</h2>
+            <p className="text-xl font-medium max-w-3xl mx-auto text-blue-100">{t.makesUsSubtitle}</p>
+            <p className="text-lg text-white mt-4 font-black">{t.chartPath}</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-             <div className="bg-white/5 p-10 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors">
-                <BookOpen size={48} className="text-[#f2a900] mb-6" />
-                <h3 className="text-3xl font-black uppercase mb-4">{t.pillars[0].title}</h3>
-                <p className="text-gray-300 leading-relaxed">{t.pillars[0].desc}</p>
+             <div className="bg-white/5 p-10 rounded-3xl border border-white/10 hover:bg-white/10 transition-all shadow-xl">
+                <BookOpen size={48} className="text-[#f59e0b] mb-6" />
+                <h3 className="text-3xl font-black uppercase mb-4 text-white">{t.pillars[0].title}</h3>
+                <p className="text-slate-300 leading-relaxed text-sm">{t.pillars[0].desc}</p>
              </div>
-             <div className="bg-white/5 p-10 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors">
-                <Users size={48} className="text-[#f2a900] mb-6" />
-                <h3 className="text-3xl font-black uppercase mb-4">{t.pillars[1].title}</h3>
-                <p className="text-gray-300 leading-relaxed">{t.pillars[1].desc}</p>
+             <div className="bg-white/5 p-10 rounded-3xl border border-white/10 hover:bg-white/10 transition-all shadow-xl">
+                <Users size={48} className="text-[#f59e0b] mb-6" />
+                <h3 className="text-3xl font-black uppercase mb-4 text-white">{t.pillars[1].title}</h3>
+                <p className="text-slate-300 leading-relaxed text-sm">{t.pillars[1].desc}</p>
              </div>
-             <div className="bg-white/5 p-10 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors">
-                <ArrowRight size={48} className="text-[#f2a900] mb-6" />
-                <h3 className="text-3xl font-black uppercase mb-4">{t.pillars[2].title}</h3>
-                <p className="text-gray-300 leading-relaxed">{t.pillars[2].desc}</p>
+             <div className="bg-white/5 p-10 rounded-3xl border border-white/10 hover:bg-white/10 transition-all shadow-xl">
+                <ArrowRight size={48} className="text-[#f59e0b] mb-6" />
+                <h3 className="text-3xl font-black uppercase mb-4 text-white">{t.pillars[2].title}</h3>
+                <p className="text-slate-300 leading-relaxed text-sm">{t.pillars[2].desc}</p>
              </div>
           </div>
           
           <div className="mt-20 flex flex-col sm:flex-row justify-center gap-6">
-            <button onClick={() => navigate('/apply')} className="bg-[#f2a900] text-[#00523e] px-10 py-4 font-bold uppercase tracking-widest hover:bg-white transition-colors shadow-lg rounded-full">{t.actionInquire}</button>
-            <button onClick={() => navigate('/apply')} className="bg-transparent border-2 border-white text-white px-10 py-4 font-bold uppercase tracking-widest hover:bg-white hover:text-[#00523e] transition-colors shadow-lg rounded-full">{t.actionVisit}</button>
-            <button onClick={() => navigate('/apply')} className="bg-transparent border-2 border-[#f2a900] text-[#f2a900] px-10 py-4 font-bold uppercase tracking-widest hover:bg-[#f2a900] hover:text-[#00523e] transition-colors shadow-lg rounded-full">{t.actionApply}</button>
+            <button onClick={() => navigate('/apply')} className="bg-[#f59e0b] text-slate-950 px-10 py-4 font-black uppercase tracking-widest hover:bg-white transition-colors shadow-2xl rounded-full">
+              {t.actionInquire}
+            </button>
+            <button onClick={() => navigate('/apply')} className="bg-transparent border-2 border-white text-white px-10 py-4 font-black uppercase tracking-widest hover:bg-white hover:text-[#0c1b33] transition-colors shadow-2xl rounded-full">
+              {t.actionVisit}
+            </button>
+            <button onClick={() => navigate('/apply')} className="bg-gradient-to-r from-blue-700 to-indigo-600 text-white px-10 py-4 font-black uppercase tracking-widest hover:brightness-110 transition-all shadow-2xl rounded-full border border-blue-400/40">
+              {t.actionApply}
+            </button>
           </div>
         </div>
       </div>
@@ -1203,54 +1223,54 @@ const LandingPage = () => {
         {t.demoBanner}
       </div>
 
-      {/* Footer */}
-      <footer className="w-full bg-[#111] text-white py-16 px-8 relative z-30">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12 border-b border-gray-800 pb-12 mb-8">
+      {/* Footer (Luxury Midnight Black & Royal Navy) */}
+      <footer className="w-full bg-[#030914] text-white py-16 px-8 relative z-30 border-t border-slate-900">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12 border-b border-slate-800/80 pb-12 mb-8">
           <div className="flex items-start gap-5 max-w-sm">
-            <div className="w-16 h-16 bg-gradient-to-br from-[#00523e] to-[#00291f] text-white rounded-2xl shadow-[0_0_20px_rgba(0,82,62,0.5)] border border-[#00523e]/50 flex-shrink-0 flex items-center justify-center font-black text-4xl">S</div>
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-900 to-[#0c1b33] text-white rounded-2xl shadow-[0_0_25px_rgba(30,58,138,0.6)] border border-blue-500/40 flex-shrink-0 flex items-center justify-center font-black text-4xl">S</div>
             <div>
-              <div className="font-black text-2xl uppercase tracking-widest mb-2 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">Simple School System</div>
-              <div className="text-gray-400 text-sm leading-relaxed mb-6 font-medium whitespace-pre-line">{t.footerAddress}</div>
+              <div className="font-black text-2xl uppercase tracking-widest mb-2 text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200">Simple School System</div>
+              <div className="text-slate-400 text-sm leading-relaxed mb-6 font-medium whitespace-pre-line">{t.footerAddress}</div>
             </div>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 w-full md:w-auto flex-1 md:ml-12">
             <div>
-              <h4 className="font-black uppercase tracking-widest mb-6 text-[#f2a900] text-sm">{t.footerMeetTitle}</h4>
-              <ul className="space-y-3 text-sm font-bold text-gray-400">
+              <h4 className="font-black uppercase tracking-widest mb-6 text-[#f59e0b] text-sm">{t.footerMeetTitle}</h4>
+              <ul className="space-y-3 text-sm font-bold text-slate-400">
                 {t.mainNav[0].links.slice(0, 4).map(l => (
                   <li key={l.name} onClick={() => navigate(`/page/${l.path}`)} className="hover:text-white cursor-pointer transition-colors">{l.name}</li>
                 ))}
               </ul>
             </div>
             <div>
-              <h4 className="font-black uppercase tracking-widest mb-6 text-[#f2a900] text-sm">{t.footerAcademicsTitle}</h4>
-              <ul className="space-y-3 text-sm font-bold text-gray-400">
+              <h4 className="font-black uppercase tracking-widest mb-6 text-[#f59e0b] text-sm">{t.footerAcademicsTitle}</h4>
+              <ul className="space-y-3 text-sm font-bold text-slate-400">
                 {t.mainNav[1].links.slice(0, 4).map(l => (
                   <li key={l.name} onClick={() => navigate(`/page/${l.path}`)} className="hover:text-white cursor-pointer transition-colors">{l.name}</li>
                 ))}
               </ul>
             </div>
             <div>
-              <h4 className="font-black uppercase tracking-widest mb-6 text-[#f2a900] text-sm">{t.footerCommunityTitle}</h4>
-              <ul className="space-y-3 text-sm font-bold text-gray-400">
+              <h4 className="font-black uppercase tracking-widest mb-6 text-[#f59e0b] text-sm">{t.footerCommunityTitle}</h4>
+              <ul className="space-y-3 text-sm font-bold text-slate-400">
                 {t.mainNav[2].links.slice(0, 4).map(l => (
                   <li key={l.name} onClick={() => navigate(`/page/${l.path}`)} className="hover:text-white cursor-pointer transition-colors">{l.name}</li>
                 ))}
               </ul>
             </div>
             <div>
-              <h4 className="font-black uppercase tracking-widest mb-6 text-[#f2a900] text-sm">{t.footerAdmissionsTitle}</h4>
-              <ul className="space-y-3 text-sm font-bold text-gray-400">
+              <h4 className="font-black uppercase tracking-widest mb-6 text-[#f59e0b] text-sm">{t.footerAdmissionsTitle}</h4>
+              <ul className="space-y-3 text-sm font-bold text-slate-400">
                 {t.mainNav[3].links.slice(0, 3).map(l => (
                   <li key={l.name} onClick={() => navigate(`/page/${l.path}`)} className="hover:text-white cursor-pointer transition-colors">{l.name}</li>
                 ))}
-                <li onClick={() => navigate('/apply')} className="text-[#f2a900] hover:text-white cursor-pointer transition-colors">{t.actionApply}</li>
+                <li onClick={() => navigate('/apply')} className="text-[#f59e0b] hover:text-white cursor-pointer transition-colors">{t.actionApply}</li>
               </ul>
             </div>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center text-gray-500 text-xs gap-6 font-medium">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center text-slate-500 text-xs gap-6 font-medium">
           <div className="max-w-3xl leading-relaxed">
              {t.footerDisclaimer}
           </div>

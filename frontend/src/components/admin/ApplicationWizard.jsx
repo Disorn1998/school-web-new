@@ -328,7 +328,7 @@ const ApplicationWizard = ({ onClose, onSuccess }) => {
           </div>
           <div className="flex-1 text-center">
             <h1 className="text-2xl font-black uppercase tracking-widest text-slate-900">Application Form</h1>
-            <h2 className="text-lg font-semibold text-slate-600 mt-1">St. Mark's Portal School System</h2>
+            <h2 className="text-lg font-semibold text-slate-600 mt-1">Simple School System (SSS)</h2>
             <p className="text-sm mt-2 text-slate-500">Academic Year: {formData.enrollment_year} • Class: {getClassName(formData.year_id)}</p>
           </div>
         </div>
