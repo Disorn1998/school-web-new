@@ -62,14 +62,38 @@ const StudentLogin = () => {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
-                  onClick={() => { setUsername('STU20261'); setPassword('password'); }}
+                  onClick={async () => { 
+                    setUsername('STU20261'); 
+                    setPassword('password');
+                    setError('');
+                    setIsLoading(true);
+                    const result = await login('STU20261', 'password', 'student');
+                    if (result.success) {
+                      navigate('/student');
+                    } else {
+                      setError(result.message);
+                    }
+                    setIsLoading(false);
+                  }}
                   className="py-2.5 px-3 bg-brand-600 hover:bg-brand-500 rounded-lg text-sm text-white font-bold transition-all shadow-lg shadow-brand-500/20 active:scale-95 flex items-center justify-center gap-2"
                 >
                   Student
                 </button>
                 <button
                   type="button"
-                  onClick={() => { setUsername('parent1'); setPassword('password'); }}
+                  onClick={async () => { 
+                    setUsername('parent1'); 
+                    setPassword('password');
+                    setError('');
+                    setIsLoading(true);
+                    const result = await login('parent1', 'password', 'student');
+                    if (result.success) {
+                      navigate('/student');
+                    } else {
+                      setError(result.message);
+                    }
+                    setIsLoading(false);
+                  }}
                   className="py-2.5 px-3 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm text-white font-bold transition-all shadow-lg shadow-blue-500/20 active:scale-95 flex items-center justify-center gap-2"
                 >
                   Parent

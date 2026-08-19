@@ -60,14 +60,38 @@ const AdminLogin = () => {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
-                  onClick={() => { setUsername('admin'); setPassword('password'); }}
+                  onClick={async () => { 
+                    setUsername('admin'); 
+                    setPassword('password');
+                    setError('');
+                    setIsLoading(true);
+                    const result = await login('admin', 'password', 'admin');
+                    if (result.success) {
+                      navigate('/admin');
+                    } else {
+                      setError(result.message);
+                    }
+                    setIsLoading(false);
+                  }}
                   className="py-2.5 px-3 bg-brand-600 hover:bg-brand-500 rounded-lg text-sm text-white font-bold transition-all shadow-lg shadow-brand-500/20 active:scale-95 flex items-center justify-center gap-2"
                 >
                   Admin
                 </button>
                 <button
                   type="button"
-                  onClick={() => { setUsername('teacher1'); setPassword('password'); }}
+                  onClick={async () => { 
+                    setUsername('teacher1'); 
+                    setPassword('password');
+                    setError('');
+                    setIsLoading(true);
+                    const result = await login('teacher1', 'password', 'admin');
+                    if (result.success) {
+                      navigate('/admin');
+                    } else {
+                      setError(result.message);
+                    }
+                    setIsLoading(false);
+                  }}
                   className="py-2.5 px-3 bg-purple-600 hover:bg-purple-500 rounded-lg text-sm text-white font-bold transition-all shadow-lg shadow-purple-500/20 active:scale-95 flex items-center justify-center gap-2"
                 >
                   Teacher
