@@ -31,7 +31,7 @@ const StudentReportCardView = () => {
   useEffect(() => {
     const fetchSemesters = async () => {
       try {
-        const res = await api.get('/admin/settings/semesters');
+        const res = await api.get('/student/settings/semesters');
         setSemesters(res.data || []);
       } catch (err) {
         console.error(err);

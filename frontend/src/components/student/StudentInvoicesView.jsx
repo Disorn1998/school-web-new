@@ -29,7 +29,7 @@ const StudentInvoicesView = ({ activeStudentId }) => {
       const targetId = activeStudentId || user.id;
       // student_id passed here for mockup (in real app backend extracts from JWT)
       // but now our API supports ?student_id= query param for parent switching!
-      const res = await api.get(`/finance/my-invoices?student_id=${targetId}`);
+      const res = await api.get(`/student/invoices?student_id=${targetId}`);
       setInvoices(res.data || []);
     } catch (error) {
       console.error('Failed to fetch invoices', error);

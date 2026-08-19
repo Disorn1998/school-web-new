@@ -26,7 +26,7 @@ const StudentECAEnrollment = ({ currentStudent }) => {
   const fetchECAData = async () => {
     setIsLoading(true);
     try {
-      const semRes = await api.get('/admin/settings/semesters');
+      const semRes = await api.get('/student/settings/semesters');
       const activeSem = (semRes.data || []).find(s => s.status === 'ACTIVE') || (semRes.data || [])[0];
       
       if (activeSem) {

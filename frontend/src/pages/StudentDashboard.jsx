@@ -56,7 +56,7 @@ const StudentDashboard = () => {
         const activeProfile = siblings.find(s => s.id === activeStudentId);
         setProfile(activeProfile);
 
-        const homeworkRes = await api.get(`/student/homework?student_id=${activeStudentId}`);
+        const homeworkRes = await api.get(`/student/homework/${activeStudentId}`);
         setHomework(homeworkRes.data || []);
       } catch (error) {
         console.error('Failed to fetch student specific data', error);

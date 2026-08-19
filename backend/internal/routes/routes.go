@@ -187,6 +187,10 @@ func SetupRoutes(app *fiber.App) {
 	student.Get("/profile", handlers.GetMyProfile)
 	student.Get("/invoices", handlers.GetMyInvoices)
 	
+	// Expose Read-Only Settings to Students
+	student.Get("/settings/years", handlers.GetYears)
+	student.Get("/settings/semesters", handlers.GetSemesters)
+	
 	// Phase 13: Support Classes
 	student.Get("/support-classes", handlers.GetAllSupportClasses) // Student can see available classes
 	student.Post("/support-classes/enroll", handlers.EnrollSupportClass)
@@ -224,6 +228,7 @@ func SetupRoutes(app *fiber.App) {
 	// Phase 10: Student Library
 	student.Get("/library/books", handlers.GetLibraryBooks)
 	student.Get("/library/borrowings/:id", handlers.GetStudentBorrowings)
+	student.Post("/library/borrow", handlers.BorrowBook)
 
 	// Phase 11: Student Health & Evaluation
 	student.Get("/health/record/:id", handlers.GetStudentHealthRecord)

@@ -34,7 +34,7 @@ const StudentLibrary = ({ currentStudent }) => {
     if (!window.confirm('Do you want to borrow this book?')) return;
     setIsBorrowing(true);
     try {
-      await api.post('/admin/library/borrow', {
+      await api.post('/student/library/borrow', {
         book_id: bookId,
         student_id: currentStudent.id,
         days: 7
