@@ -47,7 +47,7 @@ func SetupRoutes(app *fiber.App) {
 	admin.Post("/upload", handlers.UploadImage)
 
 	// Admin & Teacher Protected Routes
-	adminRoutes := api.Group("/admin", middleware.RoleGuard("super", "officer", "teacher"))
+	adminRoutes := api.Group("/admin", middleware.Protected(), middleware.RoleGuard("super", "admin", "officer", "teacher"))
 
 	// Student Management
 	adminRoutes.Get("/students", handlers.GetAllStudents) 
@@ -68,7 +68,10 @@ func SetupRoutes(app *fiber.App) {
 	
 	adminRoutes.Get("/attendance/daily", handlers.GetDailyAttendance)
 	adminRoutes.Get("/attendance/report", handlers.GetMonthlyReport)
-	adminRoutes.Get("/attendance/report/yearly", handlers.GetYearlyReport)
+
+	// Admin Only Routes (Super/Officer)
+	adminOnlyRoutes := api.Group("/admin", middleware.Protected(), middleware.RoleGuard("super", "admin", "officer"))
+	adminOnlyRoutes.Get("/stats", handlers.GetDashboardStats)
 	adminRoutes.Post("/attendance/manual", handlers.ManualCheckIn)
 	adminRoutes.Post("/attendance/bulk", handlers.BulkCheckIn)
 	adminRoutes.Get("/attendance/student/:id", handlers.GetStudentAttendance)
@@ -164,10 +167,6 @@ func SetupRoutes(app *fiber.App) {
 
 	
 	// Removed student ECA from here
-
-	// Admin Only Routes (Super/Officer)
-	adminOnlyRoutes := api.Group("/admin", middleware.RoleGuard("super", "officer"))
-	adminOnlyRoutes.Get("/stats", handlers.GetDashboardStats)
 
 	// Settings & Academic Configurations
 	admin.Get("/settings/years", handlers.GetYears)

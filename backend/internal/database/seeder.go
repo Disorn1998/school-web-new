@@ -30,7 +30,7 @@ func SeedMockData() {
 	admin := models.Admin{
 		Username:     "admin",
 		PasswordHash: hashedPassword,
-		Role:         "Super Admin",
+		Role:         "super",
 		Email:        "admin@school.com",
 		Name:         "System Administrator",
 	}
@@ -38,9 +38,9 @@ func SeedMockData() {
 
 	// 4. Seed Teachers
 	teachers := []models.Admin{
-		{Username: "teacher1", PasswordHash: hashedPassword, Role: "Teacher", Name: "Kru Somsri", Email: "somsri@school.com"},
-		{Username: "teacher2", PasswordHash: hashedPassword, Role: "Teacher", Name: "Kru Mana", Email: "mana@school.com"},
-		{Username: "teacher3", PasswordHash: hashedPassword, Role: "Teacher", Name: "Kru Piti", Email: "piti@school.com"},
+		{Username: "teacher1", PasswordHash: hashedPassword, Role: "teacher", Name: "Kru Somsri", Email: "somsri@school.com"},
+		{Username: "teacher2", PasswordHash: hashedPassword, Role: "teacher", Name: "Kru Mana", Email: "mana@school.com"},
+		{Username: "teacher3", PasswordHash: hashedPassword, Role: "teacher", Name: "Kru Piti", Email: "piti@school.com"},
 	}
 	for i := range teachers {
 		DB.Create(&teachers[i])
